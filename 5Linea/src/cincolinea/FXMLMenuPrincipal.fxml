@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import com.jfoenix.controls.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="420.0" prefWidth="672.0" style="-fx-background-color: #00FFAA;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cincolinea.FXMLMenuPrincipalController">
+    <children>
+      <ImageView fitHeight="420.0" fitWidth="672.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@imagenes/wallpaper.jpg" />
+         </image>
+      </ImageView>
+        <JFXButton fx:id="btnBuscarPartida" buttonType="RAISED" focusTraversable="false" layoutX="246.0" layoutY="168.0" onAction="#desplegarBuscaPartida" prefHeight="25.0" prefWidth="108.0" style="-fx-background-color: white;" />
+        <JFXButton fx:id="btnMostrarRanking" buttonType="RAISED" focusTraversable="false" layoutX="246.0" layoutY="221.0" onAction="#desplegarRanking" prefHeight="25.0" prefWidth="108.0" style="-fx-background-color: white;" />
+      <JFXButton fx:id="btnCerrarSesion" layoutX="246.0" layoutY="343.0" onAction="#cerrarSesion" prefHeight="25.0" prefWidth="108.0" style="-fx-background-color: #686868;" textFill="WHITE" />
+    </children>
+</AnchorPane>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="525.0" prefWidth="840.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cincolinea.FXMLTableroController">
+   <children>
+      <ImageView fitHeight="525.0" fitWidth="840.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@imagenes/wallpaper.jpg" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="252.0" fitWidth="252.0" layoutX="168.0" layoutY="137.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@imagenes/Noname_1.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="102.0" fitWidth="108.0" layoutX="24.0" layoutY="395.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@imagenes/Usuario_Generico.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="102.0" fitWidth="108.0" layoutX="24.0" layoutY="28.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@imagenes/Usuario_Generico.png" />
+         </image>
+      </ImageView>
+      <JFXButton fx:id="btnAbandonarP" layoutX="440.0" layoutY="246.0" prefHeight="34.0" prefWidth="113.0" style="-fx-background-color: #686868;" textFill="WHITE" />
+      <Label fx:id="labelTextoTiempo" layoutX="24.0" layoutY="238.0" prefHeight="17.0" prefWidth="102.0" text="Label" textFill="WHITE" />
+      <Label fx:id="labelContTiempo" layoutX="24.0" layoutY="272.0" prefHeight="17.0" prefWidth="102.0" text="Label" textFill="WHITE" />
+      <Label fx:id="labelNombreJugador" layoutX="168.0" layoutY="28.0" prefHeight="17.0" prefWidth="179.0" text="Label" textFill="WHITE" />
+      <Label fx:id="labelNombreContrincante" layoutX="168.0" layoutY="405.0" prefHeight="17.0" prefWidth="179.0" text="Label" textFill="WHITE" />
+      <Label fx:id="labelInfoContrincante" layoutX="168.0" layoutY="438.0" prefHeight="17.0" prefWidth="179.0" text="Label" textFill="WHITE" />
+      <Label fx:id="labelInfoJugador" layoutX="168.0" layoutY="62.0" prefHeight="17.0" prefWidth="179.0" text="Label" textFill="WHITE" />
+   </children>
+</AnchorPane>

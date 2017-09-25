@@ -20,7 +20,7 @@ import javafx.stage.Stage;
 public class Main extends Application {
 
     private Stage stageLocal;
-    
+
     @Override
     public void start(Stage stage) throws Exception {
         desplegarInicioSesion(stage);
@@ -31,14 +31,14 @@ public class Main extends Application {
             FXMLLoader loader = new FXMLLoader(Main.class.getResource("FXMLDocument.fxml"));
             Parent root = (Parent) loader.load();
             Scene scene = new Scene(root);
-            
+
             stageInicio.setScene(scene);
             stageInicio.setTitle("5 in linea");
-            
+
             FXMLDocumentController control = loader.getController();
             control.setMain(this);
             stageInicio.show();
-            
+
             stageLocal = stageInicio;
         } catch (IOException ex) {
             System.out.println("Excepción tipo IO, mensaje: " + ex.getMessage());
@@ -49,16 +49,16 @@ public class Main extends Application {
         try {
             FXMLLoader loader = new FXMLLoader(Main.class.getResource("FXMLMenuPrincipal.fxml"));
             Parent root = (Parent) loader.load();
-            
+
             FXMLMenuPrincipalController control = loader.getController();
             control.setMain(this);
-            
-            Scene scene = new Scene(root);    
-            
+
+            Scene scene = new Scene(root);
+
             control.initialize(null, bundleElegido);
             stageLocal.setScene(scene);
             stageLocal.setTitle("Menu principal");
-            
+
         } catch (IOException ex) {
             System.out.println("Excepción tipo IO, mensaje: " + ex.getMessage());
         }
@@ -66,46 +66,46 @@ public class Main extends Application {
 
     public void desplegarRanking(ResourceBundle bundleElegido) {
         try {
-            
+
             FXMLLoader loader = new FXMLLoader(Main.class.getResource("FXMLRanking.fxml"));
             Parent root = (Parent) loader.load();
-            
+
             FXMLRankingController control = loader.getController();
             control.setMain(this);
-            
-            Scene scene = new Scene(root);    
-            
+
+            Scene scene = new Scene(root);
+
             control.initialize(null, bundleElegido);
             stageLocal.setScene(scene);
             stageLocal.setTitle("Ranking");
-            
-        } catch (NullPointerException ex ) {
+
+        } catch (NullPointerException ex) {
             System.out.println("Excepción tipo Null, mensaje: " + ex.getMessage());
         } catch (IOException ex) {
             System.out.println("Excepción tipo IO, mensaje: " + ex.getMessage());
         }
     }
-    
-    public void desplegarBuscaPartida(ResourceBundle bundleElegido){
-        try{
-            
+
+    public void desplegarBuscaPartida(ResourceBundle bundleElegido) {
+        try {
+
             FXMLLoader loader = new FXMLLoader(Main.class.getResource("FXMLBuscaPartida.fxml"));
             Parent root = (Parent) loader.load();
-            
+
             FXMLBuscaPartidaController control = loader.getController();
             control.setMain(this);
-            
+
             Scene scene = new Scene(root);
-            
+
             control.initialize(null, bundleElegido);
             stageLocal.setScene(scene);
             stageLocal.setTitle("Buscando partida");
-            
-        }catch(IOException ex){
+
+        } catch (IOException ex) {
             System.out.println("Excepción de tipo IO, mensaje: " + ex.getMessage());
         }
     }
-    
+
     public static void main(String[] args) {
         launch(args);
     }
@@ -114,57 +114,75 @@ public class Main extends Application {
         try {
             FXMLLoader loader = new FXMLLoader(Main.class.getResource("FXMLDocument.fxml"));
             Parent root = (Parent) loader.load();
-            
+
             FXMLDocumentController control = loader.getController();
             control.setMain(this);
-            
+
             Scene scene = new Scene(root);
-            
+
             control.initialize(null, bundleElegido);
             stageLocal.setScene(scene);
             stageLocal.setTitle("5 en linea");
-            
+
         } catch (IOException ex) {
             System.out.println("Excepción tipo IO, mensaje: " + ex.getMessage());
         }
     }
 
-    public void registrarUsuario(ResourceBundle bundleElegido){
-		try {
-            FXMLLoader loader = new FXMLLoader(Main.class.getResource("FXMLRegistrrUsuario.fxml"));
+    public void registrarUsuario(ResourceBundle bundleElegido) {
+        try {
+            FXMLLoader loader = new FXMLLoader(Main.class.getResource("FXMLRegistrarUsuario.fxml"));
             Parent root = (Parent) loader.load();
-            
+
             FXMLRegistrarUsuarioController control = loader.getController();
             control.setMain(this);
-            
+
             Scene scene = new Scene(root);
-            
+
             control.initialize(null, bundleElegido);
             stageLocal.setScene(scene);
             stageLocal.setTitle("Registrar Usuario");
-            
+
         } catch (IOException ex) {
             System.out.println("Excepción tipo IO, mensaje: " + ex.getMessage());
         }
-	}
-	
-	public void configurarPartida(ResourceBundle bundleElegido){
-		try {
+    }
+
+    public void configurarPartida(ResourceBundle bundleElegido) {
+        try {
             FXMLLoader loader = new FXMLLoader(Main.class.getResource("FXMLConfigurarPartida.fxml"));
             Parent root = (Parent) loader.load();
-            
+
             FXMLConfigurarPartidaController control = loader.getController();
             control.setMain(this);
-            
+
             Scene scene = new Scene(root);
-            
+
             control.initialize(null, bundleElegido);
             stageLocal.setScene(scene);
             stageLocal.setTitle("Configurar Partida");
-            
+
         } catch (IOException ex) {
             System.out.println("Excepción tipo IO, mensaje: " + ex.getMessage());
         }
-	}
+    }
+    
+    public void iniciarJuego(ResourceBundle bundleElegido) {
+        try {
+            FXMLLoader loader = new FXMLLoader(Main.class.getResource("FXMLTablero.fxml"));
+            Parent root = (Parent) loader.load();
 
+            FXMLTableroController control = loader.getController();
+            control.setMain(this);
+
+            Scene scene = new Scene(root);
+
+            control.initialize(null, bundleElegido);
+            stageLocal.setScene(scene);
+            stageLocal.setTitle("Jugar");
+
+        } catch (IOException ex) {
+            System.out.println("Excepción tipo IO, mensaje: " + ex.getMessage());
+        }
+    }
 }

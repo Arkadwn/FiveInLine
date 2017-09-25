@@ -25,8 +25,11 @@ public class FXMLMenuPrincipalController implements Initializable {
     
     private ResourceBundle Bundle;
     private Main main;
+    
     @FXML
     private JFXButton btnCerrarSesion;
+    @FXML
+    private JFXButton btnCrearPartida;
     
     public void setMain(Main main){
         this.main=main;
@@ -34,7 +37,8 @@ public class FXMLMenuPrincipalController implements Initializable {
     private void iniciarIdiomaComponentes(){
         btnBuscarPartida.setText(Bundle.getString("btnBuscarPartida"));
         btnMostrarRanking.setText(Bundle.getString("btnMostrarRanking"));
-        btnCerrarSesion.setText(Bundle.getString("btnCerrarSesion"));   
+        btnCerrarSesion.setText(Bundle.getString("btnCerrarSesion"));
+        btnCrearPartida.setText(Bundle.getString("btnCrearPartida"));
     }
     
     @Override
@@ -59,4 +63,10 @@ public class FXMLMenuPrincipalController implements Initializable {
     private void cerrarSesion(javafx.event.ActionEvent event) {
         main.cerrarSesion(Bundle);
     }
+    
+    @FXML
+    private void crearPartida(javafx.event.ActionEvent event){
+        main.configurarPartida(Bundle);
+    }
+    
 }

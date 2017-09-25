@@ -49,6 +49,11 @@ public class FXMLDocumentController implements Initializable {
     }
 
     @FXML
+    private void desplegarRegistroUser(javafx.event.ActionEvent event){
+        main.registrarUsuario(Bundle);
+    }
+    
+    @FXML
     private void ingresarMenuPrincipal(ActionEvent event) {
         main.desplegarMenuPrincipal(Bundle);
     }

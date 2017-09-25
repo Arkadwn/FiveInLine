@@ -129,6 +129,42 @@ public class Main extends Application {
         }
     }
 
-    
+    public void registrarUsuario(ResourceBundle bundleElegido){
+		try {
+            FXMLLoader loader = new FXMLLoader(Main.class.getResource("FXMLRegistrrUsuario.fxml"));
+            Parent root = (Parent) loader.load();
+            
+            FXMLRegistrarUsuarioController control = loader.getController();
+            control.setMain(this);
+            
+            Scene scene = new Scene(root);
+            
+            control.initialize(null, bundleElegido);
+            stageLocal.setScene(scene);
+            stageLocal.setTitle("Registrar Usuario");
+            
+        } catch (IOException ex) {
+            System.out.println("Excepción tipo IO, mensaje: " + ex.getMessage());
+        }
+	}
+	
+	public void configurarPartida(ResourceBundle bundleElegido){
+		try {
+            FXMLLoader loader = new FXMLLoader(Main.class.getResource("FXMLConfigurarPartida.fxml"));
+            Parent root = (Parent) loader.load();
+            
+            FXMLConfigurarPartidaController control = loader.getController();
+            control.setMain(this);
+            
+            Scene scene = new Scene(root);
+            
+            control.initialize(null, bundleElegido);
+            stageLocal.setScene(scene);
+            stageLocal.setTitle("Configurar Partida");
+            
+        } catch (IOException ex) {
+            System.out.println("Excepción tipo IO, mensaje: " + ex.getMessage());
+        }
+	}
 
 }

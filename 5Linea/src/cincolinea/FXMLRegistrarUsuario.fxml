@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.*?>
 <?import javafx.scene.effect.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.text.*?>
@@ -10,25 +11,20 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="404.0" prefWidth="596.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.RegistrarUsuarioController">
+<AnchorPane id="AnchorPane" prefHeight="404.0" prefWidth="596.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cincolinea.FXMLRegistrarUsuarioController">
    <children>
       <ImageView fx:id="imagen" fitHeight="414.0" fitWidth="603.0" layoutY="-1.0" pickOnBounds="true">
          <image>
-            <Image url="@../imagenes/fondo.jpg" />
+            <Image url="@imagenes/wallpaper.jpg" />
          </image>
       </ImageView>
-      <Button id="btnRegistrar" fx:id="btnRegistrar" layoutX="237.0" layoutY="299.0" mnemonicParsing="false" onAction="#accionBtnRegistrar" prefHeight="25.0" prefWidth="94.0" style="-fx-border-radius: 18;" text="%btn.Registrar" AnchorPane.rightAnchor="272.0" />
-      <Button id="btnCancelar" fx:id="btnCancelar" cancelButton="true" layoutX="89.0" layoutY="299.0" mnemonicParsing="false" style="-fx-border-radius: 18;" text="%btn.Cancelar" wrapText="true" />
-      <PasswordField id="contrasena" fx:id="contrasena" layoutX="135.0" layoutY="174.0" promptText="**************" AnchorPane.rightAnchor="319.0" />
-      <PasswordField id="reContrasena" fx:id="reContrasena" layoutX="135.0" layoutY="231.0" promptText="**************" />
-      <TextField id="nombreUsuario" fx:id="nombreUsuario" layoutX="135.0" layoutY="112.0" promptText="Jugador 1" />
-      <Label id="labelNombreUsuario" fx:id="labelNombreUsuario" layoutX="135.0" layoutY="89.0" prefHeight="17.0" prefWidth="149.0" text="%lbn.NombreUsuario" textFill="WHITE" />
-      <Label id="labelContrasena" fx:id="labelContrasena" layoutX="135.0" layoutY="150.0" prefHeight="17.0" prefWidth="149.0" text="%lbn.Contrasena" textFill="WHITE" />
-      <Label id="labelReContrasena" fx:id="labelReContrasena" layoutX="135.0" layoutY="208.0" prefHeight="17.0" prefWidth="149.0" text="%lbn.ReContrasena" textFill="WHITE" />
-      <Label layoutX="61.0" layoutY="35.0" text="%lbn.IngresarUsuario" textFill="WHITE">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </Label>
+      <Label id="labelNombreUsuario" fx:id="labelNombreUsuario" layoutX="100.0" layoutY="65.0" prefHeight="17.0" prefWidth="149.0" textFill="WHITE" />
+      <Label id="labelContrasena" fx:id="labelContrasena" layoutX="99.0" layoutY="129.0" prefHeight="17.0" prefWidth="149.0" textFill="WHITE" />
+      <Label id="labelReContrasena" fx:id="labelReContrasena" layoutX="98.0" layoutY="198.0" prefHeight="17.0" prefWidth="149.0" textFill="WHITE" />
+      <JFXButton fx:id="btnRegistrar" buttonType="RAISED" layoutX="203.0" layoutY="296.0" prefHeight="41.0" prefWidth="88.0" style="-fx-background-color: white; -fx-background-radius: 18;" />
+      <JFXButton fx:id="btnCancelar" buttonType="RAISED" layoutX="55.0" layoutY="296.0" onAction="#regresarMenuPrincipal" prefHeight="41.0" prefWidth="88.0" style="-fx-background-color: white; -fx-background-radius: 18;" />
+      <JFXPasswordField fx:id="tfReContrasena" layoutX="80.0" layoutY="216.0" prefHeight="25.0" prefWidth="189.0" />
+      <JFXPasswordField fx:id="tfContrasena" layoutX="82.0" layoutY="156.0" prefHeight="25.0" prefWidth="189.0" />
+      <JFXTextField fx:id="tfNombreUsuario" layoutX="82.0" layoutY="96.0" prefHeight="25.0" prefWidth="189.0" />
    </children>
 </AnchorPane>

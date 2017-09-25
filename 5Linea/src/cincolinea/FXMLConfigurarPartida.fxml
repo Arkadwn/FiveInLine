@@ -1,19 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.*?>
+<?import javafx.scene.image.*?>
 <?import java.lang.*?>
 <?import java.util.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="255.0" prefWidth="348.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="gui.CrearPartidaController">
+<AnchorPane id="AnchorPane" prefHeight="255.0" prefWidth="348.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cincolinea.FXMLConfigurarPartidaController">
    <children>
-      <Button fx:id="btnAceptar" layoutX="226.0" layoutY="198.0" mnemonicParsing="false" text="%btn.Aceptar" />
-      <Button fx:id="btnCancelar" layoutX="57.0" layoutY="198.0" mnemonicParsing="false" text="%btn.Cancelar" />
-      <ComboBox fx:id="cbTamaño" layoutX="78.0" layoutY="138.0" prefHeight="25.0" prefWidth="201.0" />
-      <ComboBox fx:id="cbColorFichas" layoutX="77.0" layoutY="73.0" prefHeight="25.0" prefWidth="201.0" />
-      <Label fx:id="labelColorFichas" layoutX="77.0" layoutY="43.0" text="%lbn.ColorFichas" />
-      <Label fx:id="labelTamaño" layoutX="77.0" layoutY="111.0" text="%lbn.Tamaño" />
+      <ImageView fx:id="imagen" fitHeight="316.0" fitWidth="493.0" layoutY="-11.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@imagenes/wallpaper.jpg" />
+         </image>
+      </ImageView>
+      <Label fx:id="labelColorFichas" layoutX="77.0" layoutY="43.0" prefHeight="17.0" prefWidth="201.0" textFill="WHITE" />
+      <Label fx:id="labelTamaño" layoutX="77.0" layoutY="140.0" prefHeight="17.0" prefWidth="201.0" textFill="WHITE" />
+      <JFXComboBox fx:id="cbColorFichas" layoutX="77.0" layoutY="78.0" prefHeight="25.0" prefWidth="201.0" unFocusColor="#4d4c4c" />
+      <JFXComboBox fx:id="cbTamano" layoutX="77.0" layoutY="168.0" prefHeight="25.0" prefWidth="201.0" />
+      <JFXButton fx:id="btnCancelar" layoutX="69.0" layoutY="237.0" onAction="#regresarMenuPrincipal" prefHeight="25.0" prefWidth="82.0" style="-fx-background-color: white; -fx-background-radius: 18;" />
+      <JFXButton fx:id="btnCrear" layoutX="191.0" layoutY="237.0" prefHeight="25.0" prefWidth="82.0" style="-fx-background-color: white; -fx-background-radius: 18;" />
    </children>
 </AnchorPane>

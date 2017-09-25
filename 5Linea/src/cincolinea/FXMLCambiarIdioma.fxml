@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="206.0" prefWidth="343.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.CambiarIdiomaController">
+   <children>
+      <Button fx:id="btnAceptar" layoutX="196.0" layoutY="147.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="111.0" text="btn.Aceptar" />
+      <Button fx:id="btnCancelar" layoutX="47.0" layoutY="147.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="117.0" text="%btn.Cancelar" />
+      <ComboBox fx:id="cbIdioma" layoutX="67.0" layoutY="78.0" prefHeight="25.0" prefWidth="216.0" />
+      <Label fx:id="labelIdioma" layoutX="139.0" layoutY="41.0" text="%lbn.Idioma">
+         <font>
+            <Font size="14.0" />
+         </font></Label>
+   </children>
+</AnchorPane>

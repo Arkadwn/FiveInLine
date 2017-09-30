@@ -50,7 +50,7 @@
             <DropShadow blurType="ONE_PASS_BOX" color="#000000a6" height="5.0" offsetX="2.0" offsetY="2.0" radius="2.0" width="5.0" />
          </effect>
       </Label>
-      <Hyperlink fx:id="linkRegistro" layoutX="92.0" layoutY="336.0" onAction="#desplegarRegistroUser" prefHeight="23.0" prefWidth="142.0" underline="true" />
+      <Hyperlink fx:id="linkRegistro" layoutX="92.0" layoutY="336.0" onAction="#desplegarRegistroUsuario" prefHeight="23.0" prefWidth="142.0" underline="true" />
       <JFXButton fx:id="translateButton" layoutX="528.0" layoutY="62.0" onAction="#cambiarIdioma" prefHeight="35.0" prefWidth="35.0" />
    </children>
 </AnchorPane>

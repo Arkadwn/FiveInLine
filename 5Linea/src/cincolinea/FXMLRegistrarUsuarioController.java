@@ -26,13 +26,13 @@ public class FXMLRegistrarUsuarioController implements Initializable {
     @FXML
     private Label labelReContrasena;
 
-    private ResourceBundle Bundle;
+    private ResourceBundle idioma;
     private Main main;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        Bundle = rb;
-        if (Bundle != null) {
+        idioma = rb;
+        if (idioma != null) {
             iniciarIdiomaComponentes();
         }
     }
@@ -42,15 +42,15 @@ public class FXMLRegistrarUsuarioController implements Initializable {
     }
 
     private void iniciarIdiomaComponentes() {
-        btnRegistrar.setText(Bundle.getString("btnRegistrar"));
-        btnCancelar.setText(Bundle.getString("btnCancelar"));
-        labelNombreUsuario.setText(Bundle.getString("labelUsuario"));
-        labelContrasena.setText(Bundle.getString("labelContrasena"));
-        labelReContrasena.setText(Bundle.getString("labelReContrasena"));
+        btnRegistrar.setText(idioma.getString("btnRegistrar"));
+        btnCancelar.setText(idioma.getString("btnCancelar"));
+        labelNombreUsuario.setText(idioma.getString("labelUsuario"));
+        labelContrasena.setText(idioma.getString("labelContrasena"));
+        labelReContrasena.setText(idioma.getString("labelReContrasena"));
     }
 
     @FXML
     private void regresarMenuPrincipal(ActionEvent event) {
-        main.desplegarMenuPrincipal(Bundle);
+        main.desplegarMenuPrincipal(idioma);
     }
 }

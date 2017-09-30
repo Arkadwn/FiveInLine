@@ -19,18 +19,18 @@ public class FXMLBuscaPartidaController implements Initializable {
     private Label labelBuscandoP;
     @FXML
     private JFXButton btnCancelarBusqPartida;
-    private ResourceBundle Bundle;
+    private ResourceBundle idioma;
     private Main main;
 
     private void iniciarIdiomaComponentes() {
-        btnCancelarBusqPartida.setText(Bundle.getString("btnCancelarBusqPartida"));
-        labelBuscandoP.setText(Bundle.getString("labelBuscandoP")); 
+        btnCancelarBusqPartida.setText(idioma.getString("btnCancelarBusqPartida"));
+        labelBuscandoP.setText(idioma.getString("labelBuscandoP")); 
     }
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        Bundle = rb;
-        if (Bundle != null) {
+        idioma = rb;
+        if (idioma != null) {
             iniciarIdiomaComponentes();
         }
 
@@ -42,7 +42,7 @@ public class FXMLBuscaPartidaController implements Initializable {
 
     @FXML
     private void regresarMenuPrincipal(ActionEvent event) {
-        main.desplegarMenuPrincipal(Bundle);
+        main.desplegarMenuPrincipal(idioma);
     }  
     
 }

@@ -16,7 +16,7 @@ import javafx.scene.control.TableView;
  * @author Sammy Guergachi <sguergachi at gmail.com>
  */
 public class FXMLRankingController implements Initializable {
-    private ResourceBundle Bundle;
+    private ResourceBundle idioma;
     
     @FXML
     private JFXButton btnRegresar;
@@ -33,17 +33,17 @@ public class FXMLRankingController implements Initializable {
     private Label labelRanking;
     
     private void iniciarIdiomaComponentes() {
-        btnRegresar.setText(Bundle.getString("btnRegresar"));
-        columJugador.setText(Bundle.getString("columJugador"));
-        columGanadas.setText(Bundle.getString("columGanadas"));
-        columPerdidas.setText(Bundle.getString("columPerdidas"));
-        labelRanking.setText(Bundle.getString("labelRanking")); 
+        btnRegresar.setText(idioma.getString("btnRegresar"));
+        columJugador.setText(idioma.getString("columJugador"));
+        columGanadas.setText(idioma.getString("columGanadas"));
+        columPerdidas.setText(idioma.getString("columPerdidas"));
+        labelRanking.setText(idioma.getString("labelRanking")); 
     }
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        Bundle = rb;
-        if (Bundle != null) {
+        idioma = rb;
+        if (idioma != null) {
             iniciarIdiomaComponentes();
         }
 
@@ -55,7 +55,7 @@ public class FXMLRankingController implements Initializable {
 
     @FXML
     private void regresarMenuPrincipal(ActionEvent event) {
-        main.desplegarMenuPrincipal(Bundle);
+        main.desplegarMenuPrincipal(idioma);
     }
 
 }

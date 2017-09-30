@@ -23,7 +23,7 @@ public class FXMLMenuPrincipalController implements Initializable {
     @FXML
     private JFXButton btnMostrarRanking;
     
-    private ResourceBundle Bundle;
+    private ResourceBundle idioma;
     private Main main;
     
     @FXML
@@ -35,38 +35,38 @@ public class FXMLMenuPrincipalController implements Initializable {
         this.main=main;
     }
     private void iniciarIdiomaComponentes(){
-        btnBuscarPartida.setText(Bundle.getString("btnBuscarPartida"));
-        btnMostrarRanking.setText(Bundle.getString("btnMostrarRanking"));
-        btnCerrarSesion.setText(Bundle.getString("btnCerrarSesion"));
-        btnCrearPartida.setText(Bundle.getString("btnCrearPartida"));
+        btnBuscarPartida.setText(idioma.getString("btnBuscarPartida"));
+        btnMostrarRanking.setText(idioma.getString("btnMostrarRanking"));
+        btnCerrarSesion.setText(idioma.getString("btnCerrarSesion"));
+        btnCrearPartida.setText(idioma.getString("btnCrearPartida"));
     }
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        Bundle = rb;
-        if(Bundle!=null)
+        idioma = rb;
+        if(idioma!=null)
             iniciarIdiomaComponentes();
         
     }    
 
     @FXML
     private void desplegarRanking(javafx.event.ActionEvent event) {
-        main.desplegarRanking(Bundle);
+        main.desplegarRanking(idioma);
     }
     
     @FXML
     private void desplegarBuscaPartida(javafx.event.ActionEvent event){
-        main.desplegarBuscaPartida(Bundle);
+        main.desplegarBuscaPartida(idioma);
     }
 
     @FXML
     private void cerrarSesion(javafx.event.ActionEvent event) {
-        main.cerrarSesion(Bundle);
+        main.cerrarSesion(idioma);
     }
     
     @FXML
     private void crearPartida(javafx.event.ActionEvent event){
-        main.configurarPartida(Bundle);
+        main.deplegarConfigurarPartida(idioma);
     }
     
 }

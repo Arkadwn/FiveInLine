@@ -22,7 +22,7 @@ public class FXMLConfigurarPartidaController implements Initializable {
     @FXML
     private Label labelColorFichas;
 
-    private ResourceBundle Bundle;
+    private ResourceBundle idioma;
     private Main main;
     
     @FXML
@@ -30,8 +30,8 @@ public class FXMLConfigurarPartidaController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        Bundle = rb;
-        if (Bundle != null) {
+        idioma = rb;
+        if (idioma != null) {
             iniciarIdiomaComponentes();
         }
     }
@@ -41,19 +41,19 @@ public class FXMLConfigurarPartidaController implements Initializable {
     }
 
     private void iniciarIdiomaComponentes() {
-        btnCrear.setText(Bundle.getString("btnCrear"));
-        btnCancelar.setText(Bundle.getString("btnCancelar"));
-        labelColorFichas.setText(Bundle.getString("labelColor"));
-        labelTamaño.setText(Bundle.getString("labelTamaño"));
+        btnCrear.setText(idioma.getString("btnCrear"));
+        btnCancelar.setText(idioma.getString("btnCancelar"));
+        labelColorFichas.setText(idioma.getString("labelColor"));
+        labelTamaño.setText(idioma.getString("labelTamaño"));
     }
 
     @FXML
     private void regresarMenuPrincipal(ActionEvent event) {
-        main.desplegarMenuPrincipal(Bundle);
+        main.desplegarMenuPrincipal(idioma);
     }
     
     @FXML
     private void iniciarJuego(ActionEvent event){
-        main.iniciarJuego(Bundle);
+        main.iniciarJuego(idioma);
     }
 }

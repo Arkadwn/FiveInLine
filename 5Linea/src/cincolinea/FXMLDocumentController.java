@@ -36,70 +36,70 @@ public class FXMLDocumentController implements Initializable {
     private JFXButton translateButton;
     
     private boolean estaEspañol;
-    private ResourceBundle Bundle;
+    private ResourceBundle idioma;
     private Main main;
     
     @FXML
     private void cambiarIdioma(ActionEvent event) {
         if (estaEspañol) {
-            cambiarComponentesEnglish();
+            cambiarComponentesIngles();
         } else {
-            cambiarComponentesSpanish();
+            cambiarComponentesEspañol();
         }
     }
 
     @FXML
-    private void desplegarRegistroUser(javafx.event.ActionEvent event){
-        main.registrarUsuario(Bundle);
+    private void desplegarRegistroUsuario(javafx.event.ActionEvent event){
+        main.desplegarRegistrarUsuario(idioma);
     }
     
     @FXML
     private void ingresarMenuPrincipal(ActionEvent event) {
-        main.desplegarMenuPrincipal(Bundle);
+        main.desplegarMenuPrincipal(idioma);
     }
     
     public void setMain(Main main) {
         this.main = main;
     }
 
-    private void cambiarComponentesSpanish() {
-        Bundle = ResourceBundle.getBundle("cincolinea/resources/Bundle_es_MX");
-        labelTitle.setText(Bundle.getString("labelTitle"));
-        labelContraseña.setText(Bundle.getString("labelContraseña"));
-        labelUsuario.setText(Bundle.getString("labelUsuario"));
-        btnIngresar.setText(Bundle.getString("btnIngresar"));
-        btnSalir.setText(Bundle.getString("btnSalir"));
-        linkRegistro.setText(Bundle.getString("linkRegistro"));
+    private void cambiarComponentesEspañol() {
+        idioma = ResourceBundle.getBundle("cincolinea/resources/Bundle_es_MX");
+        labelTitle.setText(idioma.getString("labelTitle"));
+        labelContraseña.setText(idioma.getString("labelContraseña"));
+        labelUsuario.setText(idioma.getString("labelUsuario"));
+        btnIngresar.setText(idioma.getString("btnIngresar"));
+        btnSalir.setText(idioma.getString("btnSalir"));
+        linkRegistro.setText(idioma.getString("linkRegistro"));
         estaEspañol = true;
     }
     
-    private void cambiarComponentesEnglish() {
-        Bundle = ResourceBundle.getBundle("cincolinea/resources/Bundle_en_US");
-        labelTitle.setText(Bundle.getString("labelTitle"));
-        labelContraseña.setText(Bundle.getString("labelContraseña"));
-        labelUsuario.setText(Bundle.getString("labelUsuario"));
-        btnIngresar.setText(Bundle.getString("btnIngresar"));
-        btnSalir.setText(Bundle.getString("btnSalir"));
-        linkRegistro.setText(Bundle.getString("linkRegistro"));
+    private void cambiarComponentesIngles() {
+        idioma = ResourceBundle.getBundle("cincolinea/resources/Bundle_en_US");
+        labelTitle.setText(idioma.getString("labelTitle"));
+        labelContraseña.setText(idioma.getString("labelContraseña"));
+        labelUsuario.setText(idioma.getString("labelUsuario"));
+        btnIngresar.setText(idioma.getString("btnIngresar"));
+        btnSalir.setText(idioma.getString("btnSalir"));
+        linkRegistro.setText(idioma.getString("linkRegistro"));
         estaEspañol = false;
     }
     
-    private void inicializarComponentesRB(ResourceBundle bundleElegido) {
+    private void inicializarComponentesPorDefecto(ResourceBundle bundleElegido) {
         labelTitle.setText(bundleElegido.getString("labelTitle"));
         labelContraseña.setText(bundleElegido.getString("labelContraseña"));
         labelUsuario.setText(bundleElegido.getString("labelUsuario"));
         btnIngresar.setText(bundleElegido.getString("btnIngresar"));
         btnSalir.setText(bundleElegido.getString("btnSalir"));
         linkRegistro.setText(bundleElegido.getString("linkRegistro"));
-        Bundle = bundleElegido;
+        idioma = bundleElegido;
     }
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         if (rb != null) {
-            inicializarComponentesRB(rb);
+            inicializarComponentesPorDefecto(rb);
         } else {
-            cambiarComponentesSpanish();
+            cambiarComponentesEspañol();
         }
         translateButton.setStyle("-fx-background-image: url('cincolinea/imagenes/language.png');"
                 + "-fx-background-position: center center; -fx-background-repeat: stretch; -fx-background-size: 35px 35px 35px 35px;");

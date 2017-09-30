@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
 <?import javafx.scene.image.*?>
 <?import com.jfoenix.controls.*?>
 <?import java.lang.*?>
@@ -15,9 +16,14 @@
             <Image url="@imagenes/wallpaper.jpg" />
          </image>
       </ImageView>
-        <JFXButton fx:id="btnBuscarPartida" buttonType="RAISED" focusTraversable="false" layoutX="246.0" layoutY="168.0" onAction="#desplegarBuscaPartida" prefHeight="25.0" prefWidth="108.0" style="-fx-background-color: white;" />
-        <JFXButton fx:id="btnMostrarRanking" buttonType="RAISED" focusTraversable="false" layoutX="246.0" layoutY="221.0" onAction="#desplegarRanking" prefHeight="25.0" prefWidth="108.0" style="-fx-background-color: white;" />
-      <JFXButton fx:id="btnCerrarSesion" layoutX="246.0" layoutY="343.0" onAction="#cerrarSesion" prefHeight="25.0" prefWidth="108.0" style="-fx-background-color: #686868;" textFill="WHITE" />
-      <JFXButton fx:id="btnCrearPartida" buttonType="RAISED" focusTraversable="false" layoutX="246.0" layoutY="130.0" onAction="#crearPartida" prefHeight="25.0" prefWidth="108.0" style="-fx-background-color: white;" />
+        <JFXButton fx:id="btnBuscarPartida" buttonType="RAISED" focusTraversable="false" layoutX="135.0" layoutY="168.0" onAction="#desplegarBuscaPartida" prefHeight="34.0" prefWidth="219.0" style="-fx-background-color: white; -fx-background-radius: 18;" />
+        <JFXButton fx:id="btnMostrarRanking" buttonType="RAISED" focusTraversable="false" layoutX="135.0" layoutY="229.0" onAction="#desplegarRanking" prefHeight="34.0" prefWidth="219.0" style="-fx-background-color: white; -fx-background-radius: 18;" />
+      <JFXButton fx:id="btnCerrarSesion" layoutX="135.0" layoutY="324.0" onAction="#cerrarSesion" prefHeight="34.0" prefWidth="219.0" style="-fx-background-color: #686868; -fx-background-radius: 18;" textFill="WHITE" />
+      <JFXButton fx:id="btnCrearPartida" buttonType="RAISED" focusTraversable="false" layoutX="135.0" layoutY="111.0" onAction="#crearPartida" prefHeight="34.0" prefWidth="219.0" style="-fx-background-color: white; -fx-background-radius: 18;" />
+      <JFXButton fx:id="btnAyuda" layoutX="34.0" layoutY="35.0" prefHeight="39.0" prefWidth="40.0" style="-fx-background-color: #534e4e; -fx-background-radius: 20;" text="?" textAlignment="CENTER" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </JFXButton>
     </children>
 </AnchorPane>

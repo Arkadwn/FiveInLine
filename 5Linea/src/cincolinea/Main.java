@@ -129,7 +129,7 @@ public class Main extends Application {
         }
     }
 
-    public void registrarUsuario(ResourceBundle bundleElegido) {
+    public void desplegarRegistrarUsuario(ResourceBundle bundleElegido) {
         try {
             FXMLLoader loader = new FXMLLoader(Main.class.getResource("FXMLRegistrarUsuario.fxml"));
             Parent root = (Parent) loader.load();
@@ -148,7 +148,7 @@ public class Main extends Application {
         }
     }
 
-    public void configurarPartida(ResourceBundle bundleElegido) {
+    public void deplegarConfigurarPartida(ResourceBundle bundleElegido) {
         try {
             FXMLLoader loader = new FXMLLoader(Main.class.getResource("FXMLConfigurarPartida.fxml"));
             Parent root = (Parent) loader.load();

@@ -5,6 +5,7 @@
  */
 package cincolinea;
 
+import cincolinea.controlador.*;
 import java.io.IOException;
 import java.util.ResourceBundle;
 import javafx.application.Application;
@@ -28,7 +29,7 @@ public class Main extends Application {
 
     public void desplegarInicioSesion(Stage stageInicio) {
         try {
-            FXMLLoader loader = new FXMLLoader(Main.class.getResource("FXMLDocument.fxml"));
+            FXMLLoader loader = new FXMLLoader(Main.class.getResource("vista/FXMLDocument.fxml"));
             Parent root = (Parent) loader.load();
             Scene scene = new Scene(root);
 
@@ -47,7 +48,7 @@ public class Main extends Application {
 
     public void desplegarMenuPrincipal(ResourceBundle bundleElegido) {
         try {
-            FXMLLoader loader = new FXMLLoader(Main.class.getResource("FXMLMenuPrincipal.fxml"));
+            FXMLLoader loader = new FXMLLoader(Main.class.getResource("vista/FXMLMenuPrincipal.fxml"));
             Parent root = (Parent) loader.load();
 
             FXMLMenuPrincipalController control = loader.getController();
@@ -67,7 +68,7 @@ public class Main extends Application {
     public void desplegarRanking(ResourceBundle bundleElegido) {
         try {
 
-            FXMLLoader loader = new FXMLLoader(Main.class.getResource("FXMLRanking.fxml"));
+            FXMLLoader loader = new FXMLLoader(Main.class.getResource("vista/FXMLRanking.fxml"));
             Parent root = (Parent) loader.load();
 
             FXMLRankingController control = loader.getController();
@@ -89,7 +90,7 @@ public class Main extends Application {
     public void desplegarBuscaPartida(ResourceBundle bundleElegido) {
         try {
 
-            FXMLLoader loader = new FXMLLoader(Main.class.getResource("FXMLBuscaPartida.fxml"));
+            FXMLLoader loader = new FXMLLoader(Main.class.getResource("vista/FXMLBuscaPartida.fxml"));
             Parent root = (Parent) loader.load();
 
             FXMLBuscaPartidaController control = loader.getController();
@@ -112,7 +113,7 @@ public class Main extends Application {
 
     public void cerrarSesion(ResourceBundle bundleElegido) {
         try {
-            FXMLLoader loader = new FXMLLoader(Main.class.getResource("FXMLDocument.fxml"));
+            FXMLLoader loader = new FXMLLoader(Main.class.getResource("vista/FXMLDocument.fxml"));
             Parent root = (Parent) loader.load();
 
             FXMLDocumentController control = loader.getController();
@@ -131,7 +132,7 @@ public class Main extends Application {
 
     public void desplegarRegistrarUsuario(ResourceBundle bundleElegido) {
         try {
-            FXMLLoader loader = new FXMLLoader(Main.class.getResource("FXMLRegistrarUsuario.fxml"));
+            FXMLLoader loader = new FXMLLoader(Main.class.getResource("vista/FXMLRegistrarUsuario.fxml"));
             Parent root = (Parent) loader.load();
 
             FXMLRegistrarUsuarioController control = loader.getController();
@@ -150,7 +151,7 @@ public class Main extends Application {
 
     public void deplegarConfigurarPartida(ResourceBundle bundleElegido) {
         try {
-            FXMLLoader loader = new FXMLLoader(Main.class.getResource("FXMLConfigurarPartida.fxml"));
+            FXMLLoader loader = new FXMLLoader(Main.class.getResource("vista/FXMLConfigurarPartida.fxml"));
             Parent root = (Parent) loader.load();
 
             FXMLConfigurarPartidaController control = loader.getController();
@@ -169,7 +170,7 @@ public class Main extends Application {
     
     public void iniciarJuego(ResourceBundle bundleElegido) {
         try {
-            FXMLLoader loader = new FXMLLoader(Main.class.getResource("FXMLTablero.fxml"));
+            FXMLLoader loader = new FXMLLoader(Main.class.getResource("vista/FXMLTablero.fxml"));
             Parent root = (Parent) loader.load();
 
             FXMLTableroController control = loader.getController();

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="420.0" prefWidth="672.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cincolinea.controlador.FXMLConfigurarPartidaController">
+   <children>
+      <ImageView fx:id="imagen" fitHeight="448.0" fitWidth="672.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../imagenes/wallpaper.jpg" />
+         </image>
+      </ImageView>
+      <Label fx:id="labelColorFichas" layoutX="82.0" layoutY="78.0" prefHeight="32.0" prefWidth="251.0" textFill="WHITE" />
+      <Label fx:id="labelTamaño" layoutX="82.0" layoutY="171.0" prefHeight="32.0" prefWidth="251.0" textFill="WHITE" />
+      <JFXComboBox fx:id="cbColorFichas" layoutX="83.0" layoutY="124.0" prefHeight="32.0" prefWidth="251.0" unFocusColor="#4d4c4c" />
+      <JFXComboBox fx:id="cbTamano" layoutX="82.0" layoutY="213.0" prefHeight="32.0" prefWidth="251.0" />
+      <JFXButton fx:id="btnCancelar" layoutX="77.0" layoutY="293.0" onAction="#regresarMenuPrincipal" prefHeight="39.0" prefWidth="102.0" style="-fx-background-color: #686868; -fx-background-radius: 18;" textFill="WHITE" />
+      <JFXButton fx:id="btnCrear" layoutX="237.0" layoutY="293.0" onAction="#iniciarJuego" prefHeight="39.0" prefWidth="102.0" style="-fx-background-color: white; -fx-background-radius: 18;" />
+   </children>
+</AnchorPane>

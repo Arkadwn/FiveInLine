@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="404.0" prefWidth="596.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cincolinea.controlador.FXMLRegistrarUsuarioController">
+   <children>
+      <ImageView fx:id="imagen" fitHeight="414.0" fitWidth="603.0" layoutY="-1.0" pickOnBounds="true">
+         <image>
+            <Image url="@../imagenes/wallpaper.jpg" />
+         </image>
+      </ImageView>
+      <Label id="labelNombreUsuario" fx:id="labelNombreUsuario" layoutX="100.0" layoutY="65.0" prefHeight="17.0" prefWidth="149.0" textFill="WHITE" />
+      <Label id="labelContrasena" fx:id="labelContrasena" layoutX="99.0" layoutY="129.0" prefHeight="17.0" prefWidth="149.0" textFill="WHITE" />
+      <Label id="labelReContrasena" fx:id="labelReContrasena" layoutX="98.0" layoutY="198.0" prefHeight="17.0" prefWidth="149.0" textFill="WHITE" />
+      <JFXButton fx:id="btnRegistrar" buttonType="RAISED" layoutX="203.0" layoutY="296.0" prefHeight="41.0" prefWidth="88.0" style="-fx-background-color: white; -fx-background-radius: 18;" />
+      <JFXButton fx:id="btnCancelar" buttonType="RAISED" layoutX="55.0" layoutY="296.0" onAction="#regresarMenuPrincipal" prefHeight="41.0" prefWidth="88.0" style="-fx-background-color: white; -fx-background-radius: 18;" />
+      <JFXPasswordField fx:id="tfReContrasena" layoutX="80.0" layoutY="216.0" prefHeight="25.0" prefWidth="189.0" />
+      <JFXPasswordField fx:id="tfContrasena" layoutX="82.0" layoutY="156.0" prefHeight="25.0" prefWidth="189.0" />
+      <JFXTextField fx:id="tfNombreUsuario" layoutX="82.0" layoutY="96.0" prefHeight="25.0" prefWidth="189.0" />
+   </children>
+</AnchorPane>

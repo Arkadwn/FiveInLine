@@ -7,16 +7,16 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="420.0" prefWidth="672.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cincolinea.FXMLBuscaPartidaController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="420.0" prefWidth="672.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cincolinea.controlador.FXMLBuscaPartidaController">
    <children>
       <ImageView fitHeight="420.0" fitWidth="672.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@imagenes/wallpaper.jpg" />
+            <Image url="@../imagenes/wallpaper.jpg" />
          </image>
       </ImageView>
       <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="143.0" layoutY="60.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@imagenes/cargando.gif" />
+            <Image url="@../imagenes/cargando.gif" />
          </image>
       </ImageView>
       <Label fx:id="labelBuscandoP" layoutX="143.0" layoutY="247.0" prefHeight="17.0" prefWidth="150.0" textAlignment="CENTER" textFill="WHITE">

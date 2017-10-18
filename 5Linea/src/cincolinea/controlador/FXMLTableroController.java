@@ -8,6 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.layout.GridPane;
 
 /**
  * FXML Controller class
@@ -33,6 +34,10 @@ public class FXMLTableroController implements Initializable {
 
     private ResourceBundle idioma;
     private Main main;
+    @FXML
+    private JFXButton fxml00;
+    @FXML
+    private GridPane idGrid;
     
     private void inicializarComponentes(){
         labelTextoTiempo.setText(idioma.getString("labelTextoTiempo"));
@@ -44,7 +49,6 @@ public class FXMLTableroController implements Initializable {
         labelInfoContrincante.setText(idioma.getString("labelInfoContrincante"));
     }
     
-    @FXML
     private void abandonarPartida(ActionEvent event) {
         main.desplegarMenuPrincipal(idioma);
     }
@@ -59,6 +63,15 @@ public class FXMLTableroController implements Initializable {
         if (idioma != null) {
             inicializarComponentes();
         }
+    }
+    
+    @FXML
+    private int[] retonarCoordenadas(ActionEvent event){
+        int[] coordenadas = new int[2];
+        JFXButton btn = (JFXButton) event.getSource();
+        System.out.println(btn.getId());
+        idGrid.getChildren().remove(10, 20);
+        return coordenadas;
     }
     
     @FXML

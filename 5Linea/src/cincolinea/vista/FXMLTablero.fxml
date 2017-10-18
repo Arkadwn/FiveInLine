@@ -90,16 +90,17 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <JFXButton prefHeight="39.0" prefWidth="39.0" style="-fx-background-color: #c3c4c4,        linear-gradient(#d6d6d6 50%, white 100%);" textAlignment="CENTER" />
-            <JFXButton prefHeight="39.0" prefWidth="39.0" style="-fx-background-color: rgba(0,0,0,0.05),        linear-gradient(#dccaaa, #c7a740),        linear-gradient(#f9f2d6 0%, #f4e5bc 20%, #e6c75d 80%, #e2c045 100%),        linear-gradient(#f6ebbe, #e6c34d);" textAlignment="CENTER" GridPane.columnIndex="1" />
-            <JFXButton prefHeight="39.0" prefWidth="39.0" style="-fx-background-color: #c3c4c4, linear-gradient(#d6d6d6 50%, white 100%);" textAlignment="CENTER" GridPane.columnIndex="2" />
-            <JFXButton prefHeight="39.0" prefWidth="39.0" style="-fx-background-color: rgba(0,0,0,0.05),        linear-gradient(#dccaaa, #c7a740),        linear-gradient(#f9f2d6 0%, #f4e5bc 20%, #e6c75d 80%, #e2c045 100%),        linear-gradient(#f6ebbe, #e6c34d);" textAlignment="CENTER" GridPane.columnIndex="3" />
-            <JFXButton prefHeight="39.0" prefWidth="39.0" style="-fx-background-color: #c3c4c4, linear-gradient(#d6d6d6 50%, white 100%);" textAlignment="CENTER" GridPane.columnIndex="4" />
-            <JFXButton prefHeight="39.0" prefWidth="39.0" style="-fx-background-color: rgba(0,0,0,0.05),        linear-gradient(#dccaaa, #c7a740),        linear-gradient(#f9f2d6 0%, #f4e5bc 20%, #e6c75d 80%, #e2c045 100%),        linear-gradient(#f6ebbe, #e6c34d);" textAlignment="CENTER" GridPane.columnIndex="5" />
-            <JFXButton prefHeight="39.0" prefWidth="39.0" style="-fx-background-color: #c3c4c4, linear-gradient(#d6d6d6 50%, white 100%);" textAlignment="CENTER" GridPane.columnIndex="6" />
-            <JFXButton prefHeight="39.0" prefWidth="39.0" style="-fx-background-color: rgba(0,0,0,0.05),        linear-gradient(#dccaaa, #c7a740),        linear-gradient(#f9f2d6 0%, #f4e5bc 20%, #e6c75d 80%, #e2c045 100%),        linear-gradient(#f6ebbe, #e6c34d);" textAlignment="CENTER" GridPane.columnIndex="7" />
+            <JFXButton id="00css" fx:id="fxml00" onAction="#retonarCoordenadas" prefHeight="39.0" prefWidth="39.0" style="-fx-background-color: #c3c4c4, linear-gradient(to bottom right, #d6d6d6, white);" />
+            <JFXButton prefHeight="39.0" prefWidth="39.0" style="-fx-background-color: rgba(0,0,0,0.05), linear-gradient(#e6c34d, white);" GridPane.columnIndex="1" />
+            <JFXButton prefHeight="39.0" prefWidth="39.0" style="-fx-background-color: #c3c4c4, linear-gradient(#d6d6d6 50%, white 100%);" GridPane.columnIndex="2" />
+            <JFXButton prefHeight="39.0" prefWidth="39.0" style="-fx-background-color: rgba(0,0,0,0.05), linear-gradient(#e6c34d, white);" GridPane.columnIndex="3" />
+            <JFXButton prefHeight="39.0" prefWidth="39.0" style="-fx-background-color: #c3c4c4, linear-gradient(#d6d6d6 50%, white 100%);" GridPane.columnIndex="4" />
+            <JFXButton prefHeight="39.0" prefWidth="39.0" style="-fx-background-color: rgba(0,0,0,0.05), linear-gradient(#e6c34d, white);" GridPane.columnIndex="5" />
+            <JFXButton prefHeight="39.0" prefWidth="39.0" style="-fx-background-color: #c3c4c4, linear-gradient(#d6d6d6 50%, white 100%);" GridPane.columnIndex="6" />
+            <JFXButton prefHeight="39.0" prefWidth="39.0" style="-fx-background-color: rgba(0,0,0,0.05), linear-gradient(#e6c34d, white);" GridPane.columnIndex="7" />
             <JFXButton prefHeight="39.0" prefWidth="39.0" style="-fx-background-color: #c3c4c4, linear-gradient(#d6d6d6 50%, white 100%);" GridPane.columnIndex="8" />
-            <JFXButton prefHeight="39.0" prefWidth="39.0" style="-fx-background-color: rgba(0,0,0,0.05),        linear-gradient(#dccaaa, #c7a740),        linear-gradient(#f9f2d6 0%, #f4e5bc 20%, #e6c75d 80%, #e2c045 100%),        linear-gradient(#f6ebbe, #e6c34d);" textAlignment="CENTER" GridPane.columnIndex="9" />
+            <JFXButton prefHeight="39.0" prefWidth="39.0" style="-fx-background-color: rgba(0,0,0,0.05), linear-gradient(to bottom left, #e6c34d, white);" GridPane.columnIndex="9" />
+            
             <JFXButton prefHeight="39.0" prefWidth="39.0" style="-fx-background-color: rgba(0,0,0,0.05),        linear-gradient(#dccaaa, #c7a740),        linear-gradient(#f9f2d6 0%, #f4e5bc 20%, #e6c75d 80%, #e2c045 100%),        linear-gradient(#f6ebbe, #e6c34d);" textAlignment="CENTER" GridPane.rowIndex="1" />
             <JFXButton prefHeight="39.0" prefWidth="39.0" style="-fx-background-color: #c3c4c4,        linear-gradient(#d6d6d6 50%, white 100%);" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <JFXButton prefHeight="39.0" prefWidth="39.0" style="-fx-background-color: rgba(0,0,0,0.05),        linear-gradient(#dccaaa, #c7a740),        linear-gradient(#f9f2d6 0%, #f4e5bc 20%, #e6c75d 80%, #e2c045 100%),        linear-gradient(#f6ebbe, #e6c34d);" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.rowIndex="1" />

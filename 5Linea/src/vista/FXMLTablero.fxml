@@ -9,11 +9,11 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="525.0" prefWidth="840.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cincolinea.FXMLTableroController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="525.0" prefWidth="840.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cincolinea.controlador.FXMLTableroController">
    <children>
       <ImageView fitHeight="525.0" fitWidth="840.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@imagenes/wallpaper.jpg" />
+            <Image url="@../imagenes/wallpaper.jpg" />
          </image>
       </ImageView>
       <JFXButton fx:id="btnAbandonarP" layoutX="191.0" layoutY="467.0" onAction="#regresarMenuPrincipal" prefHeight="34.0" prefWidth="201.0" style="-fx-background-color: #686868;" textFill="WHITE" />
@@ -34,12 +34,12 @@
             </Label>
             <ImageView fitHeight="75.0" fitWidth="70.0" layoutX="78.0" layoutY="325.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@imagenes/Usuario_Generico.png" />
+                  <Image url="@../imagenes/Usuario_Generico.png" />
                </image>
             </ImageView>
             <ImageView fitHeight="86.0" fitWidth="70.0" layoutX="82.0" layoutY="41.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@imagenes/Usuario_Generico.png" />
+                  <Image url="@../imagenes/Usuario_Generico.png" />
                </image>
             </ImageView>
             <Label fx:id="labelNombreJugador" layoutX="28.0" layoutY="123.0" prefHeight="17.0" prefWidth="179.0" text="Label">

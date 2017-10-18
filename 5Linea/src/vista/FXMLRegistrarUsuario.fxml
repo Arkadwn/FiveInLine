@@ -11,11 +11,11 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="404.0" prefWidth="596.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cincolinea.FXMLRegistrarUsuarioController">
+<AnchorPane id="AnchorPane" prefHeight="404.0" prefWidth="596.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cincolinea.controlador.FXMLRegistrarUsuarioController">
    <children>
       <ImageView fx:id="imagen" fitHeight="414.0" fitWidth="603.0" layoutY="-1.0" pickOnBounds="true">
          <image>
-            <Image url="@imagenes/wallpaper.jpg" />
+            <Image url="@../imagenes/wallpaper.jpg" />
          </image>
       </ImageView>
       <Label id="labelNombreUsuario" fx:id="labelNombreUsuario" layoutX="100.0" layoutY="65.0" prefHeight="17.0" prefWidth="149.0" textFill="WHITE" />

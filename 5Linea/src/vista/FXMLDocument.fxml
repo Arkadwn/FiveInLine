@@ -13,11 +13,11 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="420.0" prefWidth="672.0" style="-fx-background-color: #F7DC6F;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cincolinea.FXMLDocumentController">
+<AnchorPane id="AnchorPane" fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="420.0" prefWidth="672.0" style="-fx-background-color: #F7DC6F;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cincolinea.controlador.FXMLDocumentController">
    <children>
       <ImageView fitHeight="420.0" fitWidth="672.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@imagenes/wallpaper.jpg" />
+            <Image url="@../imagenes/wallpaper.jpg" />
          </image>
       </ImageView>
       <JFXButton fx:id="btnSalir" buttonType="RAISED" focusTraversable="false" layoutX="256.0" layoutY="347.0" prefHeight="40.0" prefWidth="80.0" style="-fx-background-color: #909090; -fx-background-radius: 18;" textAlignment="CENTER" />

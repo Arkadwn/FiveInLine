@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package cincolinea;
 
 import cincolinea.controlador.*;
@@ -21,7 +16,12 @@ import javafx.stage.Stage;
 public class Main extends Application {
 
     private Stage stageLocal;
+    private String idUsuario;
 
+    public String getIdUsuario() {
+        return idUsuario;
+    }
+    
     @Override
     public void start(Stage stage) throws Exception {
         desplegarInicioSesion(stage);
@@ -29,14 +29,14 @@ public class Main extends Application {
 
     public void desplegarInicioSesion(Stage stageInicio) {
         try {
-            FXMLLoader loader = new FXMLLoader(Main.class.getResource("/cincolinea/vista/FXMLDocument.fxml"));
+            FXMLLoader loader = new FXMLLoader(Main.class.getResource("/cincolinea/vista/FXMLInicioSesion.fxml"));
             Parent root = (Parent) loader.load();
             Scene scene = new Scene(root);
 
             stageInicio.setScene(scene);
             stageInicio.setTitle("5 in linea");
 
-            FXMLDocumentController control = loader.getController();
+            FXMLInicioSesionController control = loader.getController();
             control.setMain(this);
             stageInicio.show();
 
@@ -113,10 +113,10 @@ public class Main extends Application {
 
     public void cerrarSesion(ResourceBundle bundleElegido) {
         try {
-            FXMLLoader loader = new FXMLLoader(Main.class.getResource("/cincolinea/vista/FXMLDocument.fxml"));
+            FXMLLoader loader = new FXMLLoader(Main.class.getResource("/cincolinea/vista/FXMLInicioSesion.fxml"));
             Parent root = (Parent) loader.load();
 
-            FXMLDocumentController control = loader.getController();
+            FXMLInicioSesionController control = loader.getController();
             control.setMain(this);
 
             Scene scene = new Scene(root);

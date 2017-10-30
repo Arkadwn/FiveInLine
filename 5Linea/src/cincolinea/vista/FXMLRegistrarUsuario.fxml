@@ -21,10 +21,10 @@
       <Label id="labelNombreUsuario" fx:id="labelNombreUsuario" layoutX="100.0" layoutY="65.0" prefHeight="17.0" prefWidth="149.0" textFill="WHITE" />
       <Label id="labelContrasena" fx:id="labelContrasena" layoutX="99.0" layoutY="129.0" prefHeight="17.0" prefWidth="149.0" textFill="WHITE" />
       <Label id="labelReContrasena" fx:id="labelReContrasena" layoutX="98.0" layoutY="198.0" prefHeight="17.0" prefWidth="149.0" textFill="WHITE" />
-      <JFXButton fx:id="btnRegistrar" buttonType="RAISED" layoutX="203.0" layoutY="296.0" prefHeight="41.0" prefWidth="88.0" style="-fx-background-color: white; -fx-background-radius: 18;" />
+      <JFXButton fx:id="btnRegistrar" buttonType="RAISED" layoutX="203.0" layoutY="296.0" onAction="#accionRegistrarUsuario" prefHeight="41.0" prefWidth="88.0" style="-fx-background-color: white; -fx-background-radius: 18;" />
       <JFXButton fx:id="btnCancelar" buttonType="RAISED" layoutX="55.0" layoutY="296.0" onAction="#regresarMenuPrincipal" prefHeight="41.0" prefWidth="88.0" style="-fx-background-color: white; -fx-background-radius: 18;" />
-      <JFXPasswordField fx:id="tfReContrasena" layoutX="80.0" layoutY="216.0" prefHeight="25.0" prefWidth="189.0" />
-      <JFXPasswordField fx:id="tfContrasena" layoutX="82.0" layoutY="156.0" prefHeight="25.0" prefWidth="189.0" />
-      <JFXTextField fx:id="tfNombreUsuario" layoutX="82.0" layoutY="96.0" prefHeight="25.0" prefWidth="189.0" />
+      <JFXPasswordField fx:id="tfReContrasena" layoutX="80.0" layoutY="216.0" onKeyTyped="#restringirEspacios" prefHeight="25.0" prefWidth="189.0" style="-fx-text-inner-color: white;" />
+      <JFXPasswordField fx:id="tfContrasena" layoutX="82.0" layoutY="156.0" onKeyTyped="#restringirEspacios" prefHeight="25.0" prefWidth="189.0" style="-fx-text-inner-color: white;" />
+      <JFXTextField fx:id="tfNombreUsuario" layoutX="82.0" layoutY="96.0" onKeyTyped="#restringirNumeroDeCaracteres" prefHeight="25.0" prefWidth="189.0" style="-fx-text-inner-color: white;" />
    </children>
 </AnchorPane>

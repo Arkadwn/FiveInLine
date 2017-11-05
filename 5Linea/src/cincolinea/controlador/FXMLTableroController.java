@@ -2,8 +2,13 @@ package cincolinea.controlador;
 
 import cincolinea.Main;
 import com.jfoenix.controls.JFXButton;
+import io.socket.client.IO;
+import io.socket.client.Socket;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -37,7 +42,10 @@ public class FXMLTableroController implements Initializable {
     @FXML
     private JFXButton fxml00;
     @FXML
-    private GridPane idGrid;
+    private GridPane tablero;
+    
+    private String colorFicha = "N";
+    private Socket socket;
     
     private void inicializarComponentes(){
         labelTextoTiempo.setText(idioma.getString("labelTextoTiempo"));
@@ -58,25 +66,48 @@ public class FXMLTableroController implements Initializable {
     }
 
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        idioma = rb;
-        if (idioma != null) {
+    public void initialize(URL url, ResourceBundle idioma) {
+        this.idioma = idioma;
+        if (this.idioma != null) {
             inicializarComponentes();
         }
+        /*
+        try {
+            socket = IO.socket("http://localhost:8000");
+        } catch (URISyntaxException ex) {
+            Logger.getLogger(FXMLTableroController.class.getName()).log(Level.SEVERE, null, ex);
+        }*/
+        
+        
     }
     
     @FXML
-    private int[] retonarCoordenadas(ActionEvent event){
+    private void retornarCoordenadas(ActionEvent event){
+        
         int[] coordenadas = new int[2];
-        JFXButton btn = (JFXButton) event.getSource();
-        System.out.println(btn.getId());
-        idGrid.getChildren().remove(10, 20);
-        return coordenadas;
+        JFXButton boton = (JFXButton) event.getSource();
+        //Quitar
+        System.out.println(boton.getId());
+        //idGrid.getChildren().remove(10, 20);
+        colocarFicha(boton, colorFicha);
+        
+        JFXButton boton2;
+        boton2 = (JFXButton)tablero.getChildren().get(99);
+        System.out.println(boton2.getId());
     }
     
     @FXML
     private void regresarMenuPrincipal(ActionEvent event) {
         main.desplegarMenuPrincipal(idioma);
+    }
+    
+    private void colocarFicha(JFXButton boton, String colorFicha){
+        String estilo = boton.getStyle();
+        boton.setStyle("-fx-background-image: url('cincolinea/imagenes/"+colorFicha+".png');"
+                + estilo + " -fx-background-position: center center; -fx-background-repeat: "
+                + "stretch; -fx-background-size: 39px 39px 39px 39px;");
+        
+        
     }
 
 }

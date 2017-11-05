@@ -20,3 +20,9 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+/CincoLineaServidor/nbproject/private/
+/CincoLineaServidor/build/
+/CincoLineaServidor/dist/
+/5Linea/nbproject/
+/5Linea/build/
+/5Linea/dist/

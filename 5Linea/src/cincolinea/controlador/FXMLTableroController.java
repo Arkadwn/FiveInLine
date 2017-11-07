@@ -1,9 +1,11 @@
 package cincolinea.controlador;
 
 import cincolinea.Main;
+import cincolinea.modelo.Ficha;
 import com.jfoenix.controls.JFXButton;
 import io.socket.client.IO;
 import io.socket.client.Socket;
+import io.socket.emitter.Emitter;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -14,6 +16,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
+import org.json.JSONObject;
 
 /**
  * FXML Controller class
@@ -38,9 +41,9 @@ public class FXMLTableroController implements Initializable {
     private Label labelInfoJugador;
 
     private ResourceBundle idioma;
+    
     private Main main;
-    @FXML
-    private JFXButton fxml00;
+    
     @FXML
     private GridPane tablero;
     
@@ -71,29 +74,69 @@ public class FXMLTableroController implements Initializable {
         if (this.idioma != null) {
             inicializarComponentes();
         }
-        /*
+        
         try {
-            socket = IO.socket("http://localhost:8000");
+            if(socket == null){
+                socket = crearConexionIO();
+                
+                socket.on("jugadaRealizada", new Emitter.Listener() {
+                @Override
+                public void call(Object... os) {
+                    
+                    
+                    JSONObject objeto = (JSONObject)os[0];
+                    Ficha ficha = new Ficha();
+                    ficha.setX((Integer) objeto.get("x"));
+                    ficha.setY((Integer) objeto.get("y"));
+                    ficha.setColorFicha((String) objeto.get("colorFicha"));
+
+                    colocarFichaContrincante(ficha);
+
+                }
+            });
+            }
+            
+
         } catch (URISyntaxException ex) {
             Logger.getLogger(FXMLTableroController.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
+        }
         
         
+        
+    }
+    
+    private Socket crearConexionIO() throws URISyntaxException{
+        Socket conexion = null;
+        
+        conexion = IO.socket("http://localhost:8000");
+        conexion.connect();
+        
+        return conexion;
     }
     
     @FXML
     private void retornarCoordenadas(ActionEvent event){
         
-        int[] coordenadas = new int[2];
         JFXButton boton = (JFXButton) event.getSource();
-        //Quitar
-        System.out.println(boton.getId());
-        //idGrid.getChildren().remove(10, 20);
+        
+        Ficha ficha = crearFicha(boton.getId());
+        
         colocarFicha(boton, colorFicha);
         
+        JSONObject fichaIncriptada = new JSONObject(ficha);
+        
+        socket.emit("realizarJugada", fichaIncriptada);
+        
+        //Quitar
+        System.out.println(boton.getId());
+        //tablero.getChildren().remove(10, 20);
+        
+        
+        /*
         JFXButton boton2;
         boton2 = (JFXButton)tablero.getChildren().get(99);
         System.out.println(boton2.getId());
+        */
     }
     
     @FXML
@@ -108,6 +151,29 @@ public class FXMLTableroController implements Initializable {
                 + "stretch; -fx-background-size: 39px 39px 39px 39px;");
         
         
+    }
+    
+    private Ficha crearFicha(String coordenadas){
+        Ficha ficha = new Ficha();
+        
+        String[] divicion = coordenadas.split("-");
+        
+        ficha.setX(Integer.parseInt(divicion[0]));
+        ficha.setY(Integer.parseInt(divicion[1]));
+        ficha.setColorFicha(colorFicha);
+        
+        return ficha;
+    }
+    
+    private void colocarFichaContrincante(Ficha ficha){
+        
+        System.out.println("0" + ficha.getX() + ficha.getY());
+        int posicion = Integer.parseInt("0" + ficha.getX() + ficha.getY());
+        System.out.println("Hijo: " + posicion);
+        
+        JFXButton boton = (JFXButton)tablero.getChildren().get(posicion);
+        
+        colocarFicha(boton, ficha.getColorFicha());
     }
 
 }

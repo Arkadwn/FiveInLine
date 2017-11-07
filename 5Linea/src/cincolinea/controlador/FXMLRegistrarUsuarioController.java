@@ -4,7 +4,7 @@ import cincolinea.Main;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
-import conexion.Cliente;
+import conexion.ClienteRMI;
 import java.net.URL;
 import java.rmi.RemoteException;
 import java.util.ResourceBundle;
@@ -37,7 +37,7 @@ public class FXMLRegistrarUsuarioController implements Initializable {
 
     private ResourceBundle idioma;
     private Main main;
-    private Cliente conexion;
+    private ClienteRMI conexion;
     @FXML
     private ImageView imagen;
     @FXML
@@ -79,13 +79,13 @@ public class FXMLRegistrarUsuarioController implements Initializable {
             System.out.println("Hay campos vacios");
         }else{
             try {
-                conexion = new Cliente();
+                conexion = new ClienteRMI();
             } catch (RemoteException ex) {
                 //QUITAR
                 Logger.getLogger(FXMLRegistrarUsuarioController.class.getName()).log(Level.SEVERE, null, ex);
             }
             //4
-            if(tfContrasena.getText() == tfReContrasena.getText()){
+            if(tfContrasena.getText().equals(tfReContrasena.getText())){
                 //5
                 if (conexion.registrarUsuario(tfNombreUsuario.getText(), tfContrasena.getText())) {
                     System.out.println("Usuario guardado");

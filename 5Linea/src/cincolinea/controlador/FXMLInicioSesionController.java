@@ -9,7 +9,7 @@ import cincolinea.Main;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
-import conexion.Cliente;
+import conexion.ClienteRMI;
 import java.net.URL;
 import java.rmi.RemoteException;
 import java.util.ResourceBundle;
@@ -45,7 +45,7 @@ public class FXMLInicioSesionController implements Initializable {
     private boolean estaEspañol;
     private ResourceBundle idioma;
     private Main main;
-    private Cliente conexion;
+    private ClienteRMI conexion;
     @FXML
     private JFXTextField txtNombreUsuario;
     @FXML
@@ -116,7 +116,7 @@ public class FXMLInicioSesionController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle idioma) {
         try {
-            conexion = new Cliente();
+            conexion = new ClienteRMI();
         } catch (RemoteException ex) {
             Logger.getLogger(FXMLInicioSesionController.class.getName()).log(Level.SEVERE, null, ex);
         }

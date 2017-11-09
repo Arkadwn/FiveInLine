@@ -2,6 +2,7 @@ package cincolinea.controlador;
 
 import cincolinea.Main;
 import cincolinea.modelo.Ficha;
+import cincolinea.modelo.Tablero;
 import com.jfoenix.controls.JFXButton;
 import io.socket.client.IO;
 import io.socket.client.Socket;
@@ -39,16 +40,14 @@ public class FXMLTableroController implements Initializable {
     private Label labelInfoContrincante;
     @FXML
     private Label labelInfoJugador;
-
     private ResourceBundle idioma;
-    
     private Main main;
-    
+    private int tamañoTablero = 10;
     @FXML
     private GridPane tablero;
-    
     private String colorFicha = "N";
     private Socket socket;
+    private Tablero tableroLogico;
     
     private void inicializarComponentes(){
         labelTextoTiempo.setText(idioma.getString("labelTextoTiempo"));
@@ -77,26 +76,11 @@ public class FXMLTableroController implements Initializable {
         
         try {
             if(socket == null){
+              
                 socket = crearConexionIO();
                 
-                socket.on("jugadaRealizada", new Emitter.Listener() {
-                @Override
-                public void call(Object... os) {
-                    
-                    
-                    JSONObject objeto = (JSONObject)os[0];
-                    Ficha ficha = new Ficha();
-                    ficha.setX((Integer) objeto.get("x"));
-                    ficha.setY((Integer) objeto.get("y"));
-                    ficha.setColorFicha((String) objeto.get("colorFicha"));
-
-                    colocarFichaContrincante(ficha);
-
-                }
-            });
+                tableroLogico = new Tablero(tamañoTablero);
             }
-            
-
         } catch (URISyntaxException ex) {
             Logger.getLogger(FXMLTableroController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -111,6 +95,20 @@ public class FXMLTableroController implements Initializable {
         conexion = IO.socket("http://localhost:8000");
         conexion.connect();
         
+        conexion.on("jugadaRealizada", new Emitter.Listener() {
+            @Override
+            public void call(Object... os) {
+
+                JSONObject objeto = (JSONObject) os[0];
+                Ficha ficha = new Ficha();
+                ficha.setX((Integer) objeto.get("x"));
+                ficha.setY((Integer) objeto.get("y"));
+                ficha.setColorFicha((String) objeto.get("colorFicha"));
+
+                colocarFichaContrincante(ficha);
+            }
+        });
+        
         return conexion;
     }
     
@@ -121,11 +119,27 @@ public class FXMLTableroController implements Initializable {
         
         Ficha ficha = crearFicha(boton.getId());
         
-        colocarFicha(boton, colorFicha);
+        if(tableroLogico.validarEmpate()){
+            System.out.println("Empate");
+        }else{
+            if (tableroLogico.validarJugada(ficha.getX(), ficha.getY(), ficha.getColorFicha())) {
+                colocarFicha(boton, colorFicha);
+
+                JSONObject fichaIncriptada = new JSONObject(ficha);
+
+                socket.emit("realizarJugada", fichaIncriptada);
+
+                tablero.setDisable(true);
+            } else {
+                System.out.println("Ya hay un ficha en esa posicion");
+            }
+
+            if (tableroLogico.validarSiGano(ficha.getX(), ficha.getY(), ficha.getColorFicha())) {
+                System.out.println("ganaste");
+            }
+        }
         
-        JSONObject fichaIncriptada = new JSONObject(ficha);
         
-        socket.emit("realizarJugada", fichaIncriptada);
         
         //Quitar
         System.out.println(boton.getId());
@@ -142,6 +156,7 @@ public class FXMLTableroController implements Initializable {
     @FXML
     private void regresarMenuPrincipal(ActionEvent event) {
         main.desplegarMenuPrincipal(idioma);
+        socket.disconnect();
     }
     
     private void colocarFicha(JFXButton boton, String colorFicha){
@@ -167,13 +182,19 @@ public class FXMLTableroController implements Initializable {
     
     private void colocarFichaContrincante(Ficha ficha){
         
-        System.out.println("0" + ficha.getX() + ficha.getY());
-        int posicion = Integer.parseInt("0" + ficha.getX() + ficha.getY());
-        System.out.println("Hijo: " + posicion);
         
-        JFXButton boton = (JFXButton)tablero.getChildren().get(posicion);
+        if(tableroLogico.validarJugada(ficha.getX(), ficha.getY(), ficha.getColorFicha())){
+            System.out.println("0" + ficha.getX() + "-" + ficha.getY());
+            int posicion = Integer.parseInt("0" + ficha.getY() + ficha.getX());
+            System.out.println("Hijo: " + posicion);
+
+            JFXButton boton = (JFXButton) tablero.getChildren().get(posicion);
+
+            colocarFicha(boton, ficha.getColorFicha());
+            
+            tablero.setDisable(false);
+        }
         
-        colocarFicha(boton, ficha.getColorFicha());
     }
 
 }

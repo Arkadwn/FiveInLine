@@ -9,18 +9,18 @@ import static org.junit.Assert.*;
  * @author Leonardo
  */
 public class ClienteRMITest {
-    private Cliente conexion;
+    private ClienteRMI conexion;
     public ClienteRMITest() throws RemoteException {
-        conexion = new Cliente();
+        conexion = new ClienteRMI();
     }
     /**
-     * Test of autenticarCuenta method, of class Cliente.
+     * Test of autenticarCuenta method, of class ClienteRMI.
      */
     @Test
     public void testAutenticarCuentaNombreUsuarioIncorrecto() throws RemoteException {
         String usuario = "Mauricio";
         String contrasena = "acdc";
-        conexion = new Cliente();
+        conexion = new ClienteRMI();
         boolean resultadoEsperado = false;
         boolean resultado = conexion.autenticarCuenta(usuario, contrasena);
         assertEquals(resultadoEsperado, resultado);
@@ -30,14 +30,14 @@ public class ClienteRMITest {
     public void testAutenticarCuenta() throws RemoteException {
         String usuario = "Leo";
         String contrasena = "acdc";
-        conexion = new Cliente();
+        conexion = new ClienteRMI();
         boolean resultadoEsperado = true;
         boolean resultado = conexion.autenticarCuenta(usuario, contrasena);
         assertEquals(resultadoEsperado, resultado);
     }
     
     /**
-     * Test of registrarUsuario method, of class Cliente.
+     * Test of registrarUsuario method, of class ClienteRMI.
      */
     @Test
     public void probrarRegistroSobrepasoDeCaracteres() {

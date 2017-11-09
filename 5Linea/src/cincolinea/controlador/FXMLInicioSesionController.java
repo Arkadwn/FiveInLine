@@ -69,7 +69,7 @@ public class FXMLInicioSesionController implements Initializable {
     private void ingresarMenuPrincipal(ActionEvent event) {
         
         if(conexion.autenticarCuenta(txtNombreUsuario.getText(),txtContrasena.getText())){
-            main.desplegarMenuPrincipal(idioma);
+            main.desplegarMenuPrincipal(idioma, txtNombreUsuario.getText());
         }else{
             System.out.println("Error en los datos del usuario");
         }

@@ -14,7 +14,8 @@ import javafx.scene.control.TableView;
 /**
  * FXML Controller class
  *
- * @author Sammy Guergachi <sguergachi at gmail.com>
+ * @author Adrián Bustamante Zarate
+ * @author Miguel Leonardo Jimenez
  */
 public class FXMLRankingController implements Initializable {
     private ResourceBundle idioma;
@@ -32,6 +33,7 @@ public class FXMLRankingController implements Initializable {
     private TableView<?> tablaRanking;
     @FXML
     private Label labelRanking;
+    private String idUsuario;
     
     private void iniciarIdiomaComponentes() {
         btnRegresar.setText(idioma.getString("btnRegresar"));
@@ -50,13 +52,17 @@ public class FXMLRankingController implements Initializable {
 
     }
 
+    public void setIdUsuario(String idUsuario) {
+        this.idUsuario = idUsuario;
+    }
+
     public void setMain(Main main) {
         this.main=main;
     }
 
     @FXML
     private void regresarMenuPrincipal(ActionEvent event) {
-        main.desplegarMenuPrincipal(idioma);
+        main.desplegarMenuPrincipal(idioma, idUsuario);
     }
 
 }

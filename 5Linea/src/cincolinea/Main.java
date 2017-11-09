@@ -46,7 +46,7 @@ public class Main extends Application {
         }
     }
 
-    public void desplegarMenuPrincipal(ResourceBundle bundleElegido) {
+    public void desplegarMenuPrincipal(ResourceBundle idiomaElegido, String idUsuario) {
         try {
             FXMLLoader loader = new FXMLLoader(Main.class.getResource("/cincolinea/vista/FXMLMenuPrincipal.fxml"));
             Parent root = (Parent) loader.load();
@@ -56,7 +56,7 @@ public class Main extends Application {
 
             Scene scene = new Scene(root);
 
-            control.initialize(null, bundleElegido);
+            control.initialize(null, idiomaElegido);
             stageLocal.setScene(scene);
             stageLocal.setTitle("Menu principal");
 
@@ -65,7 +65,7 @@ public class Main extends Application {
         }
     }
 
-    public void desplegarRanking(ResourceBundle bundleElegido) {
+    public void desplegarRanking(ResourceBundle idiomaElegido, String idUsuario) {
         try {
 
             FXMLLoader loader = new FXMLLoader(Main.class.getResource("/cincolinea/vista/FXMLRanking.fxml"));
@@ -73,10 +73,12 @@ public class Main extends Application {
 
             FXMLRankingController control = loader.getController();
             control.setMain(this);
-
+            control.setIdUsuario(idUsuario);
+                    
             Scene scene = new Scene(root);
-
-            control.initialize(null, bundleElegido);
+            
+            
+            control.initialize(null, idiomaElegido);
             stageLocal.setScene(scene);
             stageLocal.setTitle("Ranking");
 
@@ -87,7 +89,7 @@ public class Main extends Application {
         }
     }
 
-    public void desplegarBuscaPartida(ResourceBundle bundleElegido) {
+    public void desplegarBuscaPartida(ResourceBundle idiomaElegido, String idUsuario) {
         try {
 
             FXMLLoader loader = new FXMLLoader(Main.class.getResource("/cincolinea/vista/FXMLBuscaPartida.fxml"));
@@ -98,7 +100,7 @@ public class Main extends Application {
 
             Scene scene = new Scene(root);
 
-            control.initialize(null, bundleElegido);
+            control.initialize(null, idiomaElegido);
             stageLocal.setScene(scene);
             stageLocal.setTitle("Buscando partida");
 
@@ -111,7 +113,7 @@ public class Main extends Application {
         launch(args);
     }
 
-    public void cerrarSesion(ResourceBundle bundleElegido) {
+    public void cerrarSesion(ResourceBundle idiomaElegido) {
         try {
             FXMLLoader loader = new FXMLLoader(Main.class.getResource("/cincolinea/vista/FXMLInicioSesion.fxml"));
             Parent root = (Parent) loader.load();
@@ -121,7 +123,7 @@ public class Main extends Application {
 
             Scene scene = new Scene(root);
 
-            control.initialize(null, bundleElegido);
+            control.initialize(null, idiomaElegido);
             stageLocal.setScene(scene);
             stageLocal.setTitle("5 en linea");
 
@@ -130,7 +132,7 @@ public class Main extends Application {
         }
     }
 
-    public void desplegarRegistrarUsuario(ResourceBundle bundleElegido) {
+    public void desplegarRegistrarUsuario(ResourceBundle idiomaElegido) {
         try {
             FXMLLoader loader = new FXMLLoader(Main.class.getResource("/cincolinea/vista/FXMLRegistrarUsuario.fxml"));
             Parent root = (Parent) loader.load();
@@ -140,7 +142,7 @@ public class Main extends Application {
 
             Scene scene = new Scene(root);
 
-            control.initialize(null, bundleElegido);
+            control.initialize(null, idiomaElegido);
             stageLocal.setScene(scene);
             stageLocal.setTitle("Registrar Usuario");
 
@@ -149,7 +151,7 @@ public class Main extends Application {
         }
     }
 
-    public void deplegarConfigurarPartida(ResourceBundle bundleElegido) {
+    public void deplegarConfigurarPartida(ResourceBundle idiomaElegido, String idUsuario) {
         try {
             FXMLLoader loader = new FXMLLoader(Main.class.getResource("/cincolinea/vista/FXMLConfigurarPartida.fxml"));
             Parent root = (Parent) loader.load();
@@ -159,7 +161,7 @@ public class Main extends Application {
 
             Scene scene = new Scene(root);
 
-            control.initialize(null, bundleElegido);
+            control.initialize(null, idiomaElegido);
             stageLocal.setScene(scene);
             stageLocal.setTitle("Configurar Partida");
 
@@ -168,17 +170,17 @@ public class Main extends Application {
         }
     }
     
-    public void iniciarJuego(ResourceBundle bundleElegido) {
+        public void iniciarJuego(ResourceBundle idiomaElegido, String colorFicha, int tamaño, String idUsuario) {
         try {
             FXMLLoader loader = new FXMLLoader(Main.class.getResource("/cincolinea/vista/FXMLTablero.fxml"));
             Parent root = (Parent) loader.load();
 
             FXMLTableroController control = loader.getController();
             control.setMain(this);
-
+            control.setPerfilJugador(String.valueOf(colorFicha.charAt(0)), tamaño, idUsuario);
             Scene scene = new Scene(root);
 
-            control.initialize(null, bundleElegido);
+            control.initialize(null, idiomaElegido);
             stageLocal.setScene(scene);
             stageLocal.setTitle("Jugar");
 

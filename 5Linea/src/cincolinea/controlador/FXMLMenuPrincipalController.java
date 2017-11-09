@@ -15,7 +15,8 @@ import javafx.fxml.Initializable;
 /**
  * FXML Controller class
  *
- * @author Sammy Guergachi <sguergachi at gmail.com>
+ * @author Adrián Bustamante Zarate
+ * @author Miguel Leonardo Jimenez
  */
 public class FXMLMenuPrincipalController implements Initializable {
 
@@ -31,6 +32,7 @@ public class FXMLMenuPrincipalController implements Initializable {
     private JFXButton btnCerrarSesion;
     @FXML
     private JFXButton btnCrearPartida;
+    private String idUsuario;
     
     public void setMain(Main main){
         this.main=main;
@@ -50,14 +52,18 @@ public class FXMLMenuPrincipalController implements Initializable {
         
     }    
 
+    public void setIdUsuario(String idUsuario) {
+        this.idUsuario = idUsuario;
+    }
+
     @FXML
     private void desplegarRanking(javafx.event.ActionEvent event) {
-        main.desplegarRanking(idioma);
+        main.desplegarRanking(idioma,idUsuario);
     }
     
     @FXML
     private void desplegarBuscaPartida(javafx.event.ActionEvent event){
-        main.desplegarBuscaPartida(idioma);
+        main.desplegarBuscaPartida(idioma, idUsuario);
     }
 
     @FXML
@@ -67,7 +73,7 @@ public class FXMLMenuPrincipalController implements Initializable {
     
     @FXML
     private void crearPartida(javafx.event.ActionEvent event){
-        main.deplegarConfigurarPartida(idioma);
+        main.deplegarConfigurarPartida(idioma, idUsuario);
     }
     
 }

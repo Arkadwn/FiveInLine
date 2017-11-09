@@ -69,7 +69,8 @@ public class FXMLRegistrarUsuarioController implements Initializable {
 
     @FXML
     private void regresarMenuPrincipal(ActionEvent evento) {
-        main.desplegarMenuPrincipal(idioma);
+        main.desplegarMenuPrincipal(idioma, tfNombreUsuario.getText());//Quitar
+        //main.desplegarInicioSesion(stageInicio); Crear metodo especial para puerta trasera
     }
     
     @FXML

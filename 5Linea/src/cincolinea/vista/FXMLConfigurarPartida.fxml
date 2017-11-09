@@ -17,8 +17,8 @@
       </ImageView>
       <Label fx:id="labelColorFichas" layoutX="82.0" layoutY="78.0" prefHeight="32.0" prefWidth="251.0" textFill="WHITE" />
       <Label fx:id="labelTamaño" layoutX="82.0" layoutY="171.0" prefHeight="32.0" prefWidth="251.0" textFill="WHITE" />
-      <JFXComboBox fx:id="cbColorFichas" layoutX="83.0" layoutY="124.0" prefHeight="32.0" prefWidth="251.0" unFocusColor="#4d4c4c" />
-      <JFXComboBox fx:id="cbTamano" layoutX="82.0" layoutY="213.0" prefHeight="32.0" prefWidth="251.0" />
+      <JFXComboBox fx:id="cbColorFichas" layoutX="83.0" layoutY="124.0" prefHeight="32.0" prefWidth="251.0" style="-fx-text-inner-color: white;" unFocusColor="#4d4c4c" />
+      <JFXComboBox fx:id="cbTamano" layoutX="82.0" layoutY="213.0" prefHeight="32.0" prefWidth="251.0" style="-fx-text-inner-color: white;" />
       <JFXButton fx:id="btnCancelar" layoutX="77.0" layoutY="293.0" onAction="#regresarMenuPrincipal" prefHeight="39.0" prefWidth="102.0" style="-fx-background-color: #686868; -fx-background-radius: 18;" textFill="WHITE" />
       <JFXButton fx:id="btnCrear" layoutX="237.0" layoutY="293.0" onAction="#iniciarJuego" prefHeight="39.0" prefWidth="102.0" style="-fx-background-color: white; -fx-background-radius: 18;" />
    </children>

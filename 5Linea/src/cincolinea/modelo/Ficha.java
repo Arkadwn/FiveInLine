@@ -10,7 +10,7 @@ public class Ficha{
     private String colorFicha;
     private int x;
     private int y;
-
+    
     public String getColorFicha() {
         return colorFicha;
     }

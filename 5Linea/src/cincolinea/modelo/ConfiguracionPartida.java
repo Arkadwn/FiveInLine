@@ -38,8 +38,6 @@ public class ConfiguracionPartida {
         this.idContrincante = idContrincante;
     }
     
-    
-
     public String getColorFicha() {
         return colorFicha;
     }

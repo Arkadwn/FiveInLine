@@ -51,8 +51,7 @@ public class FXMLTableroController implements Initializable {
     private Socket socket;
     private Tablero tableroLogico;
     private String idUsuario;
-    private String idContrincante;
-    private boolean esCreador;
+    private JSONObject contrincante;
     
     private void inicializarComponentes(){
         labelTextoTiempo.setText(idioma.getString("labelTextoTiempo"));
@@ -78,8 +77,16 @@ public class FXMLTableroController implements Initializable {
         this.colorFicha = configuracion.getColorFicha();
         this.tamañoTablero = configuracion.getTamaño();
         this.idUsuario = idUsuario;
-        this.esCreador = configuracion.isEsCreador();
+        contrincante = new JSONObject();
+        contrincante.put("tipo", !configuracion.isEsCreador());
+        contrincante.put("idJugador", configuracion.getIdContrincante());
+        this.socket = configuracion.getSocket();
         tableroLogico = new Tablero(tamañoTablero);
+        try {
+            crearConexionIO();
+        } catch (URISyntaxException ex) {
+            
+        }
     }
     
     @Override
@@ -89,21 +96,9 @@ public class FXMLTableroController implements Initializable {
             inicializarComponentes();
         }
         
-        try {
-            if(socket == null){
-              
-            crearConexionIO();
-            }
-        } catch (URISyntaxException ex) {
-            Logger.getLogger(FXMLTableroController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        
-        
     }
     
     private void crearConexionIO() throws URISyntaxException{
-        socket = IO.socket("http://localhost:8000");
         
         socket.on("jugadaRealizada", new Emitter.Listener() {
             @Override
@@ -118,7 +113,6 @@ public class FXMLTableroController implements Initializable {
                 colocarFichaContrincante(ficha);
             }
         });
-        socket.connect();
     }
     
     @FXML
@@ -136,7 +130,7 @@ public class FXMLTableroController implements Initializable {
 
                 JSONObject fichaIncriptada = new JSONObject(ficha);
 
-                socket.emit("realizarJugada", fichaIncriptada);
+                socket.emit("realizarJugada", fichaIncriptada,contrincante);
 
                 tablero.setDisable(true);
             } else {

@@ -102,7 +102,7 @@ public class FXMLRegistrarUsuarioController implements Initializable {
     
     @FXML
     private void restringirNumeroDeCaracteres(KeyEvent evento){
-        if(tfNombreUsuario.getText().length() >= 20){
+        if(tfNombreUsuario.getText().length() >= 50){
             evento.consume();
         }
     }

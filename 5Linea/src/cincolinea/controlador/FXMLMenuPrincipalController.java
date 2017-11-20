@@ -68,7 +68,7 @@ public class FXMLMenuPrincipalController implements Initializable {
 
     @FXML
     private void cerrarSesion(javafx.event.ActionEvent event) {
-        main.cerrarSesion(idioma);
+        main.desplegarInicioSesion(idioma);
     }
     
     @FXML

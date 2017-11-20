@@ -1,6 +1,7 @@
 package cincolinea.controlador;
 
 import cincolinea.Main;
+import cincolinea.modelo.ConfiguracionPartida;
 import cincolinea.modelo.Ficha;
 import cincolinea.modelo.Tablero;
 import com.jfoenix.controls.JFXButton;
@@ -22,7 +23,8 @@ import org.json.JSONObject;
 /**
  * FXML Controller class
  *
- * @author Adrian Bustamante Z
+ * @author Adrian Bustamante Zarate
+ * @author Miguel Leonardo Jimenez Jimenez
  */
 public class FXMLTableroController implements Initializable {
 
@@ -42,12 +44,15 @@ public class FXMLTableroController implements Initializable {
     private Label labelInfoJugador;
     private ResourceBundle idioma;
     private Main main;
-    private int tamañoTablero = 10;
+    private int tamañoTablero;
     @FXML
     private GridPane tablero;
-    private String colorFicha = "N";
+    private String colorFicha;
     private Socket socket;
     private Tablero tableroLogico;
+    private String idUsuario;
+    private String idContrincante;
+    private boolean esCreador;
     
     private void inicializarComponentes(){
         labelTextoTiempo.setText(idioma.getString("labelTextoTiempo"));
@@ -60,13 +65,23 @@ public class FXMLTableroController implements Initializable {
     }
     
     private void abandonarPartida(ActionEvent event) {
-        main.desplegarMenuPrincipal(idioma);
+        socket.disconnect();
+        main.desplegarMenuPrincipal(idioma, idUsuario);
+        
     }
 
     public void setMain(Main main) {
         this.main = main;
     }
 
+    public void setConfiguracionJugador(ConfiguracionPartida configuracion, String idUsuario){
+        this.colorFicha = configuracion.getColorFicha();
+        this.tamañoTablero = configuracion.getTamaño();
+        this.idUsuario = idUsuario;
+        this.esCreador = configuracion.isEsCreador();
+        tableroLogico = new Tablero(tamañoTablero);
+    }
+    
     @Override
     public void initialize(URL url, ResourceBundle idioma) {
         this.idioma = idioma;
@@ -77,9 +92,7 @@ public class FXMLTableroController implements Initializable {
         try {
             if(socket == null){
               
-                socket = crearConexionIO();
-                
-                tableroLogico = new Tablero(tamañoTablero);
+            crearConexionIO();
             }
         } catch (URISyntaxException ex) {
             Logger.getLogger(FXMLTableroController.class.getName()).log(Level.SEVERE, null, ex);
@@ -89,13 +102,10 @@ public class FXMLTableroController implements Initializable {
         
     }
     
-    private Socket crearConexionIO() throws URISyntaxException{
-        Socket conexion = null;
+    private void crearConexionIO() throws URISyntaxException{
+        socket = IO.socket("http://localhost:8000");
         
-        conexion = IO.socket("http://localhost:8000");
-        conexion.connect();
-        
-        conexion.on("jugadaRealizada", new Emitter.Listener() {
+        socket.on("jugadaRealizada", new Emitter.Listener() {
             @Override
             public void call(Object... os) {
 
@@ -108,8 +118,7 @@ public class FXMLTableroController implements Initializable {
                 colocarFichaContrincante(ficha);
             }
         });
-        
-        return conexion;
+        socket.connect();
     }
     
     @FXML
@@ -139,24 +148,15 @@ public class FXMLTableroController implements Initializable {
             }
         }
         
-        
-        
-        //Quitar
         System.out.println(boton.getId());
-        //tablero.getChildren().remove(10, 20);
-        
-        
-        /*
-        JFXButton boton2;
-        boton2 = (JFXButton)tablero.getChildren().get(99);
-        System.out.println(boton2.getId());
-        */
     }
     
     @FXML
     private void regresarMenuPrincipal(ActionEvent event) {
-        main.desplegarMenuPrincipal(idioma);
+        socket.off("jugadaRealizada");
         socket.disconnect();
+        main.desplegarMenuPrincipal(idioma, idUsuario);
+        
     }
     
     private void colocarFicha(JFXButton boton, String colorFicha){

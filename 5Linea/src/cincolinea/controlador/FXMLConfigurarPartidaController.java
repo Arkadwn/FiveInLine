@@ -1,8 +1,13 @@
 package cincolinea.controlador;
 
 import cincolinea.Main;
+import cincolinea.modelo.ConfiguracionPartida;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
+import io.socket.client.IO;
+import io.socket.client.Socket;
+import io.socket.emitter.Emitter;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
@@ -12,6 +17,7 @@ import javafx.scene.control.Label;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.image.ImageView;
+import org.json.JSONObject;
 
 /**
  * FXML Controller class
@@ -35,28 +41,58 @@ public class FXMLConfigurarPartidaController implements Initializable {
     @FXML
     private ImageView imagen;
     @FXML
-    private JFXComboBox<?> cbColorFichas;
+    private JFXComboBox<String> cbColorFichas;
     @FXML
-    private JFXComboBox<?> cbTamano;
+    private JFXComboBox<String> cbTamano;
     private String idUsuario;
+    private Socket socket;
+    private ConfiguracionPartida configuracion;
 
     @Override
     public void initialize(URL url, ResourceBundle idioma) {
         this.idioma = idioma;
         if (this.idioma != null) {
             iniciarIdiomaComponentes();
-            rellenarCombobox();
+            crearConexion();
         }
     }
 
-    private void rellenarCombobox() {
-        ObservableList tablero = cbTamano.getItems();
-        tablero.addAll("10x10", "9x9", "8x8");
+    @FXML
+    private void rellenarComboboxTamaño() {
+        ObservableList <String> tablero = FXCollections.observableArrayList("10x10","9x9", "8x8");
         cbTamano.setItems(tablero);
-        ObservableList fichas = cbColorFichas.getItems();
-        fichas.addAll(idioma.getString("fichaNegra"), idioma.getString("fichaBlanca"));
+    }
+    
+    @FXML
+    private void rellenarComboboxColores() {
+        ObservableList <String> fichas = FXCollections.observableArrayList("Negras","Blancas");
         cbColorFichas.setItems(fichas);
-
+    }
+    
+    private void crearConexion(){
+        
+        try {
+            socket = IO.socket("http://localhost:8000");
+            
+            socket.on("conexionCreada", new Emitter.Listener(){
+                @Override
+                public void call(Object... os) {
+                    
+                }
+                
+            }).on("respuestaEmparejamiento", new Emitter.Listener() {
+                @Override
+                public void call(Object... os) {
+                    configuracion.setIdContrincante((String) os[0]);
+                    System.out.println(configuracion.getIdContrincante());
+                    
+                    socket.disconnect();
+                }
+            });
+            socket.connect();
+        } catch (URISyntaxException ex) {
+            System.out.println("Conexion mal creada");
+        }
     }
 
     public void setMain(Main main) {
@@ -81,13 +117,46 @@ public class FXMLConfigurarPartidaController implements Initializable {
 
     @FXML
     private void iniciarJuego(ActionEvent event) {
-        int tamaño;
-        String tamañoElegido = cbTamano.getSelectionModel().getSelectedItem().toString();
-        if (tamañoElegido.length() != 5) {
-            tamaño = tamañoElegido.charAt(0);
-        } else {
-            tamaño = Integer.parseInt(tamañoElegido.substring(0, 2));
+        
+        if(cbTamano.getItems().isEmpty() || cbColorFichas.getItems().isEmpty()){
+            System.out.println("Campos no elegidos");
+        }else{
+            crearConfiguracion();
+            
+            JSONObject configuracionEncriptada = new JSONObject();
+            
+            if(configuracion.getColorFicha().equals("N")){
+                configuracionEncriptada.put("colorFicha", "B");
+            }else{
+                configuracionEncriptada.put("colorFicha", "N");
+            }
+            
+            configuracionEncriptada.put("tamaño", configuracion.getTamaño());
+            
+            socket.emit("peticionCreacionPartida", idUsuario, configuracionEncriptada);
+            //main.iniciarJuego(idioma, cbColorFichas.getSelectionModel().getSelectedItem().toString(), tamaño, idUsuario);
+            
         }
-        main.iniciarJuego(idioma, cbColorFichas.getSelectionModel().getSelectedItem().toString(), tamaño, idUsuario);
+        
+    }
+    
+    private void crearConfiguracion(){
+        
+        String valorComboBox = (String) cbTamano.getValue();
+
+        if (valorComboBox.length() != 5) {
+            configuracion.setTamaño(Integer.parseInt(valorComboBox, 0));
+        } else {
+            configuracion.setTamaño(Integer.parseInt(valorComboBox.substring(0, 2)));
+        }
+        
+        valorComboBox =(String)cbColorFichas.getValue();
+        
+        valorComboBox = valorComboBox.substring(0,1);
+        
+        configuracion.setColorFicha(valorComboBox);
+        
+        configuracion.setSocket(socket);
+        configuracion.setEsCreador(true);
     }
 }

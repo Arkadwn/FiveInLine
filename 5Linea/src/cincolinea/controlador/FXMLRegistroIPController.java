@@ -112,6 +112,7 @@ public class FXMLRegistroIPController implements Initializable {
             if (ConfiguracionIP.verificarConfiguracionIP(txtIP.getText() + "." + txtIP1.getText() + "." + txtIP2.getText() + "." + txtIP3.getText())) {
                 labelConexion.setVisible(true);
                 Thread.sleep(3000);
+                ConfiguracionIP.guardarConfiguracionIP(txtIP.getText(), txtIP1.getText(), txtIP2.getText(), txtIP3.getText());
                 main.desplegarInicioSesion(idioma);
             } else {
                 labelNoConexion.setVisible(true);

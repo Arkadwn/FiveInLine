@@ -5,7 +5,8 @@
  */
 package cincolineaservidor.persistencia.controladores;
 
-import cincolineaservidor.persistencia.Cuenta;
+import cincolineaservidor.persistencia.Cuentas;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
@@ -15,9 +16,9 @@ import javax.persistence.Query;
  * @author Adrián Bustamante Zarate
  * @author Miguel Leonardo Jimenez
  */
-public class ControladorAutenticacion {
+public class ControladorCuenta {
 
-    public ControladorAutenticacion(EntityManagerFactory fabricaEntidad) {
+    public ControladorCuenta(EntityManagerFactory fabricaEntidad) {
         this.fabricaEntidad = fabricaEntidad;
     }
     private EntityManagerFactory fabricaEntidad = null;
@@ -26,39 +27,48 @@ public class ControladorAutenticacion {
         return fabricaEntidad.createEntityManager();
     }
 
-    public String verificarAutenticacion(String nombreUsuario)throws Exception {
+    public String verificarAutenticacion(String nombreUsuario) throws Exception {
         EntityManager entidad = getEntityManager();
         String s = "SELECT c FROM Cuenta c WHERE c.nombreUsuario = :nombreUser ";
         Query q = entidad.createQuery(s).setParameter("nombreUser", nombreUsuario);
-        Cuenta cuentaResultado;
+        Cuentas cuentaResultado;
         String contrasenaResultado = "";
-        try{
-        cuentaResultado = (Cuenta) q.getSingleResult();
-        contrasenaResultado = cuentaResultado.getContrasena();
-        }catch(Exception ex){
-            System.out.println("Error: "+ex.getMessage());
+        try {
+            cuentaResultado = (Cuentas) q.getSingleResult();
+            contrasenaResultado = cuentaResultado.getContrasena();
+        } catch (Exception ex) {
+            System.out.println("Error: " + ex.getMessage());
         }
         return contrasenaResultado;
     }
 
-    public boolean registrarUsuario(String nombreUsuario, String contrasena, String idImagen) {
+    public boolean registrarUsuario(List<String> datosUsuario) {
         boolean registro = true;
+        EntityManager entidad = getEntityManager();
         try {
-            EntityManager entidad = getEntityManager();
             entidad.getTransaction().begin();
-            
-            Cuenta nuevaCuenta = new Cuenta(nombreUsuario);
-            nuevaCuenta.setContrasena(contrasena);
-            nuevaCuenta.setImagen(idImagen);
-            
+            Cuentas nuevaCuenta = new Cuentas();
+
+            nuevaCuenta.setNombreUsuario(datosUsuario.get(0));
+            nuevaCuenta.setContrasena(datosUsuario.get(1));
+            nuevaCuenta.setCorreoElectronico(datosUsuario.get(2));
+            nuevaCuenta.setEstadoSesion(Integer.parseInt(datosUsuario.get(3)));
+            nuevaCuenta.setImagen(datosUsuario.get(4));
+            nuevaCuenta.setNombre(datosUsuario.get(5));
+            nuevaCuenta.setApellidoMatern(datosUsuario.get(6));
+            nuevaCuenta.setApellidoPatern(datosUsuario.get(7));
+
             entidad.persist(nuevaCuenta);
             entidad.getTransaction().commit();
-            
+
         } catch (Exception ex) {
             System.out.println("Error: " + ex.getMessage());
+            if (entidad.getTransaction().isActive()) {
+                entidad.getTransaction().rollback();
+            }
             registro = false;
         }
-        
+
         return registro;
     }
 }

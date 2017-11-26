@@ -4,6 +4,7 @@ import cincolinea.Main;
 import cincolinea.modelo.ConfiguracionPartida;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
+import javafx.application.Platform;
 import io.socket.client.IO;
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
@@ -16,8 +17,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.image.ImageView;
 import org.json.JSONObject;
+import cincolinea.modelo.utilerias.ConfiguracionIP;
 
 /**
  * FXML Controller class
@@ -38,8 +39,6 @@ public class FXMLConfigurarPartidaController implements Initializable {
 
     @FXML
     private Label labelTamaño;
-    @FXML
-    private ImageView imagen;
     @FXML
     private JFXComboBox<String> cbColorFichas;
     @FXML
@@ -72,7 +71,8 @@ public class FXMLConfigurarPartidaController implements Initializable {
     private void crearConexion(){
         
         try {
-            socket = IO.socket("http://localhost:8000");
+            String[] ip = ConfiguracionIP.getIP();
+            socket = IO.socket("http://"+ip[0]+"."+ip[1]+"."+ip[2]+"."+ip[3]+":8000");
             
             socket.on("conexionCreada", new Emitter.Listener(){
                 @Override
@@ -86,7 +86,10 @@ public class FXMLConfigurarPartidaController implements Initializable {
                     configuracion.setIdContrincante((String) os[0]);
                     System.out.println(configuracion.getIdContrincante());
                     
-                    socket.disconnect();
+                    Platform.runLater(()->{
+                        main.iniciarJuego(idioma, configuracion,idUsuario);
+                    });
+                    
                 }
             });
             socket.connect();
@@ -134,20 +137,22 @@ public class FXMLConfigurarPartidaController implements Initializable {
             configuracionEncriptada.put("tamaño", configuracion.getTamaño());
             
             socket.emit("peticionCreacionPartida", idUsuario, configuracionEncriptada);
-            //main.iniciarJuego(idioma, cbColorFichas.getSelectionModel().getSelectedItem().toString(), tamaño, idUsuario);
+            //
             
         }
         
     }
     
     private void crearConfiguracion(){
+        configuracion = new ConfiguracionPartida();
         
-        String valorComboBox = (String) cbTamano.getValue();
+        String valorComboBox = (String)cbTamano.getValue();
 
         if (valorComboBox.length() != 5) {
-            configuracion.setTamaño(Integer.parseInt(valorComboBox, 0));
+            configuracion.setTamaño(Integer.parseInt(valorComboBox.substring(0,1)));
         } else {
-            configuracion.setTamaño(Integer.parseInt(valorComboBox.substring(0, 2)));
+            int tamaño = Integer.parseInt(valorComboBox.substring(0, 2));
+            configuracion.setTamaño(tamaño);
         }
         
         valorComboBox =(String)cbColorFichas.getValue();

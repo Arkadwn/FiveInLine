@@ -5,14 +5,11 @@ import cincolinea.modelo.ConfiguracionPartida;
 import cincolinea.modelo.Ficha;
 import cincolinea.modelo.Tablero;
 import com.jfoenix.controls.JFXButton;
-import io.socket.client.IO;
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -87,6 +84,7 @@ public class FXMLTableroController implements Initializable {
         } catch (URISyntaxException ex) {
             
         }
+        crearTablero(configuracion.getTamaño());
     }
     
     @Override
@@ -122,9 +120,7 @@ public class FXMLTableroController implements Initializable {
         
         Ficha ficha = crearFicha(boton.getId());
         
-        if(tableroLogico.validarEmpate()){
-            System.out.println("Empate");
-        }else{
+        
             if (tableroLogico.validarJugada(ficha.getX(), ficha.getY(), ficha.getColorFicha())) {
                 colocarFicha(boton, colorFicha);
 
@@ -133,16 +129,17 @@ public class FXMLTableroController implements Initializable {
                 socket.emit("realizarJugada", fichaIncriptada,contrincante);
 
                 tablero.setDisable(true);
+                
+                if (tableroLogico.validarSiGano(ficha.getX(), ficha.getY(), ficha.getColorFicha())) {
+                    System.out.println("ganaste");
+                }
+                
+                if (tableroLogico.validarEmpate()) {
+                    System.out.println("Empate");
+                }
             } else {
                 System.out.println("Ya hay un ficha en esa posicion");
             }
-
-            if (tableroLogico.validarSiGano(ficha.getX(), ficha.getY(), ficha.getColorFicha())) {
-                System.out.println("ganaste");
-            }
-        }
-        
-        System.out.println(boton.getId());
     }
     
     @FXML
@@ -178,10 +175,8 @@ public class FXMLTableroController implements Initializable {
         
         
         if(tableroLogico.validarJugada(ficha.getX(), ficha.getY(), ficha.getColorFicha())){
-            System.out.println("0" + ficha.getX() + "-" + ficha.getY());
             int posicion = Integer.parseInt("0" + ficha.getY() + ficha.getX());
-            System.out.println("Hijo: " + posicion);
-
+            String a;
             JFXButton boton = (JFXButton) tablero.getChildren().get(posicion);
 
             colocarFicha(boton, ficha.getColorFicha());
@@ -189,6 +184,69 @@ public class FXMLTableroController implements Initializable {
             tablero.setDisable(false);
         }
         
+    }
+    
+    private void crearTablero(int tamaño){
+        if (validarSiTiraPrimero()) {
+            tablero.setDisable(true);
+        }
+        JFXButton boton;
+        int i = 0;
+        switch(tamaño){
+            case 8:
+                for(i = 9; i < 100; i += 10){
+                    boton = (JFXButton) tablero.getChildren().get(i);
+                    boton.setVisible(false);
+                    
+                    if(i == 79){
+                        break;
+                    }
+                }
+                
+                for(i = 8; i < 100; i += 10){
+                    boton = (JFXButton) tablero.getChildren().get(i);
+                    boton.setVisible(false);
+                    
+                    if(i == 78){
+                        break;
+                    }
+                }
+                
+                for(i = 90; i < 100; i++){
+                    boton = (JFXButton) tablero.getChildren().get(i);
+                    boton.setVisible(false);
+                }
+                
+                for(i = 80; i < 90; i++){
+                    boton = (JFXButton) tablero.getChildren().get(i);
+                    boton.setVisible(false);
+                }
+                
+                break;
+            case 9:
+                for(i = 9; i < 100; i += 10){
+                    boton = (JFXButton) tablero.getChildren().get(i);
+                    boton.setVisible(false);
+                    
+                    if(i == 89){
+                        break;
+                    }
+                }
+                
+                for(i = 90; i < 100; i++){
+                    boton = (JFXButton) tablero.getChildren().get(i);
+                    boton.setVisible(false);
+                }               
+                
+                break;
+            case 10:
+                
+                break;
+        }
+    }
+    
+    private boolean validarSiTiraPrimero(){
+        return colorFicha.equals("B");
     }
 
 }

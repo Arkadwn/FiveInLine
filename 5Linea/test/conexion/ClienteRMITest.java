@@ -1,6 +1,9 @@
 package conexion;
 
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -11,13 +14,17 @@ import static org.junit.Assert.*;
 public class ClienteRMITest {
     private ClienteRMI conexion;
     public ClienteRMITest() throws RemoteException {
-        conexion = new ClienteRMI();
+        try {
+            conexion = new ClienteRMI();
+        } catch (NotBoundException ex) {
+            Logger.getLogger(ClienteRMITest.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     /**
      * Test of autenticarCuenta method, of class ClienteRMI.
      */
     @Test
-    public void testAutenticarCuentaNombreUsuarioIncorrecto() throws RemoteException {
+    public void testAutenticarCuentaNombreUsuarioIncorrecto() throws RemoteException, NotBoundException {
         String usuario = "Mauricio";
         String contrasena = "acdc";
         conexion = new ClienteRMI();
@@ -27,7 +34,7 @@ public class ClienteRMITest {
     }
 
     @Test
-    public void testAutenticarCuenta() throws RemoteException {
+    public void testAutenticarCuenta() throws RemoteException, NotBoundException {
         String usuario = "Leo";
         String contrasena = "acdc";
         conexion = new ClienteRMI();

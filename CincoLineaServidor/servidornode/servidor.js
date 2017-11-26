@@ -1,6 +1,6 @@
 var io=require('socket.io')(8000);
-var jugadas = new Array(0);
-var jugadasId = new Array(0);
+var jugadas = new Array();
+var jugadasId = new Array();
 var auxJugada;
 function jugada(socketAnfitrion, idAnfitrion, socketInvitado, idInvitado, configuracion){
 	this.socketAnfitrion = socketAnfitrion;
@@ -19,27 +19,34 @@ io.on('connection', function(socket) {
 
 	socket.on('peticionCreacionPartida', function(idJugador, configuracion){
 		nuevaPartida = new jugada(socket, idJugador, null, null, configuracion);
+		console.log("Se ha creado una partida con: " + idJugador + " con esta configuracion: " + configuracion.colorFicha);
 		nuevaPartidaId = new jugadaId(idJugador);
 		jugadas.push(nuevaPartida);
-		jugadas.push(nuevaPartidaId);
+		console.log("Numero de partidas creadas: " + jugadas.length);
+		console.log("Numero de partidas creadas: " + jugadasId.length);
+		jugadasId.push(nuevaPartidaId);
 	});//Anfitrion
 
 	socket.on('peticionEnlacePartida', function(){
+		console.log("Se han solicitado partidas");
 		socket.emit('jugadores', jugadasId);
 	});//Invitado
 
 	socket.on('emparejar',function(idAnfitrion, idInvitado){
 		var socketAnfitrion;
-		for(var i = 0; i < jugadas.leght; i++){
+		console.log(jugadas.length);
+		for(var i = 0; i < jugadas.length; i++){
 			auxJugada = jugadas[i];
+			console.log(auxJugada.idAnfitrion);
 			if(auxJugada.idAnfitrion == idAnfitrion){
+
 				auxJugada.idInvitado = idInvitado;
 				auxJugada.socketInvitado = socket;
 				jugadas[i] = auxJugada;
 				jugadasId.splice(i, 1);
 				console.log('Se emparejo ' + idAnfitrion + 'con ' + idInvitado);
 				socketAnfitrion = auxJugada.socketAnfitrion;
-				socket.emit('respuestaEmparejamiento', idAnfitrion, configuracion);
+				socket.emit('respuestaEmparejamiento', idAnfitrion, auxJugada.configuracion);
 				socketAnfitrion.emit('respuestaEmparejamiento', idInvitado);
 				break;
 			}
@@ -50,7 +57,7 @@ io.on('connection', function(socket) {
 		var socketContrincante;
 		for (var i = 0; i < jugadas.length; i++) {
 			auxJugada = jugadas[i];
-			if(jugadorContrincante.tipo == "Anfitrion"){
+			if(jugadorContrincante.tipo){
 				if(auxJugada.idAnfitrion == jugadorContrincante.idJugador){
 					socketContrincante = auxJugada.socketAnfitrion;
 					break;
@@ -63,8 +70,7 @@ io.on('connection', function(socket) {
 			}
 
 		}
-
-		socketContrincante.send.emit('jugadaRealizada', jugada);
+		socketContrincante.emit('jugadaRealizada', jugada);
 		//envio de tiempo de espera para jugada
 	});
 

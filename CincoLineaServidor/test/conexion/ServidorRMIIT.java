@@ -5,6 +5,8 @@
  */
 package conexion;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -57,12 +59,18 @@ public class ServidorRMIIT {
     @Test
     public void testRegistrarCuenta() throws Exception {
         System.out.println("Se probara el metodo: registrarCuenta");
-        String usuario = "Adri";
-        String contrasena = "ChinaHP";
-        String idImagen = "img17";
+        List<String> datosUsuario = new ArrayList();
+        datosUsuario.add("Adri");
+        datosUsuario.add("ChinaHP");
+        datosUsuario.add("arkadwn@gmail.com");
+        datosUsuario.add("0");
+        datosUsuario.add("img99");
+        datosUsuario.add("Adrián");
+        datosUsuario.add("Bustamante");
+        datosUsuario.add("Zarate");
         ServidorRMI instance = new ServidorRMI();
         boolean expResult = true;
-        boolean result = instance.registrarCuenta(usuario, contrasena, idImagen);
+        boolean result = instance.registrarCuenta(datosUsuario);
         assertEquals(expResult, result);
         
         //fail("El teste a fallado");
@@ -74,12 +82,18 @@ public class ServidorRMIIT {
     @Test
     public void testRegistrarCuentaFalso() throws Exception {
         System.out.println("Se probara el metodo: registrarCuenta");
-        String usuario = "NombreeeeLargoooooDeUsuariooooo";
-        String contrasena = "ChinaHP";
-        String idImagen = "img17";
+        List<String> datosUsuario = new ArrayList();
+        datosUsuario.add("asdfghjklñpoiuytrewqzxcvbnmklpñoiuhygvtfcredxswqazxasdfg");
+        datosUsuario.add("ChinaHP");
+        datosUsuario.add("arkadwn@gmail.com");
+        datosUsuario.add("0");
+        datosUsuario.add("img99");
+        datosUsuario.add("Adrián");
+        datosUsuario.add("Bustamante");
+        datosUsuario.add("Zarate");
         ServidorRMI instance = new ServidorRMI();
         boolean expResult = false;
-        boolean result = instance.registrarCuenta(usuario, contrasena, idImagen);
+        boolean result = instance.registrarCuenta(datosUsuario);
         assertEquals(expResult, result);
         
         //fail("El teste a fallado");

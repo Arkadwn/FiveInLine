@@ -12,7 +12,8 @@ import javafx.stage.Stage;
 
 /**
  *
- * @author Sammy Guergachi <sguergachi at gmail.com>
+ * @author Adrian Bustamante Zarate
+ * @author Miguel Leonardo Jimenez
  */
 public class Main extends Application {
 
@@ -20,23 +21,40 @@ public class Main extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
-        desplegarInicioSesion(stage);
+        desplegarConfiguracionIP(stage);
     }
 
-    public void desplegarInicioSesion(Stage stageInicio) {
-        try {
-            FXMLLoader loader = new FXMLLoader(Main.class.getResource("/cincolinea/vista/FXMLInicioSesion.fxml"));
+    public void desplegarConfiguracionIP(Stage stageInicio) throws IOException {
+        //try {
+            FXMLLoader loader = new FXMLLoader(Main.class.getResource("/cincolinea/vista/FXMLRegistroIP.fxml"));
             Parent root = (Parent) loader.load();
             Scene scene = new Scene(root);
 
             stageInicio.setScene(scene);
-            stageInicio.setTitle("5 in linea");
+            stageInicio.setTitle("Configuración de IP");
 
-            FXMLInicioSesionController control = loader.getController();
+            FXMLRegistroIPController control = loader.getController();
             control.setMain(this);
             stageInicio.show();
 
             stageLocal = stageInicio;
+        //} catch (IOException ex) {
+            //System.out.println("Excepción tipo IO, mensaje: " + ex.getMessage());
+        //}
+    }
+    
+    public void desplegarInicioSesion(ResourceBundle idiomaElegido) {
+        try {
+            FXMLLoader loader = new FXMLLoader(Main.class.getResource("/cincolinea/vista/FXMLInicioSesion.fxml"), idiomaElegido);
+            Parent root = (Parent) loader.load();
+            
+            FXMLInicioSesionController control = loader.getController();
+            control.setMain(this);
+            Scene scene = new Scene(root);
+
+            stageLocal.setScene(scene);
+            stageLocal.setTitle("5 in linea");
+
         } catch (IOException ex) {
             System.out.println("Excepción tipo IO, mensaje: " + ex.getMessage());
         }
@@ -46,7 +64,7 @@ public class Main extends Application {
         try {
             FXMLLoader loader = new FXMLLoader(Main.class.getResource("/cincolinea/vista/FXMLMenuPrincipal.fxml"),idiomaElegido);
             Parent root = (Parent) loader.load();
-
+            
             FXMLMenuPrincipalController control = loader.getController();
             control.setMain(this);
             control.setIdUsuario(idUsuario);
@@ -106,7 +124,7 @@ public class Main extends Application {
         launch(args);
     }
 
-    public void desplegarInicioSesion(ResourceBundle idiomaElegido) {
+    /*public void desplegarInicioSesion(ResourceBundle idiomaElegido) {
         try {
             FXMLLoader loader = new FXMLLoader(Main.class.getResource("/cincolinea/vista/FXMLInicioSesion.fxml"),idiomaElegido);
             Parent root = (Parent) loader.load();
@@ -122,7 +140,7 @@ public class Main extends Application {
         } catch (IOException ex) {
             System.out.println("Excepción tipo IO, mensaje: " + ex.getMessage());
         }
-    }
+    }*/
 
     public void desplegarRegistrarUsuario(ResourceBundle idiomaElegido) {
         try {

@@ -89,7 +89,7 @@ public class ClienteRMI {
         return stringBuilder.toString();
     }
     
-    public boolean verficarConexion(boolean banderaSeñal) {
+    public boolean verficarConexion(boolean banderaSeñal) throws RemoteException{
         boolean banderaRetorno = false;
         try {
             //Nombre del servico que proporciona el servidor

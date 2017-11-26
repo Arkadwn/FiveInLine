@@ -2,6 +2,7 @@ package conexion.interfaces;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.List;
 
 /**
  *
@@ -10,5 +11,5 @@ import java.rmi.RemoteException;
  */
 public interface ICuenta extends Remote{
     public boolean autenticarCuenta(String usuario, String contrasena) throws RemoteException;
-    public boolean registrarCuenta(String usuario, String contrasena, String idImagen) throws RemoteException;
+    public boolean registrarCuenta(List<String> datosUsuario) throws RemoteException;
 }

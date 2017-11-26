@@ -1,6 +1,8 @@
 package conexion;
 
+import cincolinea.modelo.utilerias.ConfiguracionIP;
 import conexion.interfaces.ICuenta;
+import conexion.interfaces.IVerificacionConexion;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -19,8 +21,13 @@ public class ClienteRMI {
     private ICuenta cuenta;
     private Registry conexion;
     
-    public ClienteRMI() throws RemoteException{
-        conexion = LocateRegistry.getRegistry("192.168.43.75");
+    public ClienteRMI() throws RemoteException, NotBoundException{
+        String[] ip = ConfiguracionIP.getIP();
+        conexion = LocateRegistry.getRegistry(ip[0]+"."+ip[1]+"."+ip[2]+"."+ip[3]);
+    }
+    
+    public ClienteRMI(String ip) throws RemoteException, NotBoundException{
+        conexion = LocateRegistry.getRegistry(ip);
     }
     
     public boolean autenticarCuenta(String usuario, String contrasena) {
@@ -37,7 +44,6 @@ public class ClienteRMI {
         try{
             //Nombre del servico que proporciona el servidor
             cuenta = (ICuenta) conexion.lookup("ServiciosCuenta");
-
             validacion = cuenta.autenticarCuenta(usuario, contrasenaEncriptada);
 
         }catch(NotBoundException | RemoteException ex){
@@ -62,7 +68,6 @@ public class ClienteRMI {
         try {
             //Nombre del servico que proporciona el servidor
             cuenta = (ICuenta) conexion.lookup("ServiciosCuenta");
-
             validacion = cuenta.registrarCuenta(nombreUsuario, contrasenaEncriptada, "img" + generarNumeroImagenAleatorio());
 
         } catch (NotBoundException | RemoteException ex) {
@@ -82,6 +87,20 @@ public class ClienteRMI {
             stringBuilder.append(Integer.toString((hash[i] & 0xff) + 0x100, 16).substring(1));
         }
         return stringBuilder.toString();
+    }
+    
+    public boolean verficarConexion(boolean banderaSeñal) {
+        boolean banderaRetorno = false;
+        try {
+            //Nombre del servico que proporciona el servidor
+            IVerificacionConexion verificacion = (IVerificacionConexion) conexion.lookup("ServiciosValidacion");
+            banderaRetorno = verificacion.verficarConexion(banderaSeñal);
+
+        } catch (NotBoundException | RemoteException ex) {
+            //Quitar
+            //ex.printStackTrace();
+        }
+        return banderaRetorno;
     }
     
     private int generarNumeroImagenAleatorio(){

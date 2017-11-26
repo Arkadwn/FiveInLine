@@ -5,11 +5,12 @@
  */
 package conexion.interfaces;
 import java.rmi.Remote;
+import java.rmi.RemoteException;
 
 /**
  *
  * @author Adrián Bustamante Zarate
  */
 public interface IVerificacionConexion extends Remote{
-    public boolean verficarConexion(boolean banderaSeñal);
+    public boolean verficarConexion(boolean banderaSeñal) throws RemoteException;
 }

@@ -52,11 +52,6 @@ public class FXMLRegistroIPController implements Initializable {
     private ResourceBundle idioma;
     private Main main;
 
-    @FXML
-    private Label labelConexion;
-    @FXML
-    private Label labelNoConexion;
-
     /**
      * Initializes the controller class.
      *
@@ -67,15 +62,28 @@ public class FXMLRegistroIPController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         translateButton.setStyle("-fx-background-image: url('cincolinea/imagenes/language.png');"
                 + "-fx-background-position: center center; -fx-background-repeat: stretch; -fx-background-size: 35px 35px 35px 35px;");
-        labelNoConexion.setVisible(false);
-        labelConexion.setVisible(false);
+
+        if (idioma != null) {
+            inicializarComponentesPorDefecto(idioma);
+        } else {
+            cambiarComponentesEspañol();
+        }
 
         String[] ip = ConfiguracionIP.getIP();
+        System.out.println(ip[0]);
         txtIP.setText(ip[0]);
         txtIP1.setText(ip[1]);
         txtIP2.setText(ip[2]);
         txtIP3.setText(ip[3]);
 
+    }
+
+    private void inicializarComponentesPorDefecto(ResourceBundle idomaElegido) {
+
+        labelTituloIP.setText(idomaElegido.getString("labelTituloIP"));
+        btnSalir.setText(idomaElegido.getString("btnSalir"));
+        btnVerificarConexion.setText(idomaElegido.getString("btnValidarConexion"));
+        idioma = idomaElegido;
     }
 
     @FXML
@@ -105,21 +113,15 @@ public class FXMLRegistroIPController implements Initializable {
 
     @FXML
     private void verificarConexion(ActionEvent event) {
-        labelNoConexion.setVisible(false);
-        labelConexion.setVisible(false);
 
-        try {
-            if (ConfiguracionIP.verificarConfiguracionIP(txtIP.getText() + "." + txtIP1.getText() + "." + txtIP2.getText() + "." + txtIP3.getText())) {
-                labelConexion.setVisible(true);
-                Thread.sleep(3000);
-                ConfiguracionIP.guardarConfiguracionIP(txtIP.getText(), txtIP1.getText(), txtIP2.getText(), txtIP3.getText());
-                main.desplegarInicioSesion(idioma);
-            } else {
-                labelNoConexion.setVisible(true);
-            }
-        } catch (InterruptedException ex) {
-            System.out.println("Error: " + ex.getMessage());
+        if (ConfiguracionIP.verificarConfiguracionIP(txtIP.getText() + "." + txtIP1.getText() + "." + txtIP2.getText() + "." + txtIP3.getText())) {
+            MensajeController.mensajeInformacion(idioma.getString("conexionRealizada"));
+            ConfiguracionIP.guardarConfiguracionIP(txtIP.getText(), txtIP1.getText(), txtIP2.getText(), txtIP3.getText());
+            main.desplegarInicioSesion(idioma);
+        } else {
+            MensajeController.mensajeAdvertencia(idioma.getString("conexionFallida"));
         }
+
     }
 
     @FXML

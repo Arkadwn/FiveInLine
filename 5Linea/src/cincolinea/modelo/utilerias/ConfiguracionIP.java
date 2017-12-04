@@ -76,7 +76,6 @@ public class ConfiguracionIP {
             try {
                 archivoProperties.load(new FileReader(rutaProperties));
                 ip[0] = archivoProperties.getProperty("IP");
-                System.out.println(ip[0]);
                 ip[1] = archivoProperties.getProperty("IP2");
                 ip[2] = archivoProperties.getProperty("IP3");
                 ip[3] = archivoProperties.getProperty("IP4");
@@ -102,7 +101,6 @@ public class ConfiguracionIP {
             File fileProperties = new File(fileDir.getAbsolutePath() + "/ConfiguracionIP.properties");
 
             ruta = fileProperties.getAbsolutePath();
-            System.out.println(ruta);
 
         } catch (URISyntaxException ex) {
             System.out.println("Error: " + ex.getMessage());

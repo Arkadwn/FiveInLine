@@ -2,6 +2,7 @@ package cincolinea.controlador;
 
 import cincolinea.Main;
 import cincolinea.modelo.ConfiguracionPartida;
+import cincolinea.modelo.utilerias.ConfiguracionIP;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import java.net.URISyntaxException;
@@ -15,6 +16,8 @@ import javafx.scene.control.Label;
 import io.socket.client.IO;
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.ObservableList;
 import javafx.scene.image.ImageView;
 import org.json.JSONArray;
@@ -44,6 +47,8 @@ public class FXMLBuscaPartidaController implements Initializable {
     private Label labelJugadores;
     @FXML
     private JFXButton btnJugar;
+    @FXML
+    private JFXButton btnActualizar;
 
     private void iniciarIdiomaComponentes() {
         btnCancelarBusqPartida.setText(idioma.getString("btnCancelarBusqPartida"));
@@ -65,48 +70,55 @@ public class FXMLBuscaPartidaController implements Initializable {
         try {
             if (socket == null) {
                 crearConexionIO();
-                //tableroLogico = new Tablero(tamañoTablero);
             }
         } catch (URISyntaxException ex) {
             System.out.println("Error: " + ex.getMessage());
         }
-        
-        try {
-            //Thread.currentThread().wait(3000);
+
+            idComboPartidas.setVisible(false);
+
             obtenerPartidasDisponibles();
-        } catch (Exception ex) {
-            System.out.println("Error: "+ex.getMessage());
-        }
     }
-    private void obtenerPartidasDisponibles(){
+
+    private void obtenerPartidasDisponibles() {
+        ObservableList listaPartidas = idComboPartidas.getItems();
+        listaPartidas.clear();
+        idComboPartidas.setItems(listaPartidas);
         socket.emit("peticionEnlacePartida");
     }
-    
+
     private void crearConexionIO() throws URISyntaxException {
 
-        socket = IO.socket("http://localhost:8000");
-        
+        String[] ipArray = ConfiguracionIP.getIP();
+        String ip = ipArray[0] + "." + ipArray[1] + "." + ipArray[2] + "." + ipArray[3];
+        socket = IO.socket("http://" + ip + ":8000");
 
         socket.on("jugadores", new Emitter.Listener() {
+
             @Override
             public void call(Object... os) {
+
                 JSONArray arrayJugadasDisponibles = (JSONArray) os[0];
+                System.out.println("Me hablo el servidor");
+                if (arrayJugadasDisponibles.length() != 0) {
+                    imagenCargando.setVisible(false);
+                    idComboPartidas.setVisible(true);
+                }
                 ObservableList partidasDisponibles = null;
                 for (int i = 0; i < arrayJugadasDisponibles.length(); i++) {
                     JSONObject objetoRescatado = arrayJugadasDisponibles.getJSONObject(i);
                     partidasDisponibles = idComboPartidas.getItems();
                     partidasDisponibles.add("Jugar con: " + objetoRescatado.get("idAnfitrion").toString());
-                    
                 }
+
                 idComboPartidas.setItems(partidasDisponibles);
-                //colocarFichaContrincante(ficha);
             }
         }).on("respuestaEmparejamiento", new Emitter.Listener() {
             @Override
             public void call(Object... os) {
                 System.out.println("Entre al ON");
                 System.out.println(os[0].toString());
-                System.out.println(os[1].toString()); 
+                System.out.println(os[1].toString());
                 JSONObject configuracionPartida = (JSONObject) os[1];
                 ConfiguracionPartida configuracion = new ConfiguracionPartida();
                 configuracion.setSocket(socket);
@@ -114,23 +126,24 @@ public class FXMLBuscaPartidaController implements Initializable {
                 configuracion.setTamaño((int) configuracionPartida.get("tamaño"));
                 configuracion.setEsCreador(false);
                 configuracion.setIdContrincante(os[0].toString());
-                Platform.runLater(()->{
+                Platform.runLater(() -> {
                     main.iniciarJuego(idioma, configuracion, idUsuario);
                 });
-                
+
             }
         });
-        
+
         socket.connect();
     }
 
     public void setMain(Main main) {
         this.main = main;
     }
-    
+
     @FXML
     private void emparejar(ActionEvent event) {
         idContrincante = idComboPartidas.getValue();
+        //Borrar
         System.out.println(idContrincante.substring(11));
         System.out.println(idUsuario);
         socket.emit("emparejar", idContrincante.substring(11), idUsuario);
@@ -139,6 +152,14 @@ public class FXMLBuscaPartidaController implements Initializable {
     @FXML
     private void regresarMenuPrincipal(ActionEvent event) {
         main.desplegarMenuPrincipal(idioma, idUsuario);
+    }
+
+    @FXML
+    private void buscarPartidasNuevas(ActionEvent event) {
+            idComboPartidas.setVisible(false);
+            imagenCargando.setVisible(true);
+            
+            obtenerPartidasDisponibles();
     }
 
 }

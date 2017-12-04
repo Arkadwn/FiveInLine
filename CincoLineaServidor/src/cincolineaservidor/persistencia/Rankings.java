@@ -37,6 +37,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Rankings.findByPuntos", query = "SELECT r FROM Rankings r WHERE r.puntos = :puntos")})
 public class Rankings implements Serializable {
 
+    @Column(name = "partidasEmpatadas")
+    private Integer partidasEmpatadas;
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -123,6 +126,14 @@ public class Rankings implements Serializable {
     @Override
     public String toString() {
         return "cincolineaservidor.Rankings[ idRanking=" + idRanking + " ]";
+    }
+
+    public Integer getPartidasEmpatadas() {
+        return partidasEmpatadas;
+    }
+
+    public void setPartidasEmpatadas(Integer partidasEmpatadas) {
+        this.partidasEmpatadas = partidasEmpatadas;
     }
 
 }

@@ -40,6 +40,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Cuentas.findByApellidoMatern", query = "SELECT c FROM Cuentas c WHERE c.apellidoMatern = :apellidoMatern")})
 public class Cuentas implements Serializable {
 
+    @Column(name = "apellidos")
+    private String apellidos;
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -165,6 +168,14 @@ public class Cuentas implements Serializable {
     @Override
     public String toString() {
         return "cincolineaservidor.Cuentas[ nombreUsuario=" + nombreUsuario + " ]";
+    }
+
+    public String getApellidos() {
+        return apellidos;
+    }
+
+    public void setApellidos(String apellidos) {
+        this.apellidos = apellidos;
     }
 
 }

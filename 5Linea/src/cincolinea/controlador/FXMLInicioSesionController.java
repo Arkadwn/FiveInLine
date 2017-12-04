@@ -14,8 +14,6 @@ import java.net.URL;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -104,14 +102,14 @@ public class FXMLInicioSesionController implements Initializable {
         estaEspañol = false;
     }
     
-    private void inicializarComponentesPorDefecto(ResourceBundle bundleElegido) {
-        labelTitle.setText(bundleElegido.getString("labelTitle"));
-        labelContraseña.setText(bundleElegido.getString("labelContraseña"));
-        labelUsuario.setText(bundleElegido.getString("labelUsuario"));
-        btnIngresar.setText(bundleElegido.getString("btnIngresar"));
-        btnSalir.setText(bundleElegido.getString("btnSalir"));
-        linkRegistro.setText(bundleElegido.getString("linkRegistro"));
-        idioma = bundleElegido;
+    private void inicializarComponentesPorDefecto(ResourceBundle idomaDefecto) {
+        labelTitle.setText(idomaDefecto.getString("labelTitle"));
+        labelContraseña.setText(idomaDefecto.getString("labelContraseña"));
+        labelUsuario.setText(idomaDefecto.getString("labelUsuario"));
+        btnIngresar.setText(idomaDefecto.getString("btnIngresar"));
+        btnSalir.setText(idomaDefecto.getString("btnSalir"));
+        linkRegistro.setText(idomaDefecto.getString("linkRegistro"));
+        idioma = idomaDefecto;
     }
     
     @Override

@@ -22,7 +22,7 @@
          </image>
       </ImageView>
       <JFXButton fx:id="btnSalir" buttonType="RAISED" focusTraversable="false" layoutX="101.0" layoutY="347.0" prefHeight="40.0" prefWidth="80.0" style="-fx-background-color: #909090; -fx-background-radius: 18;" textAlignment="CENTER" />
-      <JFXButton fx:id="btnVerificarConexion" buttonType="RAISED" focusTraversable="false" layoutX="325.0" layoutY="347.0" onAction="#verificarConexion" prefHeight="40.0" prefWidth="80.0" style="-fx-background-radius: 18; -fx-background-color: white;" textAlignment="CENTER" />
+      <JFXButton fx:id="btnVerificarConexion" buttonType="RAISED" focusTraversable="false" layoutX="285.0" layoutY="347.0" onAction="#verificarConexion" prefHeight="40.0" prefWidth="120.0" style="-fx-background-radius: 18; -fx-background-color: white;" textAlignment="CENTER" />
       <Label fx:id="labelIP" layoutX="144.0" layoutY="168.0" prefHeight="18.0" prefWidth="120.0" text="IP:" textFill="WHITE">
          <font>
             <Font name="Consolas" size="15.0" />
@@ -36,7 +36,7 @@
             <DropShadow blurType="ONE_PASS_BOX" color="#000000a6" height="5.0" offsetX="2.0" offsetY="2.0" radius="2.0" width="5.0" />
          </effect>
       </Label>
-      <JFXButton fx:id="translateButton" layoutX="528.0" layoutY="62.0" onAction="#cambiarIdioma" prefHeight="35.0" prefWidth="35.0" />
+      <JFXButton fx:id="translateButton" focusTraversable="false" layoutX="528.0" layoutY="62.0" onAction="#cambiarIdioma" prefHeight="35.0" prefWidth="35.0" />
       <JFXTextField fx:id="txtIP" focusColor="#949494" layoutX="141.0" layoutY="198.0" onKeyTyped="#delimitadorCaracteresIP" prefHeight="25.0" prefWidth="35.0" style="-fx-text-inner-color: white;" unFocusColor="WHITE" />
       <JFXTextField fx:id="txtIP1" focusColor="#949494" layoutX="204.0" layoutY="198.0" onKeyTyped="#delimitadorCaracteresIP" prefHeight="25.0" prefWidth="35.0" style="-fx-text-inner-color: white;" unFocusColor="WHITE" />
       <JFXTextField fx:id="txtIP2" focusColor="#949494" layoutX="268.0" layoutY="198.0" onKeyTyped="#delimitadorCaracteresIP" prefHeight="25.0" prefWidth="35.0" style="-fx-text-inner-color: white;" unFocusColor="WHITE" />
@@ -56,7 +56,5 @@
             <Font size="20.0" />
          </font>
       </Label>
-      <Label fx:id="labelConexion" layoutX="163.0" layoutY="245.0" prefHeight="17.0" prefWidth="203.0" text="Conexion realizada satisfactoriamente" textFill="#60ff00" />
-      <Label fx:id="labelNoConexion" layoutX="208.0" layoutY="245.0" prefHeight="17.0" prefWidth="120.0" text="Conexion no realizada" textFill="RED" />
    </children>
 </AnchorPane>

@@ -79,9 +79,13 @@ public class FXMLBuscaPartidaController implements Initializable {
     }
 
     private void obtenerPartidasDisponibles() {
+        try{
         ObservableList listaPartidas = idComboPartidas.getItems();
         listaPartidas.clear();
         idComboPartidas.setItems(listaPartidas);
+        }catch(Exception ex){
+            System.out.println("Error: "+ex.getMessage());
+        }
         socket.emit("peticionEnlacePartida");
     }
 
@@ -143,6 +147,9 @@ public class FXMLBuscaPartidaController implements Initializable {
 
     @FXML
     private void regresarMenuPrincipal(ActionEvent event) {
+        socket.off("jugadores");
+        socket.off("respuestaEmparejamiento");
+        socket.disconnect();
         main.desplegarMenuPrincipal(idioma, idUsuario);
     }
 

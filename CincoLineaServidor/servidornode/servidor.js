@@ -34,17 +34,15 @@ io.on('connection', function(socket) {
 
 	socket.on('emparejar',function(idAnfitrion, idInvitado){
 		var socketAnfitrion;
-		console.log(jugadas.length);
 		for(var i = 0; i < jugadas.length; i++){
 			auxJugada = jugadas[i];
-			console.log(auxJugada.idAnfitrion);
 			if(auxJugada.idAnfitrion == idAnfitrion){
 
 				auxJugada.idInvitado = idInvitado;
 				auxJugada.socketInvitado = socket;
 				jugadas[i] = auxJugada;
 				jugadasId.splice(i, 1);
-				console.log('Se emparejo el usuario ' + idAnfitrion + 'con el usuario' + idInvitado);
+				console.log('Se emparejo el usuario: ' + idAnfitrion + ' con el usuario: ' + idInvitado);
 				socketAnfitrion = auxJugada.socketAnfitrion;
 				socket.emit('respuestaEmparejamiento', idAnfitrion, auxJugada.configuracion);
 				socketAnfitrion.emit('respuestaEmparejamiento', idInvitado);
@@ -73,19 +71,7 @@ io.on('connection', function(socket) {
 		socketContrincante.emit('jugadaRealizada', jugada);
 		//envio de tiempo de espera para jugada
 	});
-/*
-	socket.on('TerminaPartida', function(idJugador){
-		for (var i = 0; jugadas.length; i++) {
-			auxJugada = jugadas[i];
-			if(auxJugada.idInvitado == idJugador || auxJugada.idAnfitrion == idAnfitrion){
-				jugadas.splice(i, 1);
-				jugadasId.splice(i, 1);
-				break;
-			}
-		}
-
-	});
-*/
+	
 	socket.on('ganar', function(idJugador){
 		var socketContrincante;
 		for (var i = 0; jugadas.length; i++) {
@@ -96,12 +82,14 @@ io.on('connection', function(socket) {
 					socketContrincante.emit("perder");
 					jugadas.splice(i, 1);
 					jugadasId.splice(i, 1);
+					console.log("Se termino la partidad para los jugadores: " + auxJugada.idInvitado + " y el jugador: " + auxJugada.idAnfitrion);
 					break;
 				}else{
 					socketContrincante = auxJugada.socketInvitado;
 					socketContrincante.emit("perder");
 					jugadas.splice(i, 1);
 					jugadasId.splice(i, 1);
+					console.log("Se termino la partidad para los jugadores: " + auxJugada.idInvitado + " y el jugador: " + auxJugada.idAnfitrion);
 					break;
 				}
 			}
@@ -118,12 +106,38 @@ io.on('connection', function(socket) {
 					socketContrincante.emit("ganarPorAbandono");
 					jugadas.splice(i, 1);
 					jugadasId.splice(i, 1);
+					console.log("Se termino la partidad para los jugadores: " + auxJugada.idInvitado + " y el jugador: " + auxJugada.idAnfitrion);
 					break;
 				}else{
 					socketContrincante = auxJugada.socketInvitado;
 					socketContrincante.emit("ganarPorAbandono");
 					jugadas.splice(i, 1);
 					jugadasId.splice(i, 1);
+					console.log("Se termino la partidad para los jugadores: " + auxJugada.idInvitado + " y el jugador: " + auxJugada.idAnfitrion);
+					break;
+				}
+			}
+		}
+	});
+
+		socket.on('empate', function(idJugador){
+		var socketContrincante;
+		for (var i = 0; jugadas.length; i++) {
+			auxJugada = jugadas[i];
+			if(auxJugada.idInvitado == idJugador || auxJugada.idAnfitrion == idAnfitrion){
+				if(auxJugada.idInvitado == idJugador){
+					socketContrincante = auxJugada.socketAnfitrion;
+					socketContrincante.emit("empatar");
+					jugadas.splice(i, 1);
+					jugadasId.splice(i, 1);
+					console.log("Se termino la partidad para los jugadores: " + auxJugada.idInvitado + " y el jugador: " + auxJugada.idAnfitrion);
+					break;
+				}else{
+					socketContrincante = auxJugada.socketInvitado;
+					socketContrincante.emit("empatar");
+					jugadas.splice(i, 1);
+					jugadasId.splice(i, 1);
+					console.log("Se termino la partidad para los jugadores: " + auxJugada.idInvitado + " y el jugador: " + auxJugada.idAnfitrion);
 					break;
 				}
 			}

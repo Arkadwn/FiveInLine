@@ -24,6 +24,7 @@ public class ClienteRMI {
     
     public ClienteRMI() throws RemoteException, NotBoundException{
         String[] ip = ConfiguracionIP.getIP();
+        System.out.println(ip[0]+"."+ip[1]+"."+ip[2]+"."+ip[3]);
         conexion = LocateRegistry.getRegistry(ip[0]+"."+ip[1]+"."+ip[2]+"."+ip[3]);
     }
     

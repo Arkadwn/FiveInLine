@@ -58,57 +58,34 @@ public class Tablero {
      * @return 
      */
     private boolean validarHorizontal(int x, int y, String colorFicha){
+        
         boolean validacion = false;
-        int fichasEnLinea = 1;
-        int xOriginal = x;
-        x =+ 4;
+        int fichasEnLinea = 0;
+        x = 0;
         
         while(x < tamaño){
             
             if(tableroLogico[x][y].equals(colorFicha)){
                 fichasEnLinea++;
             }else{
-                break;
+                fichasEnLinea = 0;
             }
             
             if(fichasEnLinea == 5){
                 validacion = true;
-                System.out.println("gano horizontal derecha");
+                System.out.println("gano horizontal");
                 break;
             }
             
-            x--;
+            x++;
         }
-        
-        if(!validacion){
-            x = xOriginal;
-            x -= 4;
-            fichasEnLinea = 1;
-            while(x >= 0){
-                if (tableroLogico[x][y].equals(colorFicha)) {
-                    fichasEnLinea++;
-                } else {
-                    break;
-                }
-
-                if (fichasEnLinea == 5) {
-                    System.out.println("gano horizontal izquierda");
-                    validacion = true;
-                    break;
-                }
-                
-                x++;
-            }
-        }
-        
         return validacion;
     }
     
     private boolean validarVertical(int x, int y, String colorFicha){
         boolean validacion = false;
-        int fichasEnLinea = 1;
-        int yOriginal = y;
-        y += 4;
+        int fichasEnLinea = 0;
+        y = 0;
         
         while(y < tamaño){
             
@@ -117,154 +94,87 @@ public class Tablero {
             if(tableroLogico[x][y].equals(colorFicha)){
                 fichasEnLinea++;
             }else{
-                break;
+                fichasEnLinea = 0;
             }
             
             if(fichasEnLinea == 5){
                 validacion = true;
-                System.out.println("gano vertical asi arriva");
+                System.out.println("gano vertical");
                 break;
             }
             
-            y--;
+            y++;
         }
-        
-        if(!validacion){
-            y = yOriginal;
-            fichasEnLinea = 1;
-            y -= 4;
-            
-            while(y >= 0){
-                
-                if(tableroLogico[x][y].equals(colorFicha)){
-                    fichasEnLinea++;
-                }else{
-                    break;
-                }
-                
-                if(fichasEnLinea == 5){
-                    System.out.println("gano vertical asi abajo");
-                    validacion = true;
-                    break;
-                }
-                
-                y++;
-            }
-        }
-        
         return validacion;
     }
     
     private boolean validarDiagonal(int x, int y, String colorFicha){
         boolean validacion = false;
-        int xOriginal = x;
-        int yOriginal = y;
-        int fichasEnlinea = 1;
+        int fichasEnlinea = 0;
         
-        x += 4;
-        y += 4;
+        if(x == y){
+            x = 0;
+            y = 0;
+        }else if (x < y){
+            x -= x;
+            y -= x;
+        }else if (y < x){
+            y -= y;
+            x -= y;
+        }
         
         while(y < tamaño && x < tamaño){
            
            if(tableroLogico[x][y].equals(colorFicha)){
                fichasEnlinea++;
            }else{
-               break;
+               fichasEnlinea = 0;
            }
            
            if(fichasEnlinea == 5){
                validacion = true;
-               System.out.println("gano diagonal asi arriva");
+               System.out.println("gano diagonal");
                break;
            }
            
-           y--;
-           x--;
+           y++;
+           x++;
         }
-        
-        if(!validacion){
-            x = xOriginal;
-            y = yOriginal;
-            fichasEnlinea = 1;
-            
-            x -= 4;
-            y -= 4;
-            
-            while(x >= 0 && y >= 0){
-                
-                if(tableroLogico[x][y].equals(colorFicha)){
-                    fichasEnlinea++;
-                }else{
-                    break;
-                }
-                
-                if(fichasEnlinea == 5){
-                    validacion = true;
-                    System.out.println("Gano diagonal asi abajo");
-                    break;
-                }
-                
-                y++;
-                x++;
-            }
-        }
-        
         return validacion;
     }
     
     private boolean validarDiagonalInvertida(int x, int y, String colorFicha){
         boolean validacion = false;
-        int xOriginal = x;
-        int yOriginal = y;
-        int fichasEnlinea = 1;
+        int fichasEnlinea = 0;
         
-        x += 4;
-        y -= 4;
+        if((x + y) == tamaño){
+            x = 0;
+            y = 6;
+        }else if ((x + y) < tamaño){
+            x -= x;
+            y += x;
+        }else if ((x + y) > tamaño){
+            x = (x + y) - 6;
+            y = 6;            
+        }
         
         while(x < tamaño && y >= 0){
             
             if (tableroLogico[x][y].equals(colorFicha)) {
                 fichasEnlinea++;
             } else {
-                break;
+                fichasEnlinea = 0;
             }
 
             if (fichasEnlinea == 5) {
                 validacion = true;
-                System.out.println("gano diagonal ivertida asi arriva");
+                System.out.println("gano diagonal invertida");
                 break;
             }
             
-            x--;
-            y++;
+            x++;
+            y--;
         }
-        
-        if(!validacion){
-            x = xOriginal;
-            y = yOriginal;
-            fichasEnlinea = 1;
-            
-            x -= 4;
-            y += 4;
-            
-            while(x >= 0 && y < tamaño){
-                if (tableroLogico[x][y].equals(colorFicha)) {
-                    fichasEnlinea++;
-                } else {
-                    break;
-                }
-
-                if (fichasEnlinea == 5) {
-                    validacion = true;
-                    System.out.println("Gano diagonal invertida asi abajo");
-                    break;
-                }
-                
-                x++;
-                y--;
-            }
-        }
-        
         return validacion;
     }
     

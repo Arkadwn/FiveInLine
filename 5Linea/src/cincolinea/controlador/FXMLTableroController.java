@@ -13,6 +13,7 @@ import java.net.URL;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.ResourceBundle;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -119,21 +120,30 @@ public class FXMLTableroController implements Initializable {
         }).on("perder", new Emitter.Listener() {
             @Override
             public void call(Object... os) {
-                MensajeController.mensajeInformacion(idioma.getString("perder"));
-                regresarMenuPrincipal();
+                Platform.runLater(()->{
+                    MensajeController.mensajeInformacion(idioma.getString("perder"));
+                    regresarMenuPrincipal();
+                });
+                
             }
         }).on("ganarPorAbandono", new Emitter.Listener() {
             @Override
             public void call(Object... os) {
-                guardarAbandonoPartida(idUsuario, contrincante.getString("idJugador"));
-                MensajeController.mensajeInformacion(idioma.getString("ganarPorAbandono"));
-                regresarMenuPrincipal();
+                Platform.runLater(()->{
+                    guardarAbandonoPartida(idUsuario, contrincante.getString("idJugador"));
+                    MensajeController.mensajeInformacion(idioma.getString("ganarPorAbandono"));
+                    regresarMenuPrincipal();
+                });
+                
             }
         }).on("empatar", new Emitter.Listener() {
             @Override
             public void call(Object... os) {
-                MensajeController.mensajeInformacion(idioma.getString("empate"));
-                regresarMenuPrincipal();
+                Platform.runLater(()->{
+                    MensajeController.mensajeInformacion(idioma.getString("empate"));
+                    regresarMenuPrincipal();
+                });
+                
             }
         });
     }

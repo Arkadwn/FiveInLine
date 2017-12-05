@@ -9,7 +9,7 @@ import javafx.stage.StageStyle;
  *
  * @author Miguel Leonardo Jimenez Jimenez
  */
-public class FXMLMensajeController {
+public class MensajeController {
     public static void mensajeAdvertencia(String mensaje){
         Alert ventana = new Alert(Alert.AlertType.WARNING);
         ventana.setTitle(null);

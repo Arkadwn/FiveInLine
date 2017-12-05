@@ -11,20 +11,56 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="404.0" prefWidth="596.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cincolinea.controlador.FXMLRegistrarUsuarioController">
+<AnchorPane id="AnchorPane" prefHeight="488.0" prefWidth="603.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cincolinea.controlador.FXMLRegistrarUsuarioController">
    <children>
-      <ImageView fx:id="imagen" fitHeight="414.0" fitWidth="603.0" layoutY="-1.0" pickOnBounds="true">
+      <ImageView fx:id="imagen" fitHeight="495.0" fitWidth="603.0" layoutY="-1.0" pickOnBounds="true">
          <image>
             <Image url="@../imagenes/wallpaper.jpg" />
          </image>
       </ImageView>
-      <Label id="labelNombreUsuario" fx:id="labelNombreUsuario" layoutX="100.0" layoutY="65.0" prefHeight="17.0" prefWidth="149.0" textFill="WHITE" />
-      <Label id="labelContrasena" fx:id="labelContrasena" layoutX="99.0" layoutY="129.0" prefHeight="17.0" prefWidth="149.0" textFill="WHITE" />
-      <Label id="labelReContrasena" fx:id="labelReContrasena" layoutX="98.0" layoutY="198.0" prefHeight="17.0" prefWidth="149.0" textFill="WHITE" />
-      <JFXButton fx:id="btnRegistrar" buttonType="RAISED" layoutX="203.0" layoutY="296.0" onAction="#accionRegistrarUsuario" prefHeight="41.0" prefWidth="88.0" style="-fx-background-color: white; -fx-background-radius: 18;" />
-      <JFXButton fx:id="btnCancelar" buttonType="RAISED" layoutX="55.0" layoutY="296.0" onAction="#regresarMenuPrincipal" prefHeight="41.0" prefWidth="88.0" style="-fx-background-color: white; -fx-background-radius: 18;" />
-      <JFXPasswordField fx:id="tfReContrasena" layoutX="80.0" layoutY="216.0" onKeyTyped="#restringirEspacios" prefHeight="25.0" prefWidth="189.0" style="-fx-text-inner-color: white;" />
-      <JFXPasswordField fx:id="tfContrasena" layoutX="82.0" layoutY="156.0" onKeyTyped="#restringirEspacios" prefHeight="25.0" prefWidth="189.0" style="-fx-text-inner-color: white;" />
-      <JFXTextField fx:id="tfNombreUsuario" layoutX="82.0" layoutY="96.0" onKeyTyped="#restringirNumeroDeCaracteres" prefHeight="25.0" prefWidth="189.0" style="-fx-text-inner-color: white;" />
+      <Label id="labelNombreUsuario" fx:id="labelNombreUsuario" layoutX="112.0" layoutY="171.0" prefHeight="17.0" prefWidth="149.0" textFill="WHITE" />
+      <Label id="labelContrasena" fx:id="labelContrasena" layoutX="112.0" layoutY="230.0" prefHeight="17.0" prefWidth="149.0" textFill="WHITE" />
+      <Label id="labelReContrasena" fx:id="labelReContrasena" layoutX="112.0" layoutY="293.0" prefHeight="17.0" prefWidth="149.0" textFill="WHITE" />
+      <JFXButton fx:id="btnRegistrar" buttonType="RAISED" layoutX="252.0" layoutY="433.0" onAction="#accionRegistrarUsuario" prefHeight="41.0" prefWidth="88.0" style="-fx-background-color: white; -fx-background-radius: 18;" />
+      <JFXButton fx:id="btnCancelar" buttonType="RAISED" layoutX="67.0" layoutY="433.0" onAction="#regresarMenuPrincipal" prefHeight="41.0" prefWidth="88.0" style="-fx-background-color: white; -fx-background-radius: 18;" />
+      <JFXPasswordField fx:id="tfReContrasena" layoutX="111.0" layoutY="319.0" onKeyTyped="#restringirEspacios" prefHeight="25.0" prefWidth="189.0" style="-fx-text-inner-color: white;" />
+      <JFXPasswordField fx:id="tfContrasena" layoutX="112.0" layoutY="252.0" onKeyTyped="#restringirEspacios" prefHeight="25.0" prefWidth="189.0" style="-fx-text-inner-color: white;" />
+      <JFXTextField fx:id="tfNombreUsuario" layoutX="112.0" layoutY="194.0" onKeyTyped="#restringirNumeroDeCaracteres" prefHeight="25.0" prefWidth="189.0" style="-fx-text-inner-color: white;" />
+      <Label fx:id="labelCorreo" layoutX="111.0" layoutY="353.0" prefHeight="17.0" prefWidth="149.0" textFill="WHITE" />
+      <JFXTextField fx:id="tfCorreo" layoutX="112.0" layoutY="381.0" prefHeight="25.0" prefWidth="189.0" style="-fx-text-inner-color: white;" />
+      <JFXTextField fx:id="tfApellidos" layoutX="112.0" layoutY="131.0" onKeyTyped="#restringirNumeroDeCaracteres" prefHeight="25.0" prefWidth="189.0" style="-fx-text-inner-color: white;" />
+      <Label fx:id="labelApellidos" layoutX="112.0" layoutY="98.0" prefHeight="17.0" prefWidth="149.0" textFill="WHITE" />
+      <Label fx:id="labelNombre" layoutX="112.0" layoutY="34.0" prefHeight="17.0" prefWidth="149.0" textFill="WHITE" />
+      <JFXTextField fx:id="tfNombre" layoutX="111.0" layoutY="64.0" onKeyTyped="#restringirNumeroDeCaracteres" prefHeight="25.0" prefWidth="189.0" style="-fx-text-inner-color: white;" />
+      <Label fx:id="labelErrorNombre" layoutX="312.0" layoutY="59.0" text="*" textFill="RED" visible="false">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <Label fx:id="labelErrorApellidos" layoutX="312.0" layoutY="126.0" text="*" textFill="RED" visible="false">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <Label fx:id="labelErrorNombreUsuario" layoutX="312.0" layoutY="189.0" text="*" textFill="RED" visible="false">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <Label fx:id="labelErrorContraseña" layoutX="312.0" layoutY="247.0" text="*" textFill="RED" visible="false">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <Label fx:id="labelErrorReContraseña" layoutX="312.0" layoutY="314.0" text="*" textFill="RED" visible="false">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <Label fx:id="labelErrorCorreo" layoutX="312.0" layoutY="376.0" text="*" textFill="RED" visible="false">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

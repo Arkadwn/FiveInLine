@@ -1,5 +1,6 @@
 package conexion;
 
+import cincolinea.modelo.Cuenta;
 import cincolinea.modelo.utilerias.ConfiguracionIP;
 import conexion.interfaces.ICuenta;
 import conexion.interfaces.IVerificacionConexion;
@@ -54,21 +55,22 @@ public class ClienteRMI {
         return validacion;
     }
     
-    public boolean registrarUsuario(String nombreUsuario, String contrasena){
+    public boolean registrarUsuario(Cuenta cuenta){
         boolean validacion = false;
         String contrasenaEncriptada = "";
         
         try {
-            contrasenaEncriptada = encriptarContrasena(contrasena);
+            contrasenaEncriptada = encriptarContrasena(cuenta.getContraseña());
         } catch (NoSuchAlgorithmException ex) {
             //quitar
             ex.printStackTrace();
         }
-
+        
+        cuenta.setContraseña(contrasenaEncriptada);
         try {
             //Nombre del servico que proporciona el servidor
-            cuenta = (ICuenta) conexion.lookup("ServiciosCuenta");
-            validacion = cuenta.registrarCuenta(nombreUsuario, contrasenaEncriptada, "img" + generarNumeroImagenAleatorio());
+            this.cuenta = (ICuenta) conexion.lookup("ServiciosCuenta");
+            validacion = this.cuenta.registrarCuenta(cuenta);
 
         } catch (NotBoundException | RemoteException ex) {
             //Quitar
@@ -101,13 +103,5 @@ public class ClienteRMI {
             //ex.printStackTrace();
         }
         return banderaRetorno;
-    }
-    
-    private int generarNumeroImagenAleatorio(){
-        Random aleatatio = new Random(System.currentTimeMillis());
-        
-        int numero = aleatatio.nextInt(99);
-        
-        return numero;
     }
 }

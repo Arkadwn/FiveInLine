@@ -176,7 +176,6 @@ public class FXMLTableroController implements Initializable {
         
         if(tableroLogico.validarJugada(ficha.getX(), ficha.getY(), ficha.getColorFicha())){
             int posicion = Integer.parseInt("0" + ficha.getY() + ficha.getX());
-            String a;
             JFXButton boton = (JFXButton) tablero.getChildren().get(posicion);
 
             colocarFicha(boton, ficha.getColorFicha());

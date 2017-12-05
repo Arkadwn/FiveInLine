@@ -1,5 +1,6 @@
 package conexion.interfaces;
 
+import cincolinea.modelo.Cuenta;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
@@ -10,5 +11,5 @@ import java.rmi.RemoteException;
  */
 public interface ICuenta extends Remote{
     public boolean autenticarCuenta(String usuario,String contrasena) throws RemoteException;
-    public boolean registrarCuenta(String usuario, String contrasena, String idImagen) throws RemoteException;
+    public boolean registrarCuenta(Cuenta cuenta) throws RemoteException;
 }

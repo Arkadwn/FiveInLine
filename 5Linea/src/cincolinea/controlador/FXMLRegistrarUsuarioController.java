@@ -1,20 +1,20 @@
 package cincolinea.controlador;
 
 import cincolinea.Main;
+import cincolinea.modelo.Cuenta;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import conexion.ClienteRMI;
 import java.net.URL;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.util.Random;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 
 /**
@@ -39,13 +39,35 @@ public class FXMLRegistrarUsuarioController implements Initializable {
     private Main main;
     private ClienteRMI conexion;
     @FXML
-    private ImageView imagen;
-    @FXML
     private JFXPasswordField tfReContrasena;
     @FXML
     private JFXPasswordField tfContrasena;
     @FXML
     private JFXTextField tfNombreUsuario;
+    @FXML
+    private Label labelCorreo;
+    @FXML
+    private JFXTextField tfCorreo;
+    @FXML
+    private JFXTextField tfApellidos;
+    @FXML
+    private Label labelApellidos;
+    @FXML
+    private Label labelNombre;
+    @FXML
+    private JFXTextField tfNombre;
+    @FXML
+    private Label labelErrorNombre;
+    @FXML
+    private Label labelErrorApellidos;
+    @FXML
+    private Label labelErrorNombreUsuario;
+    @FXML
+    private Label labelErrorContraseña;
+    @FXML
+    private Label labelErrorReContraseña;
+    @FXML
+    private Label labelErrorCorreo;
 
     @Override
     public void initialize(URL url, ResourceBundle idioma) {
@@ -65,6 +87,9 @@ public class FXMLRegistrarUsuarioController implements Initializable {
         labelNombreUsuario.setText(idioma.getString("labelUsuario"));
         labelContrasena.setText(idioma.getString("labelContraseña"));
         labelReContrasena.setText(idioma.getString("labelReContrasena"));
+        labelApellidos.setText(idioma.getString("labelApellidos"));
+        labelCorreo.setText(idioma.getString("labelCorreo"));
+        labelNombre.setText(idioma.getString("labelNombre"));
     }
 
     @FXML
@@ -75,29 +100,45 @@ public class FXMLRegistrarUsuarioController implements Initializable {
     
     @FXML
     private void accionRegistrarUsuario(ActionEvent evento){
+        boolean hayConexion = true;
+        Cuenta cuenta;
         //3
-        if(tfNombreUsuario.getText().isEmpty() || tfContrasena.getText().isEmpty() || tfReContrasena.getText().isEmpty()){
+        if(validarCamposVacios()){
             System.out.println("Hay campos vacios");
         }else{
             try {
                 conexion = new ClienteRMI();
-            } catch (RemoteException ex) {
+            } catch (RemoteException | NotBoundException ex) {
                 //QUITAR
-                Logger.getLogger(FXMLRegistrarUsuarioController.class.getName()).log(Level.SEVERE, null, ex);
+                System.out.println("Entre");
+                hayConexion = false;
             }
             //4
-            if(tfContrasena.getText().equals(tfReContrasena.getText())){
-                //5
-                if (conexion.registrarUsuario(tfNombreUsuario.getText(), tfContrasena.getText())) {
-                    System.out.println("Usuario guardado");
+            if(hayConexion){
+                cuenta = new Cuenta(tfNombre.getText(), tfApellidos.getText(), tfNombreUsuario.getText(), tfCorreo.getText(), tfContrasena.getText(), "img"+generarNumeroImagenAleatorio());
+
+                boolean[] validaciones = cuenta.validarCampos(cuenta, tfReContrasena.getText());
+
+                if (validaciones[6]) {
+                    //5
+                    if (conexion.registrarUsuario(cuenta)) {
+                        System.out.println("Usuario guardado");
+                    } else {
+                        System.out.println("Ese usuario ya se encuentra registrado");
+                        labelErrorNombreUsuario.setVisible(validaciones[2]);
+                    }
                 } else {
-                    System.out.println("No se guardo");
+                    mostrarErroresCampos(validaciones);
                 }
             }else{
-                System.out.println("La contraseña no conduerda");
+                System.out.println("No hay conexion al servidor o internet");
             }
         }
         
+    }
+    
+    private boolean validarCamposVacios(){
+        return tfNombreUsuario.getText().isEmpty() || tfContrasena.getText().isEmpty() || tfReContrasena.getText().isEmpty() || tfApellidos.getText().isEmpty() || tfCorreo.getText().isEmpty() || tfNombre.getText().isEmpty();
     }
     
     @FXML
@@ -114,5 +155,22 @@ public class FXMLRegistrarUsuarioController implements Initializable {
         if(caracter == ' '){
             evento.consume();
         }
+    }
+
+    private void mostrarErroresCampos(boolean[] validaciones){
+        labelErrorNombre.setVisible(!validaciones[0]);
+        labelErrorApellidos.setVisible(!validaciones[1]);
+        labelErrorNombreUsuario.setVisible(!validaciones[2]);
+        labelErrorContraseña.setVisible(!validaciones[3]);
+        labelErrorReContraseña.setVisible(!validaciones[3]);
+        labelErrorCorreo.setVisible(!validaciones[5]);
+    }
+    
+    private int generarNumeroImagenAleatorio(){
+        Random aleatatio = new Random(System.currentTimeMillis());
+        
+        int numero = aleatatio.nextInt(10);
+        
+        return numero;
     }
 }

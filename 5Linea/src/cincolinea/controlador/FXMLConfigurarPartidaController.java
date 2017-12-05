@@ -71,8 +71,9 @@ public class FXMLConfigurarPartidaController implements Initializable {
     private void crearConexion(){
         
         try {
-            String[] ip = ConfiguracionIP.getIP();
-            socket = IO.socket("http://"+ip[0]+"."+ip[1]+"."+ip[2]+"."+ip[3]+":8000");
+            String[] ipPartes = ConfiguracionIP.getIP();
+            String ip = ipPartes[0]+"."+ipPartes[1]+"."+ipPartes[2]+"."+ipPartes[3];
+            socket = IO.socket("http://"+ip+":8000");
             
             socket.on("conexionCreada", new Emitter.Listener(){
                 @Override

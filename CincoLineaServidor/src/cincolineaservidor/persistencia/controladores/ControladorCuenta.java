@@ -26,18 +26,19 @@ public class ControladorCuenta {
         return fabricaEntidad.createEntityManager();
     }
 
-    public String verificarAutenticacion(String nombreUsuario) {
+    public Cuenta verificarAutenticacion(String nombreUsuario) {
         EntityManager entidad = getEntityManager();
         Query consulta = entidad.createQuery("SELECT c FROM Cuentas c WHERE c.nombreUsuario = :nombreUser").setParameter("nombreUser", nombreUsuario);
-        Cuentas cuentaResultado;
-        String contrasenaResultado = "";
+        Cuentas cuentaEntidadResultado;
+        Cuenta cuentaResultado = new Cuenta(); 
         try {
-            cuentaResultado = (Cuentas) consulta.getSingleResult();
-            contrasenaResultado = cuentaResultado.getContrasena();
+            cuentaEntidadResultado = (Cuentas) consulta.getSingleResult();
+            cuentaResultado.setContraseña(cuentaEntidadResultado.getContrasena());
+            cuentaResultado.setEstadoSesion(cuentaEntidadResultado.getEstadoSesion());
         } catch (Exception ex) {
-            System.out.println("Error: " + ex.getMessage());
+            System.out.println("Error en verificar autenticación: " + ex.getMessage());
         }
-        return contrasenaResultado;
+        return cuentaResultado;
     }
 
     public boolean registrarUsuario(Cuenta cuenta) {
@@ -55,19 +56,22 @@ public class ControladorCuenta {
             nuevaCuenta.setNombre(cuenta.getNombre());
             nuevaCuenta.setApellidos(cuenta.getApellidos());
             
+            Collection<Rankings> rankings = new ArrayList();
+            nuevaCuenta.setRankingsCollection(rankings);
+            
+            entidad.persist(nuevaCuenta);
+            
             Rankings ranking = new Rankings();
             ranking.setIdRanking(null);
             ranking.setNombreUsuario(nuevaCuenta);
             ranking.setPartidasGanadas(0);
             ranking.setPartidasPerdidas(0);
+            ranking.setPartidasEmpatadas(0);
             ranking.setPuntos(0);
-            Collection<Rankings> rankings = new ArrayList();
-            rankings.add(ranking);
-            nuevaCuenta.setRankingsCollection(rankings);
+            entidad.persist(ranking);
             
-            entidad.persist(nuevaCuenta);
             entidad.getTransaction().commit();
-
+            
         } catch (RollbackException ex) {
             System.out.println("Error: " + ex.getMessage());
             if (entidad.getTransaction().isActive()) {

@@ -16,8 +16,6 @@ import javafx.scene.control.Label;
 import io.socket.client.IO;
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.collections.ObservableList;
 import javafx.scene.image.ImageView;
 import org.json.JSONArray;
@@ -72,7 +70,7 @@ public class FXMLBuscaPartidaController implements Initializable {
                 crearConexionIO();
             }
         } catch (URISyntaxException ex) {
-            System.out.println("Error: " + ex.getMessage());
+            System.out.println("Error URI: " + ex.getMessage());
         }
 
             idComboPartidas.setVisible(false);
@@ -99,7 +97,6 @@ public class FXMLBuscaPartidaController implements Initializable {
             public void call(Object... os) {
 
                 JSONArray arrayJugadasDisponibles = (JSONArray) os[0];
-                System.out.println("Me hablo el servidor");
                 if (arrayJugadasDisponibles.length() != 0) {
                     imagenCargando.setVisible(false);
                     idComboPartidas.setVisible(true);
@@ -116,9 +113,6 @@ public class FXMLBuscaPartidaController implements Initializable {
         }).on("respuestaEmparejamiento", new Emitter.Listener() {
             @Override
             public void call(Object... os) {
-                System.out.println("Entre al ON");
-                System.out.println(os[0].toString());
-                System.out.println(os[1].toString());
                 JSONObject configuracionPartida = (JSONObject) os[1];
                 ConfiguracionPartida configuracion = new ConfiguracionPartida();
                 configuracion.setSocket(socket);
@@ -144,8 +138,6 @@ public class FXMLBuscaPartidaController implements Initializable {
     private void emparejar(ActionEvent event) {
         idContrincante = idComboPartidas.getValue();
         //Borrar
-        System.out.println(idContrincante.substring(11));
-        System.out.println(idUsuario);
         socket.emit("emparejar", idContrincante.substring(11), idUsuario);
     }
 

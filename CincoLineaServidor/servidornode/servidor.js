@@ -19,12 +19,12 @@ io.on('connection', function(socket) {
 
 	socket.on('peticionCreacionPartida', function(idJugador, configuracion){
 		nuevaPartida = new jugada(socket, idJugador, null, null, configuracion);
-		console.log("Se ha creado una partida con: " + idJugador + " con esta configuracion: " + configuracion.colorFicha);
+		console.log("Se ha creado una partida con el jugador: " + idJugador 
+			+ " con esta configuracion de ficha: " + configuracion.colorFicha);
 		nuevaPartidaId = new jugadaId(idJugador);
 		jugadas.push(nuevaPartida);
-		console.log("Numero de partidas creadas: " + jugadas.length);
-		console.log("Numero de partidas creadas: " + jugadasId.length);
 		jugadasId.push(nuevaPartidaId);
+		console.log("Numero de partidas creadas: " + jugadasId.length);
 	});//Anfitrion
 
 	socket.on('peticionEnlacePartida', function(){
@@ -44,7 +44,7 @@ io.on('connection', function(socket) {
 				auxJugada.socketInvitado = socket;
 				jugadas[i] = auxJugada;
 				jugadasId.splice(i, 1);
-				console.log('Se emparejo ' + idAnfitrion + 'con ' + idInvitado);
+				console.log('Se emparejo el usuario ' + idAnfitrion + 'con el usuario' + idInvitado);
 				socketAnfitrion = auxJugada.socketAnfitrion;
 				socket.emit('respuestaEmparejamiento', idAnfitrion, auxJugada.configuracion);
 				socketAnfitrion.emit('respuestaEmparejamiento', idInvitado);
@@ -73,16 +73,65 @@ io.on('connection', function(socket) {
 		socketContrincante.emit('jugadaRealizada', jugada);
 		//envio de tiempo de espera para jugada
 	});
-
+/*
 	socket.on('TerminaPartida', function(idJugador){
 		for (var i = 0; jugadas.length; i++) {
 			auxJugada = jugadas[i];
 			if(auxJugada.idInvitado == idJugador || auxJugada.idAnfitrion == idAnfitrion){
 				jugadas.splice(i, 1);
 				jugadasId.splice(i, 1);
+				break;
 			}
 		}
 
+	});
+*/
+	socket.on('ganar', function(idJugador){
+		var socketContrincante;
+		for (var i = 0; jugadas.length; i++) {
+			auxJugada = jugadas[i];
+			if(auxJugada.idInvitado == idJugador || auxJugada.idAnfitrion == idAnfitrion){
+				if(auxJugada.idInvitado == idJugador){
+					socketContrincante = auxJugada.socketAnfitrion;
+					socketContrincante.emit("perder");
+					jugadas.splice(i, 1);
+					jugadasId.splice(i, 1);
+					break;
+				}else{
+					socketContrincante = auxJugada.socketInvitado;
+					socketContrincante.emit("perder");
+					jugadas.splice(i, 1);
+					jugadasId.splice(i, 1);
+					break;
+				}
+			}
+		}
+	});
+
+	socket.on('abandonarPartida', function(idJugador){
+		var socketContrincante;
+		for (var i = 0; jugadas.length; i++) {
+			auxJugada = jugadas[i];
+			if(auxJugada.idInvitado == idJugador || auxJugada.idAnfitrion == idAnfitrion){
+				if(auxJugada.idInvitado == idJugador){
+					socketContrincante = auxJugada.socketAnfitrion;
+					socketContrincante.emit("ganarPorAbandono");
+					jugadas.splice(i, 1);
+					jugadasId.splice(i, 1);
+					break;
+				}else{
+					socketContrincante = auxJugada.socketInvitado;
+					socketContrincante.emit("ganarPorAbandono");
+					jugadas.splice(i, 1);
+					jugadasId.splice(i, 1);
+					break;
+				}
+			}
+		}
+	});
+
+	socket.on("desconectar", function(idJugador){
+		console.log("Se desconecto el jugador: " + idJugador);
 	});
 
 });

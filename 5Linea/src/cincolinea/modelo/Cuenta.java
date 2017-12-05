@@ -17,6 +17,7 @@ public class Cuenta implements Serializable{
     private String correo;
     private String contraseña;
     private String imagen;
+    private Integer estadoSesion;
 
     public Cuenta(){
         
@@ -37,6 +38,14 @@ public class Cuenta implements Serializable{
         this.correo = correo;
         this.contraseña = contraseña;
         this.imagen = imagen;
+    }
+
+    public Integer isEstadoSesion() {
+        return estadoSesion;
+    }
+
+    public void setEstadoSesion(Integer estadoSesion) {
+        this.estadoSesion = estadoSesion;
     }
 
     
@@ -105,7 +114,6 @@ public class Cuenta implements Serializable{
     public static boolean validarCorreo(String email) {
         Pattern patron = Pattern.compile(PATRON_CORREO);
         Matcher concordancia = patron.matcher(email);
-        System.out.println(concordancia.matches());
         return concordancia.matches();
     }
 }

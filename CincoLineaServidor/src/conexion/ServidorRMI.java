@@ -28,40 +28,53 @@ public class ServidorRMI implements ICuenta, IVerificacionConexion, IRanking {
         try {
             ServidorRMI servidorRMICuenta = new ServidorRMI();
             ICuenta cuenta = (ICuenta) UnicastRemoteObject.exportObject(servidorRMICuenta, 0);
-            
+
             ServidorRMI servidorRMIVerificacion = new ServidorRMI();
             IVerificacionConexion validacion = (IVerificacionConexion) UnicastRemoteObject.exportObject(servidorRMIVerificacion, 0);
 
+            ServidorRMI servidorRMIRanking = new ServidorRMI();
+            IRanking ranking = (IRanking) UnicastRemoteObject.exportObject(servidorRMIRanking, 0);
+
             Registry registryCuenta = LocateRegistry.getRegistry();
             registryCuenta.bind("ServiciosCuenta", cuenta);
-            
+
             Registry registryValidacion = LocateRegistry.getRegistry();
             registryValidacion.bind("ServiciosValidacion", validacion);
-            
-            
+
+            Registry registryRanking = LocateRegistry.getRegistry();
+            registryRanking.bind("ServiciosRanking", ranking);
+
         } catch (RemoteException | AlreadyBoundException ex) {
             System.out.println("Error: " + ex.getMessage());
             seActivo = false;
             ex.printStackTrace();
         }
-            return seActivo;
+        return seActivo;
     }
 
     @Override
     public boolean autenticarCuenta(String usuario, String contrasena) {
         boolean autentico = false;
-        
-            EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("CincoLineaServidorPU", null);
-            ControladorCuenta controlador = new ControladorCuenta(entityManagerFactory);
 
-            String contrasenaCuenta = controlador.verificarAutenticacion(usuario);
+        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("CincoLineaServidorPU", null);
+        ControladorCuenta controlador = new ControladorCuenta(entityManagerFactory);
 
-            if (contrasenaCuenta.equals(contrasena)) {
+        Cuenta resultadoCuenta = controlador.verificarAutenticacion(usuario);
+
+        if (resultadoCuenta == null) {
+            autentico = false;
+        } else if (resultadoCuenta.getContraseña().equals(contrasena)) {
+            if (resultadoCuenta.isEstadoSesion() == 1) {
+                autentico = false;
+                System.out.println("Se ha tratado de acceder con el usuario: " + usuario);
+            }else{
                 autentico = true;
                 System.out.println("Ha accedido el usuario: " + usuario);
             }
-        
-        return autentico; 
+            
+        }
+
+        return autentico;
     }
 
     @Override
@@ -69,9 +82,11 @@ public class ServidorRMI implements ICuenta, IVerificacionConexion, IRanking {
         EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("CincoLineaServidorPU", null);
         ControladorCuenta controller = new ControladorCuenta(entityManagerFactory);
         boolean registro = controller.registrarUsuario(datosUsuario);
+        
         if (registro) {
-            System.out.println("Se ha realizado un registro exitoso para el usuario: " + datosUsuario);
+            System.out.println("Se ha realizado un registro exitoso para el usuario: " + datosUsuario.getNombre());
         }
+        
         return registro;
     }
 
@@ -84,7 +99,7 @@ public class ServidorRMI implements ICuenta, IVerificacionConexion, IRanking {
     public boolean guardarResultadosPartida(String ganador, String perdedor) throws RemoteException {
         EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("CincoLineaServidorPU", null);
         ControladorRanking controlador = new ControladorRanking(entityManagerFactory);
-        
+
         return controlador.guardarResultadosPartida(ganador, perdedor);
     }
 
@@ -92,7 +107,7 @@ public class ServidorRMI implements ICuenta, IVerificacionConexion, IRanking {
     public boolean guardarEmpate(String jugador1, String jugador2) throws RemoteException {
         EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("CincoLineaServidorPU", null);
         ControladorRanking controlador = new ControladorRanking(entityManagerFactory);
-        
+
         return controlador.guardarEmpate(jugador1, jugador2);
     }
 
@@ -100,7 +115,7 @@ public class ServidorRMI implements ICuenta, IVerificacionConexion, IRanking {
     public boolean aplicarCastigo(String idJugador) throws RemoteException {
         EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("CincoLineaServidorPU", null);
         ControladorRanking controlador = new ControladorRanking(entityManagerFactory);
-        
+
         return controlador.aplicarCastigo(idJugador);
     }
 
@@ -108,7 +123,7 @@ public class ServidorRMI implements ICuenta, IVerificacionConexion, IRanking {
     public List<Ranking> sacarMejores10() throws RemoteException {
         EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("CincoLineaServidorPU", null);
         ControladorRanking controlador = new ControladorRanking(entityManagerFactory);
-        
+
         return sacarMejores10();
     }
 

@@ -22,8 +22,8 @@ import javax.xml.bind.annotation.XmlTransient;
 /**
  * 
  * @author Adrián Bustamante Zarate
- * @date 18/11/2017
- * @time 09:12:53 PM
+ * @date 4/12/2017
+ * @time 07:07:31 PM
  */
 @Entity
 @Table(name = "cuentas")
@@ -36,12 +36,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Cuentas.findByEstadoSesion", query = "SELECT c FROM Cuentas c WHERE c.estadoSesion = :estadoSesion"),
     @NamedQuery(name = "Cuentas.findByImagen", query = "SELECT c FROM Cuentas c WHERE c.imagen = :imagen"),
     @NamedQuery(name = "Cuentas.findByNombre", query = "SELECT c FROM Cuentas c WHERE c.nombre = :nombre"),
-    @NamedQuery(name = "Cuentas.findByApellidoPatern", query = "SELECT c FROM Cuentas c WHERE c.apellidoPatern = :apellidoPatern"),
-    @NamedQuery(name = "Cuentas.findByApellidoMatern", query = "SELECT c FROM Cuentas c WHERE c.apellidoMatern = :apellidoMatern")})
+    @NamedQuery(name = "Cuentas.findByApellidos", query = "SELECT c FROM Cuentas c WHERE c.apellidos = :apellidos")})
 public class Cuentas implements Serializable {
-
-    @Column(name = "apellidos")
-    private String apellidos;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -58,10 +54,8 @@ public class Cuentas implements Serializable {
     private String imagen;
     @Column(name = "nombre")
     private String nombre;
-    @Column(name = "apellidoPatern")
-    private String apellidoPatern;
-    @Column(name = "apellidoMatern")
-    private String apellidoMatern;
+    @Column(name = "apellidos")
+    private String apellidos;
     @OneToMany(mappedBy = "nombreUsuario")
     private Collection<Rankings> rankingsCollection;
 
@@ -120,20 +114,12 @@ public class Cuentas implements Serializable {
         this.nombre = nombre;
     }
 
-    public String getApellidoPatern() {
-        return apellidoPatern;
+    public String getApellidos() {
+        return apellidos;
     }
 
-    public void setApellidoPatern(String apellidoPatern) {
-        this.apellidoPatern = apellidoPatern;
-    }
-
-    public String getApellidoMatern() {
-        return apellidoMatern;
-    }
-
-    public void setApellidoMatern(String apellidoMatern) {
-        this.apellidoMatern = apellidoMatern;
+    public void setApellidos(String apellidos) {
+        this.apellidos = apellidos;
     }
 
     @XmlTransient
@@ -167,15 +153,7 @@ public class Cuentas implements Serializable {
 
     @Override
     public String toString() {
-        return "cincolineaservidor.Cuentas[ nombreUsuario=" + nombreUsuario + " ]";
-    }
-
-    public String getApellidos() {
-        return apellidos;
-    }
-
-    public void setApellidos(String apellidos) {
-        this.apellidos = apellidos;
+        return "cincolineaservidor.persistencia.Cuentas[ nombreUsuario=" + nombreUsuario + " ]";
     }
 
 }

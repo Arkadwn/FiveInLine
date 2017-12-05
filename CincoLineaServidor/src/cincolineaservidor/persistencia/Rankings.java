@@ -23,8 +23,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 /**
  * 
  * @author Adrián Bustamante Zarate
- * @date 18/11/2017
- * @time 09:12:52 PM
+ * @date 4/12/2017
+ * @time 07:07:30 PM
  */
 @Entity
 @Table(name = "rankings")
@@ -34,11 +34,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Rankings.findByIdRanking", query = "SELECT r FROM Rankings r WHERE r.idRanking = :idRanking"),
     @NamedQuery(name = "Rankings.findByPartidasGanadas", query = "SELECT r FROM Rankings r WHERE r.partidasGanadas = :partidasGanadas"),
     @NamedQuery(name = "Rankings.findByPartidasPerdidas", query = "SELECT r FROM Rankings r WHERE r.partidasPerdidas = :partidasPerdidas"),
-    @NamedQuery(name = "Rankings.findByPuntos", query = "SELECT r FROM Rankings r WHERE r.puntos = :puntos")})
+    @NamedQuery(name = "Rankings.findByPuntos", query = "SELECT r FROM Rankings r WHERE r.puntos = :puntos"),
+    @NamedQuery(name = "Rankings.findByPartidasEmpatadas", query = "SELECT r FROM Rankings r WHERE r.partidasEmpatadas = :partidasEmpatadas")})
 public class Rankings implements Serializable {
-
-    @Column(name = "partidasEmpatadas")
-    private Integer partidasEmpatadas;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -52,6 +50,8 @@ public class Rankings implements Serializable {
     private Integer partidasPerdidas;
     @Column(name = "puntos")
     private Integer puntos;
+    @Column(name = "partidasEmpatadas")
+    private Integer partidasEmpatadas;
     @JoinColumn(name = "nombreUsuario", referencedColumnName = "nombreUsuario")
     @ManyToOne
     private Cuentas nombreUsuario;
@@ -95,6 +95,14 @@ public class Rankings implements Serializable {
         this.puntos = puntos;
     }
 
+    public Integer getPartidasEmpatadas() {
+        return partidasEmpatadas;
+    }
+
+    public void setPartidasEmpatadas(Integer partidasEmpatadas) {
+        this.partidasEmpatadas = partidasEmpatadas;
+    }
+
     public Cuentas getNombreUsuario() {
         return nombreUsuario;
     }
@@ -125,15 +133,7 @@ public class Rankings implements Serializable {
 
     @Override
     public String toString() {
-        return "cincolineaservidor.Rankings[ idRanking=" + idRanking + " ]";
-    }
-
-    public Integer getPartidasEmpatadas() {
-        return partidasEmpatadas;
-    }
-
-    public void setPartidasEmpatadas(Integer partidasEmpatadas) {
-        this.partidasEmpatadas = partidasEmpatadas;
+        return "cincolineaservidor.persistencia.Rankings[ idRanking=" + idRanking + " ]";
     }
 
 }

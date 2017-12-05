@@ -95,7 +95,7 @@ public class ControladorRanking {
             entidad.getTransaction().begin();
             Rankings rankingJugador = entidad.find(Rankings.class, idRankingJugador);
             
-            rankingJugador.setPartidasGanadas(rankingJugador.getPuntos() - 1);
+            rankingJugador.setPuntos(rankingJugador.getPuntos() - 1);
             
             entidad.getTransaction().commit();
             
@@ -113,14 +113,13 @@ public class ControladorRanking {
     
     private Integer buscarIdRankingJugador(String idJugador){
         EntityManager entidad = getEntityManager();
-        Query consulta = entidad.createQuery("SELECT r FROM Rankings r WHERE r.nombreUsuario = :nombreUser").setParameter("nombreUser", idJugador);
+        Query consulta = entidad.createQuery("SELECT r.idRanking FROM Rankings r WHERE r.nombreUsuario = :nombreUser").setParameter("nombreUser", idJugador);
         Integer idRanking = 0;
         
         try{
-            Rankings ranking = (Rankings) consulta.getSingleResult();
-            idRanking = ranking.getIdRanking();
+            idRanking = (Integer) consulta.getSingleResult();
         }catch(Exception ex){
-            
+            System.out.println("Error: "+ex.getMessage());
         }finally{
             entidad.close();
         }

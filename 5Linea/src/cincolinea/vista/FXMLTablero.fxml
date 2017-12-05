@@ -16,7 +16,7 @@
             <Image url="@../imagenes/wallpaper.jpg" />
          </image>
       </ImageView>
-      <JFXButton fx:id="btnAbandonarP" layoutX="191.0" layoutY="467.0" onAction="#regresarMenuPrincipal" prefHeight="34.0" prefWidth="201.0" style="-fx-background-color: #686868;" textFill="WHITE" />
+      <JFXButton fx:id="btnAbandonarP" layoutX="191.0" layoutY="467.0" onAction="#abandonarPartida" prefHeight="34.0" prefWidth="201.0" style="-fx-background-color: #686868;" textFill="WHITE" />
       <Pane layoutX="559.0" layoutY="14.0" prefHeight="487.0" prefWidth="225.0" style="-fx-background-color: rgba(255,255,255,0.5);">
          <opaqueInsets>
             <Insets />

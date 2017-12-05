@@ -5,10 +5,13 @@ import cincolinea.modelo.ConfiguracionPartida;
 import cincolinea.modelo.Ficha;
 import cincolinea.modelo.Tablero;
 import com.jfoenix.controls.JFXButton;
+import conexion.ClienteRMI;
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -60,7 +63,10 @@ public class FXMLTableroController implements Initializable {
         labelInfoContrincante.setText(idioma.getString("labelInfoContrincante"));
     }
     
+    @FXML
     private void abandonarPartida(ActionEvent event) {
+        socket.emit("abandonarPartida", idUsuario);
+        socket.emit("desconectar", idUsuario);
         socket.disconnect();
         main.desplegarMenuPrincipal(idioma, idUsuario);
         
@@ -110,6 +116,25 @@ public class FXMLTableroController implements Initializable {
 
                 colocarFichaContrincante(ficha);
             }
+        }).on("perder", new Emitter.Listener() {
+            @Override
+            public void call(Object... os) {
+                MensajeController.mensajeInformacion(idioma.getString("perder"));
+                regresarMenuPrincipal();
+            }
+        }).on("ganarPorAbandono", new Emitter.Listener() {
+            @Override
+            public void call(Object... os) {
+                guardarAbandonoPartida(idUsuario, contrincante.getString("idJugador"));
+                MensajeController.mensajeInformacion(idioma.getString("ganarPorAbandono"));
+                regresarMenuPrincipal();
+            }
+        }).on("empatar", new Emitter.Listener() {
+            @Override
+            public void call(Object... os) {
+                MensajeController.mensajeInformacion(idioma.getString("empate"));
+                regresarMenuPrincipal();
+            }
         });
     }
     
@@ -131,23 +156,29 @@ public class FXMLTableroController implements Initializable {
                 tablero.setDisable(true);
                 
                 if (tableroLogico.validarSiGano(ficha.getX(), ficha.getY(), ficha.getColorFicha())) {
-                    System.out.println("ganaste");
+                    socket.emit("ganar", idUsuario);
+                    guardarResultado(idUsuario, contrincante.getString("idJugador"));
+                    MensajeController.mensajeInformacion(idioma.getString("ganar"));
+                    regresarMenuPrincipal();
                 }
                 
                 if (tableroLogico.validarEmpate()) {
-                    System.out.println("Empate");
+                    socket.emit("empate",idUsuario);
+                    guardarEmpate(idUsuario, contrincante.getString("idJugador"));
+                    MensajeController.mensajeInformacion(idioma.getString("empate"));
+                    regresarMenuPrincipal();
                 }
             } else {
-                System.out.println("Ya hay un ficha en esa posicion");
+                System.out.println("Ya hay una ficha");
             }
     }
     
-    @FXML
-    private void regresarMenuPrincipal(ActionEvent event) {
-        socket.off("jugadaRealizada");
+    
+    private void regresarMenuPrincipal() {
+        socket.emit("desconectar", idUsuario);
+        apagarOns();
         socket.disconnect();
         main.desplegarMenuPrincipal(idioma, idUsuario);
-        
     }
     
     private void colocarFicha(JFXButton boton, String colorFicha){
@@ -247,5 +278,42 @@ public class FXMLTableroController implements Initializable {
     private boolean validarSiTiraPrimero(){
         return colorFicha.equals("B");
     }
+    
+    private void guardarResultado(String ganador, String perdedor){
+        ClienteRMI conexion;
+        try {
+            conexion = new ClienteRMI();
+            conexion.guardarResultadosPardida(ganador, perdedor);
+        } catch (RemoteException | NotBoundException ex) {
+            //hacer algo
+        }
+    }
+    
+    private void guardarEmpate(String jugador1, String jugador2){
+        ClienteRMI conexion;
+        try {
+            conexion = new ClienteRMI();
+            conexion.guardarEmpate(jugador1, jugador2);
+        } catch (RemoteException | NotBoundException ex) {
+            //hacer algo
+        }
+    }
+    
+    private void guardarAbandonoPartida(String ganador, String desertor){
+        ClienteRMI conexion;
+        try {
+            conexion = new ClienteRMI();
+            conexion.guardarResultadosPardida(ganador, desertor);
+            conexion.aplicarCastigo(desertor);
+        } catch (RemoteException | NotBoundException ex) {
+            //hacer algo
+        }
+    }
 
+    private void apagarOns(){
+        socket.off("empatar");
+        socket.off("ganarPorAbandono");
+        socket.off("perder");
+        socket.off("jugadaRealizada");
+    }
 }

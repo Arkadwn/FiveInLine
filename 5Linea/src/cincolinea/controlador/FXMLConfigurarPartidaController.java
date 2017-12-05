@@ -52,7 +52,7 @@ public class FXMLConfigurarPartidaController implements Initializable {
         this.idioma = idioma;
         if (this.idioma != null) {
             iniciarIdiomaComponentes();
-            crearConexion();
+            activarEventos();
         }
     }
 
@@ -68,24 +68,18 @@ public class FXMLConfigurarPartidaController implements Initializable {
         cbColorFichas.setItems(fichas);
     }
     
-    private void crearConexion(){
+    private void activarEventos(){
         
         try {
             String[] ipPartes = ConfiguracionIP.getIP();
             String ip = ipPartes[0]+"."+ipPartes[1]+"."+ipPartes[2]+"."+ipPartes[3];
             socket = IO.socket("http://"+ip+":8000");
             
-            socket.on("conexionCreada", new Emitter.Listener(){
-                @Override
-                public void call(Object... os) {
-                    
-                }
-                
-            }).on("respuestaEmparejamiento", new Emitter.Listener() {
+            socket.on("respuestaEmparejamiento", new Emitter.Listener() {
                 @Override
                 public void call(Object... os) {
                     configuracion.setIdContrincante((String) os[0]);
-                    System.out.println(configuracion.getIdContrincante());
+                    socket.off("respuestaEmparejamiento");
                     
                     Platform.runLater(()->{
                         main.iniciarJuego(idioma, configuracion,idUsuario);
@@ -138,7 +132,6 @@ public class FXMLConfigurarPartidaController implements Initializable {
             configuracionEncriptada.put("tamaño", configuracion.getTamaño());
             
             socket.emit("peticionCreacionPartida", idUsuario, configuracionEncriptada);
-            //
             
         }
         

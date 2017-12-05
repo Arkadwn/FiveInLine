@@ -3,6 +3,7 @@ package conexion;
 import cincolinea.modelo.Cuenta;
 import cincolinea.modelo.utilerias.ConfiguracionIP;
 import conexion.interfaces.ICuenta;
+import conexion.interfaces.IRanking;
 import conexion.interfaces.IVerificacionConexion;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -10,7 +11,6 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Random;
 
 /**
  *
@@ -103,5 +103,44 @@ public class ClienteRMI {
             //ex.printStackTrace();
         }
         return banderaRetorno;
+    }
+    
+    public boolean guardarResultadosPardida(String ganador, String perdedor){
+        boolean validacion = false;
+        
+        try {
+            IRanking ranking = (IRanking) conexion.lookup("ServiciosRanking");
+            validacion = ranking.guardarResultadosPartida(ganador, perdedor);
+        } catch (RemoteException | NotBoundException ex) {
+            
+        }
+        
+        return validacion;
+    }
+    
+    public boolean guardarEmpate(String jugador1, String jugador2){
+        boolean validacion = false;
+        
+        try {
+            IRanking ranking = (IRanking) conexion.lookup("ServiciosRanking");
+            validacion = ranking.guardarEmpate(jugador1, jugador2);
+        } catch (RemoteException | NotBoundException ex) {
+            
+        }
+        
+        return validacion;
+    }
+    
+    public boolean aplicarCastigo(String idJugador){
+        boolean validacion = false;
+        
+        try {
+            IRanking ranking = (IRanking) conexion.lookup("ServiciosRanking");
+            validacion = ranking.aplicarCastigo(idJugador);
+        } catch (RemoteException | NotBoundException ex) {
+            
+        }
+        
+        return validacion;
     }
 }

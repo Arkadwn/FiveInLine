@@ -104,7 +104,7 @@ public class FXMLRegistrarUsuarioController implements Initializable {
         Cuenta cuenta;
         //3
         if(validarCamposVacios()){
-            System.out.println("Hay campos vacios");
+            MensajeController.mensajeInformacion(idioma.getString("camposVacios"));
         }else{
             try {
                 conexion = new ClienteRMI();
@@ -122,16 +122,17 @@ public class FXMLRegistrarUsuarioController implements Initializable {
                 if (validaciones[6]) {
                     //5
                     if (conexion.registrarUsuario(cuenta)) {
-                        System.out.println("Usuario guardado");
+                        MensajeController.mensajeInformacion(idioma.getString("usuarioGuardado"));
+                        main.desplegarMenuPrincipal(idioma, tfNombreUsuario.getText());
                     } else {
-                        System.out.println("Ese usuario ya se encuentra registrado");
                         labelErrorNombreUsuario.setVisible(validaciones[2]);
+                        MensajeController.mensajeAdvertencia("Hay camposInvalidos");
                     }
                 } else {
                     mostrarErroresCampos(validaciones);
                 }
             }else{
-                System.out.println("No hay conexion al servidor o internet");
+                MensajeController.mensajeAdvertencia("No hay conexion");
             }
         }
         

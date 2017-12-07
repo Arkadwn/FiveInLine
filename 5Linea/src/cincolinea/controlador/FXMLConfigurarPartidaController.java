@@ -84,7 +84,6 @@ public class FXMLConfigurarPartidaController implements Initializable {
                     Platform.runLater(()->{
                         main.iniciarJuego(idioma, configuracion,idUsuario);
                     });
-                    
                 }
             });
             socket.connect();
@@ -106,6 +105,8 @@ public class FXMLConfigurarPartidaController implements Initializable {
 
     @FXML
     private void regresarMenuPrincipal(ActionEvent event) {
+        socket.off("respuestaEmparejamiento");
+        socket.disconnect();
         main.desplegarMenuPrincipal(idioma, idUsuario);
     }
 

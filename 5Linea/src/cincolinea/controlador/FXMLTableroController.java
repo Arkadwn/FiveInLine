@@ -166,7 +166,7 @@ public class FXMLTableroController implements Initializable {
                 tablero.setDisable(true);
                 
                 if (tableroLogico.validarSiGano(ficha.getX(), ficha.getY(), ficha.getColorFicha())) {
-                    socket.emit("ganar", idUsuario);
+                    socket.emit("ganar", idUsuario);                   
                     guardarResultado(idUsuario, contrincante.getString("idJugador"));
                     MensajeController.mensajeInformacion(idioma.getString("ganar"));
                     regresarMenuPrincipal();

@@ -25,22 +25,21 @@ public class Main extends Application {
     }
 
     public void desplegarConfiguracionIP(Stage stageInicio) throws IOException {
-        //try {
+        try {
             FXMLLoader loader = new FXMLLoader(Main.class.getResource("/cincolinea/vista/FXMLRegistroIP.fxml"));
             Parent root = (Parent) loader.load();
             Scene scene = new Scene(root);
 
             stageInicio.setScene(scene);
-            stageInicio.setTitle("Configuración de IP");
 
             FXMLRegistroIPController control = loader.getController();
             control.setMain(this);
             stageInicio.show();
 
             stageLocal = stageInicio;
-        //} catch (IOException ex) {
-            //System.out.println("Excepción tipo IO, mensaje: " + ex.getMessage());
-        //}
+        } catch (IOException ex) {
+            System.out.println("Excepción tipo IO, mensaje: " + ex.getMessage());
+        }
     }
     
     public void desplegarInicioSesion(ResourceBundle idiomaElegido) {
@@ -53,7 +52,7 @@ public class Main extends Application {
             Scene scene = new Scene(root);
 
             stageLocal.setScene(scene);
-            stageLocal.setTitle("5 in linea");
+            stageLocal.setTitle(idiomaElegido.getString("vtnaInicioSesion"));
 
         } catch (IOException ex) {
             System.out.println("Excepción tipo IO, mensaje: " + ex.getMessage());
@@ -71,7 +70,7 @@ public class Main extends Application {
             Scene scene = new Scene(root);
 
             stageLocal.setScene(scene);
-            stageLocal.setTitle("Menu principal");
+            stageLocal.setTitle(idiomaElegido.getString("vtnaMenuPrincipal"));
 
         } catch (IOException ex) {
             System.out.println("Excepción tipo IO, mensaje: " + ex.getMessage());
@@ -92,7 +91,7 @@ public class Main extends Application {
             
             
             stageLocal.setScene(scene);
-            stageLocal.setTitle("Ranking");
+            stageLocal.setTitle(idiomaElegido.getString("vtnaRanking"));
 
         } catch (NullPointerException ex) {
             System.out.println("Excepción tipo Null, mensaje: " + ex.getMessage());
@@ -113,7 +112,7 @@ public class Main extends Application {
             Scene scene = new Scene(root);
 
             stageLocal.setScene(scene);
-            stageLocal.setTitle("Buscando partida");
+            stageLocal.setTitle(idiomaElegido.getString("vtnaBuscarPartida"));
 
         } catch (IOException ex) {
             System.out.println("Excepción de tipo IO, mensaje: " + ex.getMessage());
@@ -123,24 +122,6 @@ public class Main extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-
-    /*public void desplegarInicioSesion(ResourceBundle idiomaElegido) {
-        try {
-            FXMLLoader loader = new FXMLLoader(Main.class.getResource("/cincolinea/vista/FXMLInicioSesion.fxml"),idiomaElegido);
-            Parent root = (Parent) loader.load();
-
-            FXMLInicioSesionController control = loader.getController();
-            control.setMain(this);
-
-            Scene scene = new Scene(root);
-
-            stageLocal.setScene(scene);
-            stageLocal.setTitle("5 en linea");
-
-        } catch (IOException ex) {
-            System.out.println("Excepción tipo IO, mensaje: " + ex.getMessage());
-        }
-    }*/
 
     public void desplegarRegistrarUsuario(ResourceBundle idiomaElegido) {
         try {
@@ -153,7 +134,7 @@ public class Main extends Application {
             Scene scene = new Scene(root);
 
             stageLocal.setScene(scene);
-            stageLocal.setTitle("Registrar Usuario");
+            stageLocal.setTitle(idiomaElegido.getString("vtnaRegistrarUsuario"));
 
         } catch (IOException ex) {
             System.out.println("Excepción tipo IO, mensaje: " + ex.getMessage());
@@ -172,7 +153,7 @@ public class Main extends Application {
             Scene scene = new Scene(root);
 
             stageLocal.setScene(scene);
-            stageLocal.setTitle("Configurar Partida");
+            stageLocal.setTitle(idiomaElegido.getString("vtnaConfigurarPartida"));
 
         } catch (IOException ex) {
             System.out.println("Excepción tipo IO, mensaje: " + ex.getMessage());
@@ -190,7 +171,7 @@ public class Main extends Application {
             Scene scene = new Scene(root);
 
             stageLocal.setScene(scene);
-            stageLocal.setTitle("Jugar");
+            stageLocal.setTitle(idiomaElegido.getString("vtnaJugar"));
 
         } catch (IOException ex) {
             System.out.println("Excepción tipo IO, mensaje: " + ex.getMessage());

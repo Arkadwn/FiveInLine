@@ -116,11 +116,11 @@ public class Tablero {
             x = 0;
             y = 0;
         }else if (x < y){
-            x -= x;
             y -= x;
+            x -= x;
         }else if (y < x){
-            y -= y;
             x -= y;
+            y -= y;
         }
         
         while(y < tamaño && x < tamaño){
@@ -147,15 +147,15 @@ public class Tablero {
         boolean validacion = false;
         int fichasEnlinea = 0;
         
-        if((x + y) == tamaño){
+        if((x + y) == (tamaño - 1)){
             x = 0;
-            y = 6;
-        }else if ((x + y) < tamaño){
-            x -= x;
+            y = tamaño - 1;
+        }else if ((x + y) < (tamaño - 1)){
             y += x;
-        }else if ((x + y) > tamaño){
-            x = (x + y) - 6;
-            y = 6;            
+            x -= x;
+        }else if ((x + y) > (tamaño - 1)){
+            x = (x + y) - (tamaño - 1);
+            y = tamaño - 1;            
         }
         
         while(x < tamaño && y >= 0){

@@ -51,7 +51,7 @@ public class ControladorCuenta {
             nuevaCuenta.setNombreUsuario(cuenta.getNombreUsuario());
             nuevaCuenta.setContrasena(cuenta.getContraseña());
             nuevaCuenta.setCorreoElectronico(cuenta.getCorreo());
-            nuevaCuenta.setEstadoSesion(1);
+            nuevaCuenta.setEstadoSesion(0);
             nuevaCuenta.setImagen(cuenta.getImagen());
             nuevaCuenta.setNombre(cuenta.getNombre());
             nuevaCuenta.setApellidos(cuenta.getApellidos());

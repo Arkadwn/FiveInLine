@@ -29,8 +29,6 @@ import org.json.JSONObject;
 public class FXMLBuscaPartidaController implements Initializable {
 
     @FXML
-    private Label labelBuscandoP;
-    @FXML
     private JFXButton btnCancelarBusqPartida;
     private ResourceBundle idioma;
     private Main main;
@@ -38,19 +36,23 @@ public class FXMLBuscaPartidaController implements Initializable {
     private String idContrincante;
     private Socket socket;
     @FXML
-    private ImageView imagenCargando;
-    @FXML
-    private JFXComboBox<String> idComboPartidas;
-    @FXML
     private Label labelJugadores;
     @FXML
     private JFXButton btnJugar;
     @FXML
     private JFXButton btnActualizar;
+    @FXML
+    private ImageView imgCargando;
+    @FXML
+    private Label labelBuscandoPartidas;
+    @FXML
+    private JFXComboBox<String> cbPartidas;
 
     private void iniciarIdiomaComponentes() {
         btnCancelarBusqPartida.setText(idioma.getString("btnCancelarBusqPartida"));
-        labelBuscandoP.setText(idioma.getString("labelBuscandoP"));
+        labelBuscandoPartidas.setText(idioma.getString("labelBuscandoP"));
+        btnActualizar.setText(idioma.getString("btnActualizar"));
+        btnJugar.setText(idioma.getString("btnJugar"));
     }
 
     public void setIdUsuario(String idUsuario) {
@@ -73,16 +75,16 @@ public class FXMLBuscaPartidaController implements Initializable {
             System.out.println("Error URI: " + ex.getMessage());
         }
 
-            idComboPartidas.setVisible(false);
+            cbPartidas.setVisible(false);
 
             obtenerPartidasDisponibles();
     }
 
     private void obtenerPartidasDisponibles() {
         try{
-        ObservableList listaPartidas = idComboPartidas.getItems();
+        ObservableList listaPartidas = cbPartidas.getItems();
         listaPartidas.clear();
-        idComboPartidas.setItems(listaPartidas);
+        cbPartidas.setItems(listaPartidas);
         }catch(Exception ex){
             System.out.println("Error: "+ex.getMessage());
         }
@@ -102,17 +104,18 @@ public class FXMLBuscaPartidaController implements Initializable {
 
                 JSONArray arrayJugadasDisponibles = (JSONArray) os[0];
                 if (arrayJugadasDisponibles.length() != 0) {
-                    imagenCargando.setVisible(false);
-                    idComboPartidas.setVisible(true);
+                    imgCargando.setVisible(false);
+                    labelBuscandoPartidas.setVisible(false);
+                    cbPartidas.setVisible(true);
                 }
                 ObservableList partidasDisponibles = null;
                 for (int i = 0; i < arrayJugadasDisponibles.length(); i++) {
                     JSONObject objetoRescatado = arrayJugadasDisponibles.getJSONObject(i);
-                    partidasDisponibles = idComboPartidas.getItems();
+                    partidasDisponibles = cbPartidas.getItems();
                     partidasDisponibles.add("Jugar con: " + objetoRescatado.get("idAnfitrion").toString());
                 }
 
-                idComboPartidas.setItems(partidasDisponibles);
+                cbPartidas.setItems(partidasDisponibles);
             }
         }).on("respuestaEmparejamiento", new Emitter.Listener() {
             @Override
@@ -129,6 +132,12 @@ public class FXMLBuscaPartidaController implements Initializable {
                 });
 
             }
+        }).on("respuestaEmparejamientoNegativa", new Emitter.Listener() {
+            @Override
+            public void call(Object... os) {
+                MensajeController.mensajeInformacion(idioma.getString("mensajePartidaEliminada"));
+                obtenerPartidasDisponibles();
+            }
         });
 
         socket.connect();
@@ -140,7 +149,7 @@ public class FXMLBuscaPartidaController implements Initializable {
 
     @FXML
     private void emparejar(ActionEvent event) {
-        idContrincante = idComboPartidas.getValue();
+        idContrincante = cbPartidas.getValue();
         //Borrar
         socket.emit("emparejar", idContrincante.substring(11), idUsuario);
     }
@@ -155,8 +164,9 @@ public class FXMLBuscaPartidaController implements Initializable {
 
     @FXML
     private void buscarPartidasNuevas(ActionEvent event) {
-            idComboPartidas.setVisible(false);
-            imagenCargando.setVisible(true);
+            cbPartidas.setVisible(false);
+            imgCargando.setVisible(true);
+            labelBuscandoPartidas.setVisible(true);
             
             obtenerPartidasDisponibles();
     }

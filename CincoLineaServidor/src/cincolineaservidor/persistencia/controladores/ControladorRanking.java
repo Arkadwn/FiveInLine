@@ -111,10 +111,10 @@ public class ControladorRanking {
         return validacion;
     }
     
-    private Integer buscarIdRankingJugador(String idJugador){
+    private int buscarIdRankingJugador(String idJugador){
         EntityManager entidad = getEntityManager();
-        Query consulta = entidad.createQuery("SELECT r.idRanking FROM Rankings r WHERE r.nombreUsuario = :nombreUser").setParameter("nombreUser", idJugador);
-        Integer idRanking = 0;
+        Query consulta = entidad.createQuery("SELECT r.idRanking FROM Rankings r WHERE r.nombreUsuario.nombreUsuario = :nombreUser").setParameter("nombreUser", idJugador);
+        int idRanking = 0;
         
         try{
             idRanking = (Integer) consulta.getSingleResult();

@@ -34,6 +34,7 @@ io.on('connection', function(socket) {
 
 	socket.on('emparejar',function(idAnfitrion, idInvitado){
 		var socketAnfitrion;
+		var encontro = false;
 		for(var i = 0; i < jugadas.length; i++){
 			auxJugada = jugadas[i];
 			if(auxJugada.idAnfitrion == idAnfitrion){
@@ -46,7 +47,11 @@ io.on('connection', function(socket) {
 				socketAnfitrion = auxJugada.socketAnfitrion;
 				socket.emit('respuestaEmparejamiento', idAnfitrion, auxJugada.configuracion);
 				socketAnfitrion.emit('respuestaEmparejamiento', idInvitado);
+				encontro = true;
 				break;
+			}
+			if(!encontro){
+				socket.emit('respuestaEmparejamientoNegativa', true);
 			}
 		}
 	});//Invitado
@@ -71,12 +76,26 @@ io.on('connection', function(socket) {
 		socketContrincante.emit('jugadaRealizada', jugada);
 		//envio de tiempo de espera para jugada
 	});
+
+	socket.on('cancelarPartida', function(idAnfitrion){
+		for (var i = 0; jugadas.length; i++) {
+			auxJugada = jugadas[i];
+			if(auxJugada.idAnfitrion == idAnfitrion){
+				
+					jugadas.splice(i, 1);
+					jugadasId.splice(i, 1);
+					console.log("Se cancelo la partidad del anfitrion: "+idAnfitrion);
+					break;
+				
+			}
+		}
+	});
 	
 	socket.on('ganar', function(idJugador){
 		var socketContrincante;
 		for (var i = 0; jugadas.length; i++) {
 			auxJugada = jugadas[i];
-			if(auxJugada.idInvitado == idJugador || auxJugada.idAnfitrion == idAnfitrion){
+			if(auxJugada.idInvitado == idJugador || auxJugada.idAnfitrion == idJugador){
 				if(auxJugada.idInvitado == idJugador){
 					socketContrincante = auxJugada.socketAnfitrion;
 					socketContrincante.emit("perder");
@@ -100,7 +119,7 @@ io.on('connection', function(socket) {
 		var socketContrincante;
 		for (var i = 0; jugadas.length; i++) {
 			auxJugada = jugadas[i];
-			if(auxJugada.idInvitado == idJugador || auxJugada.idAnfitrion == idAnfitrion){
+			if(auxJugada.idInvitado == idJugador || auxJugada.idAnfitrion == idJugador){
 				if(auxJugada.idInvitado == idJugador){
 					socketContrincante = auxJugada.socketAnfitrion;
 					socketContrincante.emit("ganarPorAbandono");
@@ -124,7 +143,7 @@ io.on('connection', function(socket) {
 		var socketContrincante;
 		for (var i = 0; jugadas.length; i++) {
 			auxJugada = jugadas[i];
-			if(auxJugada.idInvitado == idJugador || auxJugada.idAnfitrion == idAnfitrion){
+			if(auxJugada.idInvitado == idJugador || auxJugada.idAnfitrion == idJugador){
 				if(auxJugada.idInvitado == idJugador){
 					socketContrincante = auxJugada.socketAnfitrion;
 					socketContrincante.emit("empatar");

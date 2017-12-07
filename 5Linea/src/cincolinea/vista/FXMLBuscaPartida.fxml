@@ -14,18 +14,18 @@
             <Image url="@../imagenes/wallpaper.jpg" />
          </image>
       </ImageView>
-      <ImageView fx:id="imagenCargando" fitHeight="119.0" fitWidth="117.0" layoutX="160.0" layoutY="62.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="imgCargando" fitHeight="119.0" fitWidth="117.0" layoutX="160.0" layoutY="62.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../imagenes/cargando.gif" />
          </image>
       </ImageView>
-      <Label fx:id="labelBuscandoP" layoutX="143.0" layoutY="200.0" prefHeight="17.0" prefWidth="150.0" textAlignment="CENTER" textFill="WHITE">
+      <Label fx:id="labelBuscandoPartidas" layoutX="143.0" layoutY="200.0" prefHeight="17.0" prefWidth="150.0" textAlignment="CENTER" textFill="WHITE">
          <font>
             <Font size="15.0" />
          </font>
       </Label>
       <JFXButton fx:id="btnCancelarBusqPartida" buttonType="RAISED" layoutX="96.0" layoutY="334.0" onAction="#regresarMenuPrincipal" prefHeight="25.0" prefWidth="76.0" style="-fx-background-color: #686868;" textFill="WHITE" />
-      <JFXComboBox fx:id="idComboPartidas" layoutX="96.0" layoutY="108.0" prefHeight="25.0" prefWidth="245.0" />
+      <JFXComboBox fx:id="cbPartidas" layoutX="96.0" layoutY="108.0" prefHeight="25.0" prefWidth="245.0" />
       <Label fx:id="labelJugadores" layoutX="96.0" layoutY="91.0" prefHeight="17.0" prefWidth="76.0" />
       <JFXButton fx:id="btnJugar" focusTraversable="false" layoutX="269.0" layoutY="334.0" onAction="#emparejar" prefHeight="25.0" prefWidth="76.0" style="-fx-background-color: White;" />
       <JFXButton fx:id="btnActualizar" layoutX="269.0" layoutY="235.0" onAction="#buscarPartidasNuevas" prefHeight="25.0" prefWidth="76.0" style="-fx-background-color: gray;" textFill="WHITE" />

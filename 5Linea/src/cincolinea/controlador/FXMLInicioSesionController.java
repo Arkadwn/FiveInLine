@@ -66,13 +66,17 @@ public class FXMLInicioSesionController implements Initializable {
     
     @FXML
     private void ingresarMenuPrincipal(ActionEvent event) {
-        
+    if(!txtContrasena.getText().isEmpty() || !txtNombreUsuario.getText().isEmpty())
         if(conexion.autenticarCuenta(txtNombreUsuario.getText(),txtContrasena.getText())){
+            //Actualizar con los bundle
             MensajeController.mensajeInformacion("Ha iniciado sesión correctamente");
             main.desplegarMenuPrincipal(idioma, txtNombreUsuario.getText());
         }else{
             MensajeController.mensajeAdvertencia("Error en los datos de usuario");
         }
+    else{
+        MensajeController.mensajeAdvertencia(idioma.getString("camposVacios"));
+    }
         
         
     }
@@ -103,14 +107,13 @@ public class FXMLInicioSesionController implements Initializable {
         estaEspañol = false;
     }
     
-    private void inicializarComponentesPorDefecto(ResourceBundle idomaDefecto) {
+    private void inicializarComponentes(ResourceBundle idomaDefecto) {
         labelTitle.setText(idomaDefecto.getString("labelTitle"));
         labelContraseña.setText(idomaDefecto.getString("labelContraseña"));
         labelUsuario.setText(idomaDefecto.getString("labelUsuario"));
         btnIngresar.setText(idomaDefecto.getString("btnIngresar"));
         btnSalir.setText(idomaDefecto.getString("btnSalir"));
         linkRegistro.setText(idomaDefecto.getString("linkRegistro"));
-        idioma = idomaDefecto;
     }
     
     @Override
@@ -123,11 +126,10 @@ public class FXMLInicioSesionController implements Initializable {
             System.out.println("Error: "+ex.getMessage());
         }
         
-        if (idioma != null) {
-            inicializarComponentesPorDefecto(idioma);
-        } else {
-            cambiarComponentesEspañol();
-        }
+        this.idioma = idioma;
+        estaEspañol = !idioma.getBaseBundleName().equals("cincolinea/resources/Bundle_en_US");
+        inicializarComponentes(idioma);
+        
         translateButton.setStyle("-fx-background-image: url('cincolinea/imagenes/language.png');"
                 + "-fx-background-position: center center; -fx-background-repeat: stretch; -fx-background-size: 35px 35px 35px 35px;");
         

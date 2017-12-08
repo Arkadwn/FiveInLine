@@ -16,6 +16,7 @@ import javafx.scene.control.Label;
 import io.socket.client.IO;
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.image.ImageView;
 import org.json.JSONArray;
@@ -75,18 +76,18 @@ public class FXMLBuscaPartidaController implements Initializable {
             System.out.println("Error URI: " + ex.getMessage());
         }
 
-            cbPartidas.setVisible(false);
+        cbPartidas.setVisible(false);
 
-            obtenerPartidasDisponibles();
+        obtenerPartidasDisponibles();
     }
 
     private void obtenerPartidasDisponibles() {
-        try{
-        ObservableList listaPartidas = cbPartidas.getItems();
-        listaPartidas.clear();
-        cbPartidas.setItems(listaPartidas);
-        }catch(Exception ex){
-            System.out.println("Error: "+ex.getMessage());
+        try {
+            imgCargando.setVisible(true);
+            cbPartidas.setVisible(false);
+            labelBuscandoPartidas.setVisible(true);
+        } catch (Exception ex) {
+            System.out.println("Error: " + ex.getMessage());
         }
         socket.emit("peticionEnlacePartida");
     }
@@ -106,16 +107,19 @@ public class FXMLBuscaPartidaController implements Initializable {
                 if (arrayJugadasDisponibles.length() != 0) {
                     imgCargando.setVisible(false);
                     labelBuscandoPartidas.setVisible(false);
-                    cbPartidas.setVisible(true);
                 }
-                ObservableList partidasDisponibles = null;
+                ObservableList<String> partidasDisponibles = FXCollections.observableArrayList();
                 for (int i = 0; i < arrayJugadasDisponibles.length(); i++) {
                     JSONObject objetoRescatado = arrayJugadasDisponibles.getJSONObject(i);
-                    partidasDisponibles = cbPartidas.getItems();
+
+                    cbPartidas.setVisible(true);
+                    //Agregar al bundle
                     partidasDisponibles.add("Jugar con: " + objetoRescatado.get("idAnfitrion").toString());
                 }
+                Platform.runLater(() -> {
+                    cbPartidas.setItems(partidasDisponibles);
+                });
 
-                cbPartidas.setItems(partidasDisponibles);
             }
         }).on("respuestaEmparejamiento", new Emitter.Listener() {
             @Override
@@ -135,8 +139,11 @@ public class FXMLBuscaPartidaController implements Initializable {
         }).on("respuestaEmparejamientoNegativa", new Emitter.Listener() {
             @Override
             public void call(Object... os) {
-                MensajeController.mensajeInformacion(idioma.getString("mensajePartidaEliminada"));
-                obtenerPartidasDisponibles();
+                Platform.runLater(() -> {
+                    MensajeController.mensajeInformacion(idioma.getString("mensajePartidaEliminada"));
+                    obtenerPartidasDisponibles();
+                });
+
             }
         });
 
@@ -158,17 +165,18 @@ public class FXMLBuscaPartidaController implements Initializable {
     private void regresarMenuPrincipal(ActionEvent event) {
         socket.off("jugadores");
         socket.off("respuestaEmparejamiento");
+        socket.off("respuestaEmparejamientoNegativa");
         socket.disconnect();
         main.desplegarMenuPrincipal(idioma, idUsuario);
     }
 
     @FXML
     private void buscarPartidasNuevas(ActionEvent event) {
-            cbPartidas.setVisible(false);
-            imgCargando.setVisible(true);
-            labelBuscandoPartidas.setVisible(true);
-            
-            obtenerPartidasDisponibles();
+        cbPartidas.setVisible(false);
+        imgCargando.setVisible(true);
+        labelBuscandoPartidas.setVisible(true);
+
+        obtenerPartidasDisponibles();
     }
 
 }

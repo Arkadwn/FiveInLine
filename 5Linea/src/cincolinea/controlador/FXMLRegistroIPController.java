@@ -70,7 +70,6 @@ public class FXMLRegistroIPController implements Initializable {
         }
 
         String[] ip = ConfiguracionIP.getIP();
-        System.out.println(ip[0]);
         txtIP.setText(ip[0]);
         txtIP1.setText(ip[1]);
         txtIP2.setText(ip[2]);

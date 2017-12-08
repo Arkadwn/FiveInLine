@@ -93,10 +93,9 @@ public class Main extends Application {
             stageLocal.setScene(scene);
             stageLocal.setTitle(idiomaElegido.getString("vtnaRanking"));
 
-        } catch (NullPointerException ex) {
-            System.out.println("Excepción tipo Null, mensaje: " + ex.getMessage());
-        } catch (IOException ex) {
+        } catch (NullPointerException | IOException ex) {
             System.out.println("Excepción tipo IO, mensaje: " + ex.getMessage());
+            ex.printStackTrace();
         }
     }
 

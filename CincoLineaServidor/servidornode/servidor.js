@@ -50,9 +50,11 @@ io.on('connection', function(socket) {
 				encontro = true;
 				break;
 			}
-			if(!encontro){
+
+		}
+		if(!encontro){
+				console.log('Accedio un usuario a un partida fantasma');
 				socket.emit('respuestaEmparejamientoNegativa', true);
-			}
 		}
 	});//Invitado
 

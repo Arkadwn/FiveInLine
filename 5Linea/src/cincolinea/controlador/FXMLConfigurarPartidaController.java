@@ -19,6 +19,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import org.json.JSONObject;
 import cincolinea.modelo.utilerias.ConfiguracionIP;
+import javafx.scene.image.ImageView;
 
 /**
  * FXML Controller class
@@ -46,6 +47,12 @@ public class FXMLConfigurarPartidaController implements Initializable {
     private String idUsuario;
     private Socket socket;
     private ConfiguracionPartida configuracion;
+    @FXML
+    private ImageView imgCargador;
+    @FXML
+    private JFXButton btnCancelarPartida;
+    @FXML
+    private Label labelEsperando;
 
     @Override
     public void initialize(URL url, ResourceBundle idioma) {
@@ -64,7 +71,7 @@ public class FXMLConfigurarPartidaController implements Initializable {
     
     @FXML
     private void rellenarComboboxColores() {
-        ObservableList <String> fichas = FXCollections.observableArrayList("Negras","Blancas");
+        ObservableList <String> fichas = FXCollections.observableArrayList(idioma.getString("fichaNegra"),idioma.getString("fichaBlanca"));
         cbColorFichas.setItems(fichas);
     }
     
@@ -123,19 +130,46 @@ public class FXMLConfigurarPartidaController implements Initializable {
             crearConfiguracion();
             
             JSONObject configuracionEncriptada = new JSONObject();
+            String valorComboBox = (String)cbColorFichas.getValue();
             
-            if(configuracion.getColorFicha().equals("N")){
-                configuracionEncriptada.put("colorFicha", "B");
-            }else{
+            if(valorComboBox.equals("Whites") || valorComboBox.equals("Blancas")){
                 configuracionEncriptada.put("colorFicha", "N");
+            }else{
+                configuracionEncriptada.put("colorFicha", "B");
             }
             
             configuracionEncriptada.put("tamaño", configuracion.getTamaño());
             
             socket.emit("peticionCreacionPartida", idUsuario, configuracionEncriptada);
-            
+            mostrarElementosDeEspera();
         }
         
+    }
+    
+    private void mostrarElementosDeEspera(){
+        btnCancelar.setVisible(false);
+        btnCrear.setVisible(false);
+        cbColorFichas.setVisible(false);
+        cbTamano.setVisible(false);
+        labelColorFichas.setVisible(false);
+        labelTamaño.setVisible(false);
+        labelEsperando.setVisible(true);
+        labelEsperando.setText(idioma.getString("labelEsperando"));
+        imgCargador.setVisible(true);
+        btnCancelarPartida.setVisible(true);
+        btnCancelarPartida.setText(idioma.getString("btnCancelar"));
+    }
+    
+    private void ocultarElementosDeEspera(){
+        btnCancelar.setVisible(true);
+        btnCrear.setVisible(true);
+        cbColorFichas.setVisible(true);
+        cbTamano.setVisible(true);
+        labelColorFichas.setVisible(false);
+        labelTamaño.setVisible(false);
+        labelEsperando.setVisible(false);
+        imgCargador.setVisible(false);
+        btnCancelarPartida.setVisible(false);
     }
     
     private void crearConfiguracion(){
@@ -152,11 +186,18 @@ public class FXMLConfigurarPartidaController implements Initializable {
         
         valorComboBox =(String)cbColorFichas.getValue();
         
-        valorComboBox = valorComboBox.substring(0,1);
-        
-        configuracion.setColorFicha(valorComboBox);
-        
+        if(valorComboBox.equals("Whites") || valorComboBox.equals("Blancas")){
+            configuracion.setColorFicha("B");
+        }else{
+            configuracion.setColorFicha("N");
+        }
         configuracion.setSocket(socket);
         configuracion.setEsCreador(true);
+    }
+
+    @FXML
+    private void accionCancelarPartida(ActionEvent event) {
+        socket.emit("cancelarPartida", idUsuario);
+        ocultarElementosDeEspera();
     }
 }

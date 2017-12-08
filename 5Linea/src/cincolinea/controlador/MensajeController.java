@@ -2,6 +2,7 @@ package cincolinea.controlador;
 
 import java.util.Optional;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.stage.StageStyle;
 
@@ -16,6 +17,8 @@ public class MensajeController {
         ventana.setHeaderText(mensaje);
         ventana.setContentText(null);
         ventana.initStyle(StageStyle.UTILITY);
+        ButtonType boton = new ButtonType("OK", ButtonData.OK_DONE);
+        ventana.getButtonTypes().setAll(boton);
         ventana.showAndWait();
     }
     
@@ -25,10 +28,12 @@ public class MensajeController {
         ventana.setHeaderText(null);
         ventana.setContentText(mensaje);
         ventana.initStyle(StageStyle.UTILITY);
+        ButtonType boton = new ButtonType("OK", ButtonData.OK_DONE);
+        ventana.getButtonTypes().setAll(boton);
         ventana.showAndWait();
     }
     
-    public static boolean mensajeDecisio(String mensaje){
+    public static boolean mensajeDesicion(String mensaje, String si, String no){
         boolean validacion = true;
         
         Alert ventana = new Alert(Alert.AlertType.CONFIRMATION);
@@ -36,7 +41,9 @@ public class MensajeController {
         ventana.setHeaderText(null);
         ventana.setContentText(mensaje);
         ventana.initStyle(StageStyle.UTILITY);
-        
+        ButtonType botonSi = new ButtonType(si, ButtonData.YES);
+        ButtonType botonNo = new ButtonType(no, ButtonData.NO);
+        ventana.getButtonTypes().setAll(botonSi,botonNo);
         
         Optional<ButtonType> resultado = ventana.showAndWait();
         

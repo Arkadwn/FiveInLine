@@ -124,7 +124,7 @@ public class ServidorRMI implements ICuenta, IVerificacionConexion, IRanking {
         EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("CincoLineaServidorPU", null);
         ControladorRanking controlador = new ControladorRanking(entityManagerFactory);
 
-        return sacarMejores10();
+        return controlador.sacarMejores10();
     }
 
 }

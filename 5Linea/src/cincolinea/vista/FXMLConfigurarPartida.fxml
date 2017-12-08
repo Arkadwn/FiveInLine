@@ -10,7 +10,7 @@
 
 <AnchorPane id="AnchorPane" prefHeight="420.0" prefWidth="672.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cincolinea.controlador.FXMLConfigurarPartidaController">
    <children>
-      <ImageView fx:id="imagen" fitHeight="448.0" fitWidth="672.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="448.0" fitWidth="672.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../imagenes/wallpaper.jpg" />
          </image>
@@ -21,5 +21,12 @@
       <JFXComboBox fx:id="cbTamano" layoutX="82.0" layoutY="213.0" onMouseClicked="#rellenarComboboxTamaño" prefHeight="32.0" prefWidth="251.0" style="-fx-text-inner-color: white;" />
       <JFXButton fx:id="btnCancelar" layoutX="77.0" layoutY="293.0" onAction="#regresarMenuPrincipal" prefHeight="39.0" prefWidth="102.0" style="-fx-background-color: #686868; -fx-background-radius: 18;" textFill="WHITE" />
       <JFXButton fx:id="btnCrear" layoutX="237.0" layoutY="293.0" onAction="#iniciarJuego" prefHeight="39.0" prefWidth="102.0" style="-fx-background-color: white; -fx-background-radius: 18;" />
+      <ImageView fx:id="imgCargador" fitHeight="172.0" fitWidth="197.0" layoutX="122.0" layoutY="38.0" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@../imagenes/cargando.gif" />
+         </image>
+      </ImageView>
+      <JFXButton fx:id="btnCancelarPartida" layoutX="158.0" layoutY="301.0" onAction="#accionCancelarPartida" prefHeight="39.0" prefWidth="102.0" style="-fx-background-color: #686868; -fx-background-radius: 18;" textFill="WHITE" visible="false" />
+      <Label fx:id="labelEsperando" layoutX="130.0" layoutY="256.0" prefHeight="23.0" prefWidth="172.0" text="Label" textAlignment="CENTER" textFill="WHITE" visible="false" />
    </children>
 </AnchorPane>

@@ -1,6 +1,7 @@
 package conexion;
 
 import cincolinea.modelo.Cuenta;
+import cincolinea.modelo.Ranking;
 import cincolinea.modelo.utilerias.ConfiguracionIP;
 import conexion.interfaces.ICuenta;
 import conexion.interfaces.IRanking;
@@ -11,6 +12,9 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -142,5 +146,18 @@ public class ClienteRMI {
         }
         
         return validacion;
+    }
+    
+    public List<Ranking> sacar10MejoresJugadores(){
+        List<Ranking> mejores10Jugadores = null;
+        
+        try {
+            IRanking ranking = (IRanking) conexion.lookup("ServiciosRanking");
+            mejores10Jugadores = ranking.sacarMejores10();
+        } catch (RemoteException | NotBoundException ex) {
+            Logger.getLogger(ClienteRMI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return mejores10Jugadores;
     }
 }

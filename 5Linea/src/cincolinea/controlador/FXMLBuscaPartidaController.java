@@ -48,10 +48,19 @@ public class FXMLBuscaPartidaController implements Initializable {
     private Label labelBuscandoPartidas;
     @FXML
     private JFXComboBox<String> cbPartidas;
+    private String imagenDePerfil;
+    @FXML
+    private JFXButton imgPerfil;
+
+    public void setImagenDePerfil(String imagenDePerfil) {
+        this.imagenDePerfil = imagenDePerfil;
+        cargarImagenPerfil();
+    }
 
     private void iniciarIdiomaComponentes() {
         btnCancelarBusqPartida.setText(idioma.getString("btnCancelarBusqPartida"));
         labelBuscandoPartidas.setText(idioma.getString("labelBuscandoP"));
+        labelJugadores.setText(idioma.getString("labelJugadores"));
         btnActualizar.setText(idioma.getString("btnActualizar"));
         btnJugar.setText(idioma.getString("btnJugar"));
     }
@@ -114,7 +123,7 @@ public class FXMLBuscaPartidaController implements Initializable {
 
                     cbPartidas.setVisible(true);
                     //Agregar al bundle
-                    partidasDisponibles.add("Jugar con: " + objetoRescatado.get("idAnfitrion").toString());
+                    partidasDisponibles.add(idioma + objetoRescatado.get("idAnfitrion").toString());
                 }
                 Platform.runLater(() -> {
                     cbPartidas.setItems(partidasDisponibles);
@@ -129,6 +138,8 @@ public class FXMLBuscaPartidaController implements Initializable {
                 configuracion.setSocket(socket);
                 configuracion.setColorFicha((String) configuracionPartida.get("colorFicha"));
                 configuracion.setTamaño((int) configuracionPartida.get("tamaño"));
+                configuracion.setImagenPerfilInvitado(configuracionPartida.getString("imagenDePerfil"));
+                configuracion.setImagenPerfil(imagenDePerfil);
                 configuracion.setEsCreador(false);
                 configuracion.setIdContrincante(os[0].toString());
                 Platform.runLater(() -> {
@@ -158,7 +169,7 @@ public class FXMLBuscaPartidaController implements Initializable {
     private void emparejar(ActionEvent event) {
         idContrincante = cbPartidas.getValue();
         //Borrar
-        socket.emit("emparejar", idContrincante.substring(11), idUsuario);
+        socket.emit("emparejar", idContrincante.substring(11), idUsuario, imagenDePerfil);
     }
 
     @FXML
@@ -177,6 +188,11 @@ public class FXMLBuscaPartidaController implements Initializable {
         labelBuscandoPartidas.setVisible(true);
 
         obtenerPartidasDisponibles();
+    }
+    
+    private void cargarImagenPerfil(){
+        imgPerfil.setStyle("-fx-background-image: url('cincolinea/imagenes/" + imagenDePerfil + ".jpg" + "');"
+                + "-fx-background-position: center center; -fx-background-repeat: stretch; -fx-background-size: 128px 90px 128px 90px;");
     }
 
 }

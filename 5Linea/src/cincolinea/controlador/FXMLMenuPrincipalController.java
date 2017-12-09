@@ -7,10 +7,14 @@ package cincolinea.controlador;
 
 import cincolinea.Main;
 import com.jfoenix.controls.JFXButton;
+import conexion.ClienteRMI;
 import java.net.URL;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
 
 /**
  * FXML Controller class
@@ -33,6 +37,13 @@ public class FXMLMenuPrincipalController implements Initializable {
     @FXML
     private JFXButton btnCrearPartida;
     private String idUsuario;
+    private String imagenPerfil;
+    @FXML
+    private JFXButton btnAyuda;
+    @FXML
+    private JFXButton imgPerfil;
+    @FXML
+    private Label labelNombreUsuario;
     
     public void setMain(Main main){
         this.main=main;
@@ -58,12 +69,12 @@ public class FXMLMenuPrincipalController implements Initializable {
 
     @FXML
     private void desplegarRanking(javafx.event.ActionEvent event) {
-        main.desplegarRanking(idioma,idUsuario);
+        main.desplegarRanking(idioma,idUsuario,imagenPerfil);
     }
     
     @FXML
     private void desplegarBuscaPartida(javafx.event.ActionEvent event){
-        main.desplegarBuscaPartida(idioma, idUsuario);
+        main.desplegarBuscaPartida(idioma, idUsuario,imagenPerfil);
     }
 
     @FXML
@@ -73,7 +84,21 @@ public class FXMLMenuPrincipalController implements Initializable {
     
     @FXML
     private void crearPartida(javafx.event.ActionEvent event){
-        main.deplegarConfigurarPartida(idioma, idUsuario);
+        main.deplegarConfigurarPartida(idioma, idUsuario, imagenPerfil);
     }
     
+    private void cargarPerfil(){
+        try {
+            ClienteRMI conexion = new ClienteRMI();
+            imagenPerfil = conexion.sacarImagenDePerfil(idUsuario);
+            
+            imgPerfil.setStyle("-fx-background-image: url('cincolinea/imagenes/" + imagenPerfil + ".jpg" + "');"
+                + "-fx-background-position: center center; -fx-background-repeat: stretch; -fx-background-size: 116px 105px 116px 105px;");
+            labelNombreUsuario.setText(idUsuario);
+        } catch (RemoteException | NotBoundException ex) {
+            System.out.println("Error: " + ex.getMessage());
+            MensajeController.mensajeInformacion(idioma.getString("errorDeConexionIP"));
+        }
+        
+    }
 }

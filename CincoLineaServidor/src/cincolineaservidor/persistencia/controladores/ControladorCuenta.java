@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import javax.persistence.RollbackException;
 
@@ -35,8 +36,10 @@ public class ControladorCuenta {
             cuentaEntidadResultado = (Cuentas) consulta.getSingleResult();
             cuentaResultado.setContraseña(cuentaEntidadResultado.getContrasena());
             cuentaResultado.setEstadoSesion(cuentaEntidadResultado.getEstadoSesion());
-        } catch (Exception ex) {
+        } catch (NoResultException ex) {
             System.out.println("Error en verificar autenticación: " + ex.getMessage());
+        }finally{
+            entidad.close();
         }
         return cuentaResultado;
     }
@@ -83,5 +86,22 @@ public class ControladorCuenta {
         }
 
         return registro;
+    }
+    
+    public String sacarImagenDePerfil(String idUsuario){
+        String imagen = "";
+        
+        EntityManager entidad = getEntityManager();
+        Query consulta = entidad.createQuery("SELECT c.imagen FROM Cuentas c WHERE c.nombreUsuario = :nombreUser").setParameter("nombreUser", idUsuario);
+        
+        try{
+            imagen = (String) consulta.getSingleResult();
+        } catch(NoResultException ex){
+            System.out.println("Error: " + ex.getMessage());
+        }finally{
+            entidad.close();
+        }
+        
+        return imagen;
     }
 }

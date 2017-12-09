@@ -13,6 +13,24 @@ public class ConfiguracionPartida {
     private Socket socket;
     private boolean esCreador;
     private String idContrincante;
+    private String imagenPerfil;
+    private String imagenPerfilInvitado;
+
+    public String getImagenPerfil() {
+        return imagenPerfil;
+    }
+
+    public void setImagenPerfil(String imagenPerfil) {
+        this.imagenPerfil = imagenPerfil;
+    }
+
+    public String getImagenPerfilInvitado() {
+        return imagenPerfilInvitado;
+    }
+
+    public void setImagenPerfilInvitado(String imagenPerfilInvitado) {
+        this.imagenPerfilInvitado = imagenPerfilInvitado;
+    }
 
     public Socket getSocket() {
         return socket;

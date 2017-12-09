@@ -34,7 +34,6 @@ public class FXMLRegistrarUsuarioController implements Initializable {
     private Label labelContrasena;
     @FXML
     private Label labelReContrasena;
-
     private ResourceBundle idioma;
     private Main main;
     private ClienteRMI conexion;
@@ -68,12 +67,17 @@ public class FXMLRegistrarUsuarioController implements Initializable {
     private Label labelErrorReContraseña;
     @FXML
     private Label labelErrorCorreo;
+    private String imagenDeJugador;
+    private int numeroImagen;
+    @FXML
+    private JFXButton imgPerfil;
 
     @Override
     public void initialize(URL url, ResourceBundle idioma) {
         this.idioma = idioma;
         if (this.idioma != null) {
             iniciarIdiomaComponentes();
+            mostrarImagenPerfil();
         }
     }
 
@@ -94,84 +98,95 @@ public class FXMLRegistrarUsuarioController implements Initializable {
 
     @FXML
     private void regresarMenuPrincipal(ActionEvent evento) {
-        main.desplegarMenuPrincipal(idioma, tfNombreUsuario.getText());//Quitar
-        //main.desplegarInicioSesion(stageInicio); Crear metodo especial para puerta trasera
+        //main.desplegarMenuPrincipal(idioma, tfNombreUsuario.getText());//Quitar
+        main.desplegarInicioSesion(idioma);
     }
-    
+
     @FXML
-    private void accionRegistrarUsuario(ActionEvent evento){
-        boolean hayConexion = true;
+    private void accionRegistrarUsuario(ActionEvent evento) {
         Cuenta cuenta;
-        //3
-        if(validarCamposVacios()){
+        if (validarCamposVacios()) {
             MensajeController.mensajeInformacion(idioma.getString("camposVacios"));
-        }else{
-            try {
-                conexion = new ClienteRMI();
-            } catch (RemoteException | NotBoundException ex) {
-                //QUITAR
-                System.out.println("Entre");
-                hayConexion = false;
-            }
-            //4
-            if(hayConexion){
-                cuenta = new Cuenta(tfNombre.getText(), tfApellidos.getText(), tfNombreUsuario.getText(), tfCorreo.getText(), tfContrasena.getText(), "img"+generarNumeroImagenAleatorio());
+        } else {
+            cuenta = new Cuenta(tfNombre.getText(), tfApellidos.getText(), tfNombreUsuario.getText(), tfCorreo.getText(), tfContrasena.getText(), imagenDeJugador);
 
-                boolean[] validaciones = cuenta.validarCampos(cuenta, tfReContrasena.getText());
+            boolean[] validaciones = cuenta.validarCampos(cuenta, tfReContrasena.getText());
 
-                if (validaciones[6]) {
-                    //5
+            if (validaciones[6]) {
+                try {
+                    conexion = new ClienteRMI();
                     if (conexion.registrarUsuario(cuenta)) {
                         MensajeController.mensajeInformacion(idioma.getString("usuarioGuardado"));
                         main.desplegarMenuPrincipal(idioma, tfNombreUsuario.getText());
                     } else {
                         labelErrorNombreUsuario.setVisible(validaciones[2]);
-                        MensajeController.mensajeAdvertencia("Hay camposInvalidos");
+
                     }
-                } else {
-                    mostrarErroresCampos(validaciones);
+                } catch (RemoteException | NotBoundException ex) {
+                    MensajeController.mensajeAdvertencia(idioma.getString("errorDeConexionIP"));
                 }
-            }else{
-                MensajeController.mensajeAdvertencia("No hay conexion");
+            } else {
+                mostrarErroresCampos(validaciones);
+                MensajeController.mensajeAdvertencia("Hay camposInvalidos");
             }
         }
-        
+
     }
-    
-    private boolean validarCamposVacios(){
+
+    private boolean validarCamposVacios() {
         return tfNombreUsuario.getText().isEmpty() || tfContrasena.getText().isEmpty() || tfReContrasena.getText().isEmpty() || tfApellidos.getText().isEmpty() || tfCorreo.getText().isEmpty() || tfNombre.getText().isEmpty();
     }
-    
+
     @FXML
-    private void restringirNumeroDeCaracteres(KeyEvent evento){
-        if(tfNombreUsuario.getText().length() >= 50){
-            evento.consume();
-        }
-    }
-    
-    @FXML   
-    private void restringirEspacios(KeyEvent evento){
-        char caracter = evento.getCharacter().charAt(0);
-        
-        if(caracter == ' '){
+    private void restringirNumeroDeCaracteres(KeyEvent evento) {
+        if (tfNombreUsuario.getText().length() >= 50) {
             evento.consume();
         }
     }
 
-    private void mostrarErroresCampos(boolean[] validaciones){
+    @FXML
+    private void restringirEspacios(KeyEvent evento) {
+        char caracter = evento.getCharacter().charAt(0);
+
+        if (caracter == ' ') {
+            evento.consume();
+        }
+    }
+
+    private void mostrarErroresCampos(boolean[] validaciones) {
         labelErrorNombre.setVisible(!validaciones[0]);
         labelErrorApellidos.setVisible(!validaciones[1]);
         labelErrorNombreUsuario.setVisible(!validaciones[2]);
         labelErrorContraseña.setVisible(!validaciones[3]);
+        labelErrorContraseña.setVisible(!validaciones[4]);
         labelErrorReContraseña.setVisible(!validaciones[3]);
         labelErrorCorreo.setVisible(!validaciones[5]);
     }
-    
-    private int generarNumeroImagenAleatorio(){
+
+    private int generarNumeroImagenAleatorio() {
         Random aleatatio = new Random(System.currentTimeMillis());
-        
-        int numero = aleatatio.nextInt(10);
-        
+
+        int numero = aleatatio.nextInt(15);
+
         return numero;
+    }
+
+    private void mostrarImagenPerfil() {
+        numeroImagen = generarNumeroImagenAleatorio();
+        imagenDeJugador = "img" + numeroImagen;
+        imgPerfil.setStyle("-fx-background-image: url('cincolinea/imagenes/" + imagenDeJugador + ".jpg" + "');"
+                + "-fx-background-position: center center; -fx-background-repeat: stretch; -fx-background-size: 116px 105px 116px 105px;");
+    }
+
+    @FXML
+    private void cambiarImagen(ActionEvent evento) {
+        if (numeroImagen > 14)
+            numeroImagen = 1;
+        else 
+            numeroImagen++;
+        
+        imagenDeJugador = "img" + numeroImagen;
+        imgPerfil.setStyle("-fx-background-image: url('cincolinea/imagenes/" + imagenDeJugador + ".jpg" + "');"
+                + "-fx-background-position: center center; -fx-background-repeat: stretch; -fx-background-size: 116px 105px 116px 105px;");
     }
 }

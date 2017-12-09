@@ -59,6 +59,14 @@ public class FXMLRankingController implements Initializable {
     private Label labelTotalPartidas;
     @FXML
     private Label labelPuntos;
+    @FXML
+    private JFXButton imgPerfil;
+    private String imagenDePerfil;
+
+    public void setImagenDePerfil(String imagenDePerfil) {
+        this.imagenDePerfil = imagenDePerfil;
+        cargarPerfil();
+    }
     
     private void iniciarIdiomaComponentes() {
         btnRegresar.setText(idioma.getString("btnRegresar"));
@@ -128,6 +136,11 @@ public class FXMLRankingController implements Initializable {
     @FXML
     private void regresarMenuPrincipal(ActionEvent event) {
         main.desplegarMenuPrincipal(idioma, idUsuario);
+    }
+    
+    private void cargarPerfil(){
+        imgPerfil.setStyle("-fx-background-image: url('cincolinea/imagenes/" + imagenDePerfil + ".jpg" + "');"
+                + "-fx-background-position: center center; -fx-background-repeat: stretch; -fx-background-size: 128px 90px 128px 90px;");
     }
 
 }

@@ -9,8 +9,7 @@ import java.util.regex.Pattern;
  * @author Miguel Leonardo Jimenez Jimenez
  */
 public class Cuenta implements Serializable{
-    private static final String PATRON_CORREO = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
-            + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+    private static final String PATRON_CORREO = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
     private String nombre;
     private String apellidos;
     private String nombreUsuario;
@@ -99,7 +98,7 @@ public class Cuenta implements Serializable{
         validaciones[1] = cuenta.getApellidos().length() >= 2;
         //NombreUsuario
         validaciones[2] = cuenta.getNombreUsuario().length() > 0;
-        //Contraseña concondancia
+        //Contraseña concordancia
         validaciones[3] = cuenta.getContraseña().equals(confirmacionContraseña);
         //Contraseña tamaño
         validaciones[4] = cuenta.getContraseña().length() > 8;

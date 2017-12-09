@@ -127,4 +127,12 @@ public class ServidorRMI implements ICuenta, IVerificacionConexion, IRanking {
         return controlador.sacarMejores10();
     }
 
+    @Override
+    public String sacarImagenDePerfil(String nombreUsuario) throws RemoteException {
+        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("CincoLineaServidorPU", null);
+        ControladorCuenta controlador = new ControladorCuenta(entityManagerFactory);
+
+        return controlador.sacarImagenDePerfil(nombreUsuario);
+    }
+
 }

@@ -32,7 +32,7 @@ io.on('connection', function(socket) {
 		socket.emit('jugadores', jugadasId);
 	});//Invitado
 
-	socket.on('emparejar',function(idAnfitrion, idInvitado){
+	socket.on('emparejar',function(idAnfitrion, idInvitado, imagen){
 		var socketAnfitrion;
 		var encontro = false;
 		for(var i = 0; i < jugadas.length; i++){
@@ -46,7 +46,7 @@ io.on('connection', function(socket) {
 				console.log('Se emparejo el usuario: ' + idAnfitrion + ' con el usuario: ' + idInvitado);
 				socketAnfitrion = auxJugada.socketAnfitrion;
 				socket.emit('respuestaEmparejamiento', idAnfitrion, auxJugada.configuracion);
-				socketAnfitrion.emit('respuestaEmparejamiento', idInvitado);
+				socketAnfitrion.emit('respuestaEmparejamiento', idInvitado, imagen);
 				encontro = true;
 				break;
 			}
@@ -58,17 +58,17 @@ io.on('connection', function(socket) {
 		}
 	});//Invitado
 
-	socket.on('realizarJugada', function(jugada, jugadorContrincante){
+	socket.on('realizarJugada', function(jugada, jugadorContrincante, tipo){
 		var socketContrincante;
 		for (var i = 0; i < jugadas.length; i++) {
 			auxJugada = jugadas[i];
-			if(jugadorContrincante.tipo){
-				if(auxJugada.idAnfitrion == jugadorContrincante.idJugador){
+			if(tipo){
+				if(auxJugada.idAnfitrion == jugadorContrincante){
 					socketContrincante = auxJugada.socketAnfitrion;
 					break;
 				}
 			}else{
-				if(auxJugada.idInvitado == jugadorContrincante.idJugador){
+				if(auxJugada.idInvitado == jugadorContrincante){
 					socketContrincante = auxJugada.socketInvitado;
 					break;
 				}

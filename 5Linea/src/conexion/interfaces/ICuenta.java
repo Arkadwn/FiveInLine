@@ -12,4 +12,5 @@ import java.rmi.RemoteException;
 public interface ICuenta extends Remote{
     public boolean autenticarCuenta(String usuario,String contrasena) throws RemoteException;
     public boolean registrarCuenta(Cuenta cuenta) throws RemoteException;
+    public String sacarImagenDePerfil(String nombreUsuario) throws RemoteException;
 }

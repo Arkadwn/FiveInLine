@@ -16,52 +16,29 @@
             <Image url="@../imagenes/wallpaper.jpg" />
          </image>
       </ImageView>
-      <JFXButton fx:id="btnAbandonarP" layoutX="191.0" layoutY="467.0" onAction="#abandonarPartida" prefHeight="34.0" prefWidth="201.0" style="-fx-background-color: #686868;" textFill="WHITE" />
+      <JFXButton fx:id="btnAbandonarPartida" layoutX="191.0" layoutY="467.0" onAction="#abandonarPartida" prefHeight="34.0" prefWidth="201.0" style="-fx-background-color: #686868;" textFill="WHITE" />
       <Pane layoutX="559.0" layoutY="14.0" prefHeight="487.0" prefWidth="225.0" style="-fx-background-color: rgba(255,255,255,0.5);">
          <opaqueInsets>
             <Insets />
          </opaqueInsets>
          <children>
-            <Label fx:id="labelNombreContrincante" layoutX="23.0" layoutY="404.0" prefHeight="17.0" prefWidth="179.0" text="Label">
+            <Label fx:id="labelNombreContrincante" alignment="CENTER" layoutX="40.0" layoutY="414.0" prefHeight="17.0" prefWidth="179.0" text="Label" textFill="#fc0f0f">
                <font>
-                  <Font name="System Bold" size="12.0" />
+                  <Font name="System Bold" size="18.0" />
                </font>
             </Label>
-            <Label fx:id="labelInfoContrincante" layoutX="23.0" layoutY="434.0" prefHeight="17.0" prefWidth="179.0" text="Label">
+            <Label fx:id="labelNombreJugador" alignment="CENTER" layoutX="39.0" layoutY="159.0" prefHeight="17.0" prefWidth="179.0" text="Label" textFill="#2600e4">
                <font>
-                  <Font name="System Bold" size="12.0" />
+                  <Font name="System Bold" size="18.0" />
                </font>
             </Label>
-            <ImageView fitHeight="75.0" fitWidth="70.0" layoutX="78.0" layoutY="325.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../imagenes/Usuario_Generico.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="86.0" fitWidth="70.0" layoutX="82.0" layoutY="41.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../imagenes/Usuario_Generico.png" />
-               </image>
-            </ImageView>
-            <Label fx:id="labelNombreJugador" layoutX="28.0" layoutY="123.0" prefHeight="17.0" prefWidth="179.0" text="Label">
+            <Label alignment="CENTER" layoutX="74.0" layoutY="207.0" prefHeight="17.0" prefWidth="102.0" text="VS">
                <font>
-                  <Font name="System Bold" size="12.0" />
+                  <Font name="Chiller" size="51.0" />
                </font>
             </Label>
-            <Label fx:id="labelInfoJugador" layoutX="28.0" layoutY="151.0" prefHeight="17.0" prefWidth="179.0" text="Label">
-               <font>
-                  <Font name="System Bold" size="12.0" />
-               </font>
-            </Label>
-            <Label fx:id="labelTextoTiempo" layoutX="67.0" layoutY="226.0" prefHeight="17.0" prefWidth="102.0" text="Label">
-               <font>
-                  <Font name="System Bold" size="12.0" />
-               </font>
-            </Label>
-            <Label fx:id="labelContTiempo" layoutX="66.0" layoutY="245.0" prefHeight="17.0" prefWidth="102.0" text="Label">
-               <font>
-                  <Font name="System Bold" size="12.0" />
-               </font>
-            </Label>
+            <JFXButton fx:id="imgPerfil" layoutX="68.0" layoutY="33.0" prefHeight="105.0" prefWidth="113.0" />
+            <JFXButton fx:id="imgPerfilContrincante" layoutX="73.0" layoutY="293.0" prefHeight="105.0" prefWidth="113.0" />
          </children>
       </Pane>
       <GridPane fx:id="tablero" layoutX="91.0" layoutY="32.0" prefHeight="400.0" prefWidth="401.0">

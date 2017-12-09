@@ -29,5 +29,6 @@
       <Label fx:id="labelJugadores" layoutX="96.0" layoutY="91.0" prefHeight="17.0" prefWidth="76.0" />
       <JFXButton fx:id="btnJugar" focusTraversable="false" layoutX="220.0" layoutY="318.0" onAction="#emparejar" prefHeight="41.0" prefWidth="125.0" style="-fx-background-color: White; -fx-background-radius: 18;" />
       <JFXButton fx:id="btnActualizar" layoutX="269.0" layoutY="235.0" onAction="#buscarPartidasNuevas" prefHeight="25.0" prefWidth="76.0" style="-fx-background-color: gray; -fx-background-radius: 18;" textFill="WHITE" />
+      <JFXButton fx:id="imgPerfil" layoutX="482.0" layoutY="36.0" prefHeight="90.0" prefWidth="128.0" />
    </children>
 </AnchorPane>

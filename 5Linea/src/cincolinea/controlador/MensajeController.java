@@ -16,7 +16,7 @@ public class MensajeController {
         ventana.setTitle(null);
         ventana.setHeaderText(mensaje);
         ventana.setContentText(null);
-        ventana.initStyle(StageStyle.UTILITY);
+        ventana.initStyle(StageStyle.UNDECORATED);
         ButtonType boton = new ButtonType("OK", ButtonData.OK_DONE);
         ventana.getButtonTypes().setAll(boton);
         ventana.showAndWait();
@@ -27,7 +27,7 @@ public class MensajeController {
         ventana.setTitle(null);
         ventana.setHeaderText(null);
         ventana.setContentText(mensaje);
-        ventana.initStyle(StageStyle.UTILITY);
+        ventana.initStyle(StageStyle.UNDECORATED);
         ButtonType boton = new ButtonType("OK", ButtonData.OK_DONE);
         ventana.getButtonTypes().setAll(boton);
         ventana.showAndWait();
@@ -40,7 +40,7 @@ public class MensajeController {
         ventana.setTitle(null);
         ventana.setHeaderText(null);
         ventana.setContentText(mensaje);
-        ventana.initStyle(StageStyle.UTILITY);
+        ventana.initStyle(StageStyle.UNDECORATED);
         ButtonType botonSi = new ButtonType(si, ButtonData.YES);
         ButtonType botonNo = new ButtonType(no, ButtonData.NO);
         ventana.getButtonTypes().setAll(botonSi,botonNo);

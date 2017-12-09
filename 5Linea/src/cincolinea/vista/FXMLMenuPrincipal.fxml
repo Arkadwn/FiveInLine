@@ -25,5 +25,11 @@
             <Font name="System Bold" size="18.0" />
          </font>
       </JFXButton>
+      <JFXButton fx:id="imgPerfil" layoutX="482.0" layoutY="35.0" prefHeight="91.0" prefWidth="129.0" />
+      <Label fx:id="labelNombreUsuario" alignment="CENTER" layoutX="135.0" layoutY="46.0" prefHeight="27.0" prefWidth="219.0" text="Label" textFill="WHITE">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
     </children>
 </AnchorPane>

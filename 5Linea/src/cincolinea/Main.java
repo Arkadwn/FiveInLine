@@ -9,6 +9,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 /**
  *
@@ -34,6 +35,7 @@ public class Main extends Application {
 
             FXMLRegistroIPController control = loader.getController();
             control.setMain(this);
+//            stageInicio.initStyle(StageStyle.UNDECORATED);
             stageInicio.show();
 
             stageLocal = stageInicio;
@@ -77,7 +79,7 @@ public class Main extends Application {
         }
     }
 
-    public void desplegarRanking(ResourceBundle idiomaElegido, String idUsuario) {
+    public void desplegarRanking(ResourceBundle idiomaElegido, String idUsuario, String imagenUsuario) {
         try {
 
             FXMLLoader loader = new FXMLLoader(Main.class.getResource("/cincolinea/vista/FXMLRanking.fxml"),idiomaElegido);
@@ -86,6 +88,7 @@ public class Main extends Application {
             FXMLRankingController control = loader.getController();
             control.setMain(this);
             control.setIdUsuario(idUsuario);
+            control.setImagenDePerfil(imagenUsuario);
                     
             Scene scene = new Scene(root);
             
@@ -95,11 +98,10 @@ public class Main extends Application {
 
         } catch (NullPointerException | IOException ex) {
             System.out.println("Excepción tipo IO, mensaje: " + ex.getMessage());
-            ex.printStackTrace();
         }
     }
 
-    public void desplegarBuscaPartida(ResourceBundle idiomaElegido, String idUsuario) {
+    public void desplegarBuscaPartida(ResourceBundle idiomaElegido, String idUsuario, String imagenJugador) {
         try {
 
             FXMLLoader loader = new FXMLLoader(Main.class.getResource("/cincolinea/vista/FXMLBuscaPartida.fxml"),idiomaElegido);
@@ -108,6 +110,7 @@ public class Main extends Application {
             FXMLBuscaPartidaController control = loader.getController();
             control.setMain(this);
             control.setIdUsuario(idUsuario);
+            control.setImagenDePerfil(imagenJugador);
             Scene scene = new Scene(root);
 
             stageLocal.setScene(scene);
@@ -140,7 +143,7 @@ public class Main extends Application {
         }
     }
 
-    public void deplegarConfigurarPartida(ResourceBundle idiomaElegido, String idUsuario) {
+    public void deplegarConfigurarPartida(ResourceBundle idiomaElegido, String idUsuario, String imagenDePerfil) {
         try {
             FXMLLoader loader = new FXMLLoader(Main.class.getResource("/cincolinea/vista/FXMLConfigurarPartida.fxml"),idiomaElegido);
             Parent root = (Parent) loader.load();
@@ -148,6 +151,7 @@ public class Main extends Application {
             FXMLConfigurarPartidaController control = loader.getController();
             control.setMain(this);
             control.setIdUsuario(idUsuario);
+            control.setImagenDePerfil(imagenDePerfil);
 
             Scene scene = new Scene(root);
 

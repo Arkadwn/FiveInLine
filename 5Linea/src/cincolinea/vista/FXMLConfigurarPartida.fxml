@@ -27,6 +27,7 @@
          </image>
       </ImageView>
       <JFXButton fx:id="btnCancelarPartida" layoutX="158.0" layoutY="301.0" onAction="#accionCancelarPartida" prefHeight="39.0" prefWidth="102.0" style="-fx-background-color: #686868; -fx-background-radius: 18;" textFill="WHITE" visible="false" />
-      <Label fx:id="labelEsperando" layoutX="130.0" layoutY="256.0" prefHeight="23.0" prefWidth="172.0" text="Label" textAlignment="CENTER" textFill="WHITE" visible="false" />
+      <Label fx:id="labelEsperando" alignment="CENTER" layoutX="130.0" layoutY="256.0" prefHeight="23.0" prefWidth="172.0" text="Label" textAlignment="CENTER" textFill="WHITE" visible="false" />
+      <JFXButton fx:id="imgPerfil" layoutX="483.0" layoutY="36.0" prefHeight="90.0" prefWidth="128.0" />
    </children>
 </AnchorPane>

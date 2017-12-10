@@ -50,10 +50,6 @@ public class FXMLRankingController implements Initializable {
     @FXML
     private ListView<String> listPuntos;
     @FXML
-    private Label labelPartidasGanas;
-    @FXML
-    private Label labelPartidasPertidas;
-    @FXML
     private Label labelPartidasEmpatadas;
     @FXML
     private Label labelTotalPartidas;
@@ -62,6 +58,10 @@ public class FXMLRankingController implements Initializable {
     @FXML
     private JFXButton imgPerfil;
     private String imagenDePerfil;
+    @FXML
+    private Label labelPartidasGanadas;
+    @FXML
+    private Label labelPartidasPerdidas;
 
     public void setImagenDePerfil(String imagenDePerfil) {
         this.imagenDePerfil = imagenDePerfil;
@@ -70,12 +70,19 @@ public class FXMLRankingController implements Initializable {
     
     private void iniciarIdiomaComponentes() {
         btnRegresar.setText(idioma.getString("btnRegresar"));
-        labelRanking.setText(idioma.getString("labelRanking")); 
+        labelRanking.setText(idioma.getString("labelRanking"));
+        labelTotalPartidas.setText(idioma.getString("labelTotalPartidas"));
+        labelPuntos.setText(idioma.getString("labelPuntos"));
+        labelPartidasPerdidas.setText(idioma.getString("labelPartidasPertidas"));
+        labelPartidasGanadas.setText(idioma.getString("labelPartidasGanas"));
+        labelPartidasEmpatadas.setText(idioma.getString("labelPartidasEmpatadas"));
+        labelPartidas.setText(idioma.getString("labelPartidas"));
+        labelNombreJugador.setText(idioma.getString("labelNombreJugador"));
     }
 
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        idioma = rb;
+    public void initialize(URL url, ResourceBundle idiomaElegido) {
+        idioma = idiomaElegido;
         if (idioma != null) {
             iniciarIdiomaComponentes();
         }

@@ -36,8 +36,8 @@ public class ClienteRMI {
         conexion = LocateRegistry.getRegistry(ip);
     }
 
-    public boolean autenticarCuenta(String usuario, String contrasena) {
-        boolean validacion = false;
+    public int autenticarCuenta(String usuario, String contrasena) {
+        int validacion = 0;
 
         String contrasenaEncriptada = "";
         try {
@@ -130,6 +130,32 @@ public class ClienteRMI {
         return validacion;
     }
 
+    public boolean activarEstadoSesion(String nombreUsuario) {
+        boolean validacion = false;
+
+        try {
+            ICuenta cuenta = (ICuenta) conexion.lookup("ServiciosCuenta");
+            validacion = cuenta.activarEstadoSesion(nombreUsuario);
+        } catch (RemoteException | NotBoundException ex) {
+            
+        }
+
+        return validacion;
+    }
+    
+    public boolean desactivarEstadoSesion(String nombreUsuario) {
+        boolean validacion = false;
+
+        try {
+            ICuenta cuenta = (ICuenta) conexion.lookup("ServiciosCuenta");
+            validacion = cuenta.desactivarEstadoSesion(nombreUsuario);
+        } catch (RemoteException | NotBoundException ex) {
+            
+        }
+
+        return validacion;
+    }
+        
     public boolean aplicarCastigo(String idJugador) {
         boolean validacion = false;
 

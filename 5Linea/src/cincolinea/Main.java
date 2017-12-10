@@ -9,7 +9,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 /**
  *
@@ -19,6 +18,10 @@ import javafx.stage.StageStyle;
 public class Main extends Application {
 
     private Stage stageLocal;
+
+    public Stage getStageLocal() {
+        return stageLocal;
+    }
     
     @Override
     public void start(Stage stage) throws Exception {

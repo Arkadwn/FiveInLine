@@ -95,6 +95,7 @@ public class FXMLBuscaPartidaController implements Initializable {
             imgCargando.setVisible(true);
             cbPartidas.setVisible(false);
             labelBuscandoPartidas.setVisible(true);
+            labelJugadores.setVisible(false);
         } catch (Exception ex) {
             System.out.println("Error: " + ex.getMessage());
         }
@@ -122,6 +123,7 @@ public class FXMLBuscaPartidaController implements Initializable {
                     JSONObject objetoRescatado = arrayJugadasDisponibles.getJSONObject(i);
 
                     cbPartidas.setVisible(true);
+                    labelJugadores.setVisible(true);
                     //Agregar al bundle
                     partidasDisponibles.add(idioma + objetoRescatado.get("idAnfitrion").toString());
                 }
@@ -184,6 +186,7 @@ public class FXMLBuscaPartidaController implements Initializable {
     @FXML
     private void buscarPartidasNuevas(ActionEvent event) {
         cbPartidas.setVisible(false);
+        labelJugadores.setVisible(false);
         imgCargando.setVisible(true);
         labelBuscandoPartidas.setVisible(true);
 

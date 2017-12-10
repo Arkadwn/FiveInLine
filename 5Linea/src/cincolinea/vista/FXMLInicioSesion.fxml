@@ -20,7 +20,7 @@
             <Image url="@../imagenes/wallpaper.jpg" />
          </image>
       </ImageView>
-      <JFXButton fx:id="btnSalir" buttonType="RAISED" focusTraversable="false" layoutX="256.0" layoutY="347.0" prefHeight="40.0" prefWidth="80.0" style="-fx-background-color: #909090; -fx-background-radius: 18;" textAlignment="CENTER" />
+      <JFXButton fx:id="btnSalir" buttonType="RAISED" focusTraversable="false" layoutX="256.0" layoutY="347.0" onAction="#cerrarSistema" prefHeight="40.0" prefWidth="80.0" style="-fx-background-color: #909090; -fx-background-radius: 18;" text="Button" textAlignment="CENTER" />
       <JFXButton fx:id="btnIngresar" buttonType="RAISED" focusTraversable="false" layoutX="356.0" layoutY="347.0" onAction="#ingresarMenuPrincipal" prefHeight="40.0" prefWidth="80.0" style="-fx-background-radius: 18; -fx-background-color: white;" textAlignment="CENTER" />
       <JFXTextField fx:id="txtNombreUsuario" focusColor="WHITE" labelFloat="true" layoutX="95.0" layoutY="198.0" style="-fx-text-inner-color: white;" unFocusColor="#909090" />
       <JFXPasswordField fx:id="txtContrasena" focusColor="WHITE" layoutX="95.0" layoutY="293.0" style="-fx-text-inner-color: white;" unFocusColor="#909090" />

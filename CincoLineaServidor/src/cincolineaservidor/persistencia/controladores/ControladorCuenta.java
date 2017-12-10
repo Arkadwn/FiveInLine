@@ -88,6 +88,61 @@ public class ControladorCuenta {
         return registro;
     }
     
+        public boolean desactivarPerfilInicioSesion(String nombreUsuario) {
+        EntityManager entidad = getEntityManager();
+        int estadoSesion;
+        boolean validacion = false;
+
+        try {
+            entidad.getTransaction().begin();
+            Cuentas cuentaUsuario = entidad.find(Cuentas.class, nombreUsuario);
+            estadoSesion = cuentaUsuario.getEstadoSesion();
+
+            if (estadoSesion == 0) {
+                estadoSesion = 1;
+            }
+
+            cuentaUsuario.setEstadoSesion(estadoSesion);
+            entidad.getTransaction().commit();
+            validacion = true;
+
+        } catch (RollbackException ex) {
+            if (entidad.getTransaction().isActive()) {
+                entidad.getTransaction().rollback();
+                validacion = false;
+            }
+        }
+        return validacion;
+    }
+
+    public boolean activarPerfilInicioSesion(String nombreUsuario) {
+        EntityManager entidad = getEntityManager();
+        int estadoSesion;
+        boolean validacion = false;
+
+        try {
+            entidad.getTransaction().begin();
+            Cuentas cuentaUsuario = entidad.find(Cuentas.class, nombreUsuario);
+            estadoSesion = cuentaUsuario.getEstadoSesion();
+
+            if (estadoSesion == 1) {
+                estadoSesion = 0;
+            }
+
+            cuentaUsuario.setEstadoSesion(estadoSesion);
+            entidad.getTransaction().commit();
+            validacion = true;
+
+        } catch (RollbackException ex) {
+            if (entidad.getTransaction().isActive()) {
+                entidad.getTransaction().rollback();
+                validacion = false;
+            }
+        }
+        return validacion;
+    }
+
+    
     public String sacarImagenDePerfil(String idUsuario){
         String imagen = "";
         

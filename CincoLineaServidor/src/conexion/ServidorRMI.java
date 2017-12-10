@@ -53,8 +53,8 @@ public class ServidorRMI implements ICuenta, IVerificacionConexion, IRanking {
     }
 
     @Override
-    public boolean autenticarCuenta(String usuario, String contrasena) {
-        boolean autentico = false;
+    public int autenticarCuenta(String usuario, String contrasena) {
+        int autentico = 0;
 
         EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("CincoLineaServidorPU", null);
         ControladorCuenta controlador = new ControladorCuenta(entityManagerFactory);
@@ -62,13 +62,13 @@ public class ServidorRMI implements ICuenta, IVerificacionConexion, IRanking {
         Cuenta resultadoCuenta = controlador.verificarAutenticacion(usuario);
 
         if (resultadoCuenta == null) {
-            autentico = false;
+            autentico = 0;
         } else if (resultadoCuenta.getContraseña().equals(contrasena)) {
             if (resultadoCuenta.isEstadoSesion() == 1) {
-                autentico = false;
+                autentico = 2;
                 System.out.println("Se ha tratado de acceder con el usuario: " + usuario);
             }else{
-                autentico = true;
+                autentico = 1;
                 System.out.println("Ha accedido el usuario: " + usuario);
             }
             
@@ -133,6 +133,18 @@ public class ServidorRMI implements ICuenta, IVerificacionConexion, IRanking {
         ControladorCuenta controlador = new ControladorCuenta(entityManagerFactory);
 
         return controlador.sacarImagenDePerfil(nombreUsuario);
+    }
+
+    @Override
+    public boolean activarEstadoSesion(String nombreUsuario) throws RemoteException {
+        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("CincoLineaServidorPU", null);
+        return new ControladorCuenta(entityManagerFactory).activarPerfilInicioSesion(nombreUsuario);
+    }
+
+    @Override
+    public boolean desactivarEstadoSesion(String nombreUsuario) throws RemoteException {
+        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("CincoLineaServidorPU", null);
+        return new ControladorCuenta(entityManagerFactory).desactivarPerfilInicioSesion(nombreUsuario);
     }
 
 }

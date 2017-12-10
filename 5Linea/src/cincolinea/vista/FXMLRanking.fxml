@@ -14,24 +14,25 @@
             <Image url="@../imagenes/wallpaper.jpg" />
          </image>
       </ImageView>
-      <JFXButton fx:id="btnRegresar" buttonType="RAISED" layoutX="177.0" layoutY="379.0" onAction="#regresarMenuPrincipal" prefHeight="25.0" prefWidth="107.0" style="-fx-background-color: #6b6b6b; -fx-background-radius: 18;" text="Button" textFill="WHITE" />
-      <Label fx:id="labelRanking" layoutX="145.0" layoutY="38.0" prefHeight="21.0" prefWidth="225.0" textFill="WHITE">
+      <JFXButton fx:id="btnRegresar" buttonType="RAISED" layoutX="177.0" layoutY="384.0" onAction="#regresarMenuPrincipal" prefHeight="25.0" prefWidth="107.0" style="-fx-background-color: #6b6b6b; -fx-background-radius: 18;" text="Button" textFill="WHITE" />
+      <Label fx:id="labelRanking" alignment="CENTER" layoutX="145.0" layoutY="38.0" prefHeight="21.0" prefWidth="225.0" textFill="WHITE">
          <font>
             <Font size="15.0" />
          </font>
       </Label>
-      <ListView fx:id="listUsuarios" layoutX="17.0" layoutY="131.0" prefHeight="234.0" prefWidth="152.0" style="-fx-background-color: gray;" />
-      <ListView fx:id="listPartidasGanadas" layoutX="170.0" layoutY="131.0" prefHeight="234.0" prefWidth="55.0" />
-      <ListView fx:id="listPartidasPerdidas" layoutX="226.0" layoutY="131.0" prefHeight="234.0" prefWidth="55.0" style="-fx-background-color: gray;" />
-      <ListView fx:id="listPartidasEmpatadas" layoutX="282.0" layoutY="131.0" prefHeight="234.0" prefWidth="55.0" />
-      <ListView fx:id="listTotalPartidas" layoutX="338.0" layoutY="131.0" prefHeight="234.0" prefWidth="55.0" style="-fx-background-color: gray;" />
-      <ListView fx:id="listPuntos" layoutX="394.0" layoutY="131.0" prefHeight="234.0" prefWidth="55.0" />
-      <Label fx:id="labelNombreJugador" layoutX="22.0" layoutY="107.0" prefHeight="17.0" prefWidth="152.0" textFill="WHITE" />
-      <Label fx:id="labelPartidas" contentDisplay="CENTER" layoutX="237.0" layoutY="76.0" prefHeight="17.0" prefWidth="152.0" textAlignment="CENTER" textFill="WHITE" />
-      <Label fx:id="labelPartidasGanas" alignment="CENTER" contentDisplay="CENTER" layoutX="175.0" layoutY="98.0" prefHeight="17.0" prefWidth="55.0" textFill="WHITE" />
-      <Label fx:id="labelPartidasPertidas" contentDisplay="CENTER" layoutX="230.0" layoutY="98.0" prefHeight="17.0" prefWidth="55.0" textAlignment="CENTER" textFill="WHITE" />
-      <Label fx:id="labelPartidasEmpatadas" contentDisplay="CENTER" layoutX="285.0" layoutY="98.0" prefHeight="17.0" prefWidth="55.0" textAlignment="CENTER" textFill="WHITE" />
-      <Label fx:id="labelTotalPartidas" contentDisplay="CENTER" layoutX="340.0" layoutY="98.0" prefHeight="17.0" prefWidth="55.0" textAlignment="CENTER" textFill="WHITE" />
-      <Label fx:id="labelPuntos" contentDisplay="CENTER" layoutX="395.0" layoutY="98.0" prefHeight="17.0" prefWidth="55.0" textAlignment="CENTER" textFill="WHITE" />
+      <ListView fx:id="listUsuarios" layoutX="17.0" layoutY="121.0" prefHeight="255.0" prefWidth="152.0" style="-fx-background-color: gray;" />
+      <ListView fx:id="listPartidasGanadas" layoutX="170.0" layoutY="121.0" prefHeight="255.0" prefWidth="55.0" />
+      <ListView fx:id="listPartidasPerdidas" layoutX="226.0" layoutY="121.0" prefHeight="255.0" prefWidth="55.0" style="-fx-background-color: gray;" />
+      <ListView fx:id="listPartidasEmpatadas" layoutX="282.0" layoutY="121.0" prefHeight="255.0" prefWidth="55.0" />
+      <ListView fx:id="listTotalPartidas" layoutX="338.0" layoutY="121.0" prefHeight="255.0" prefWidth="55.0" style="-fx-background-color: gray;" />
+      <ListView fx:id="listPuntos" layoutX="394.0" layoutY="121.0" prefHeight="255.0" prefWidth="55.0" />
+      <Label fx:id="labelNombreJugador" layoutX="17.0" layoutY="95.0" prefHeight="17.0" prefWidth="152.0" textFill="WHITE" />
+      <Label fx:id="labelPartidas" alignment="CENTER" contentDisplay="CENTER" layoutX="234.0" layoutY="73.0" prefHeight="17.0" prefWidth="152.0" textAlignment="CENTER" textFill="WHITE" />
+      <Label fx:id="labelPartidasGanadas" alignment="CENTER" contentDisplay="CENTER" layoutX="170.0" layoutY="95.0" prefHeight="17.0" prefWidth="55.0" textAlignment="CENTER" textFill="WHITE" />
+      <Label fx:id="labelPartidasPerdidas" alignment="CENTER" contentDisplay="CENTER" layoutX="226.0" layoutY="94.0" prefHeight="17.0" prefWidth="55.0" textAlignment="CENTER" textFill="WHITE" />
+      <Label fx:id="labelPartidasEmpatadas" alignment="CENTER" contentDisplay="CENTER" layoutX="282.0" layoutY="94.0" prefHeight="17.0" prefWidth="55.0" textAlignment="CENTER" textFill="WHITE" />
+      <Label fx:id="labelTotalPartidas" alignment="CENTER" contentDisplay="CENTER" layoutX="338.0" layoutY="94.0" prefHeight="17.0" prefWidth="55.0" textAlignment="CENTER" textFill="WHITE" />
+      <Label fx:id="labelPuntos" alignment="CENTER" contentDisplay="CENTER" layoutX="394.0" layoutY="94.0" prefHeight="17.0" prefWidth="55.0" textAlignment="CENTER" textFill="WHITE" />
+      <JFXButton fx:id="imgPerfil" layoutX="481.0" layoutY="36.0" prefHeight="90.0" prefWidth="128.0" />
    </children>
 </AnchorPane>

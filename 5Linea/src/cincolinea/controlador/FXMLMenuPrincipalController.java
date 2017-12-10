@@ -65,6 +65,7 @@ public class FXMLMenuPrincipalController implements Initializable {
 
     public void setIdUsuario(String idUsuario) {
         this.idUsuario = idUsuario;
+        cargarPerfil();
     }
 
     @FXML
@@ -79,6 +80,12 @@ public class FXMLMenuPrincipalController implements Initializable {
 
     @FXML
     private void cerrarSesion(javafx.event.ActionEvent event) {
+        try {
+            ClienteRMI conexion = new ClienteRMI();
+            conexion.activarEstadoSesion(idUsuario);
+        } catch (RemoteException |NotBoundException ex) {
+            System.out.println("Error: "+ex.getMessage());
+        }
         main.desplegarInicioSesion(idioma);
     }
     
@@ -91,9 +98,8 @@ public class FXMLMenuPrincipalController implements Initializable {
         try {
             ClienteRMI conexion = new ClienteRMI();
             imagenPerfil = conexion.sacarImagenDePerfil(idUsuario);
-            
             imgPerfil.setStyle("-fx-background-image: url('cincolinea/imagenes/" + imagenPerfil + ".jpg" + "');"
-                + "-fx-background-position: center center; -fx-background-repeat: stretch; -fx-background-size: 116px 105px 116px 105px;");
+                + "-fx-background-position: center center; -fx-background-repeat: stretch; -fx-background-size: 129px 91px 129px 91px;");
             labelNombreUsuario.setText(idUsuario);
         } catch (RemoteException | NotBoundException ex) {
             System.out.println("Error: " + ex.getMessage());

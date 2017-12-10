@@ -19,12 +19,15 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import org.json.JSONObject;
 import cincolinea.modelo.utilerias.ConfiguracionIP;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.scene.image.ImageView;
 
 /**
- * FXML Controller class
+ * Controlador de la vista configurar partida.
  *
  * @author Miguel Leonardo Jiménez Jiménez
+ * @author Adrián Bustamante Zarate
  */
 public class FXMLConfigurarPartidaController implements Initializable {
 
@@ -60,23 +63,32 @@ public class FXMLConfigurarPartidaController implements Initializable {
         this.idioma = idioma;
         if (this.idioma != null) {
             iniciarIdiomaComponentes();
-            activarEventos();
+            crearConexionIO();
         }
     }
 
+    /**
+     * Rellena el combo box cbTamano.
+     */
     @FXML
     private void rellenarComboboxTamaño() {
         ObservableList<String> tablero = FXCollections.observableArrayList("10x10", "9x9", "8x8");
         cbTamano.setItems(tablero);
     }
 
+    /**
+     * Rellena el combo box cbColorFicha.
+     */
     @FXML
     private void rellenarComboboxColores() {
         ObservableList<String> fichas = FXCollections.observableArrayList(idioma.getString("fichaNegra"), idioma.getString("fichaBlanca"));
         cbColorFichas.setItems(fichas);
     }
 
-    private void activarEventos() {
+    /**
+     * Crea la conexón con socket.io y activa los ons con su respectivo código.
+     */
+    private void crearConexionIO() {
 
         try {
             String[] ipPartes = ConfiguracionIP.getIP();
@@ -98,14 +110,22 @@ public class FXMLConfigurarPartidaController implements Initializable {
             });
             socket.connect();
         } catch (URISyntaxException ex) {
-            System.out.println("Conexion mal creada");
+            Logger.getLogger(FXMLConfigurarPartidaController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
+    /**
+     * Setter de la variable main.
+     * 
+     * @param main Ventana pricipal.
+     */
     public void setMain(Main main) {
         this.main = main;
     }
 
+    /**
+     * Internacionaliza los componentes de la vista configurar partida.
+     */
     private void iniciarIdiomaComponentes() {
         btnCrear.setText(idioma.getString("btnCrear"));
         btnCancelar.setText(idioma.getString("btnCancelar"));
@@ -113,6 +133,12 @@ public class FXMLConfigurarPartidaController implements Initializable {
         labelTamaño.setText(idioma.getString("labelTamaño"));
     }
 
+    /**
+     * Acción del botón btnAbandonarPartida.
+     * 
+     * @param evento El evento cachado por la presión del botón 
+     * btnAbandonarPartida.
+     */
     @FXML
     private void regresarMenuPrincipal(ActionEvent evento) {
         socket.off("respuestaEmparejamiento");
@@ -120,20 +146,35 @@ public class FXMLConfigurarPartidaController implements Initializable {
         main.desplegarMenuPrincipal(idioma, idUsuario);
     }
 
+    /**
+     * Setter de la variable idUsuario.
+     * 
+     * @param idUsuario Identificador del usuario que ha iniciado sesión. 
+     */
     public void setIdUsuario(String idUsuario) {
         this.idUsuario = idUsuario;
     }
 
+    /**
+     * Setter de la varialbe imagenDePerfil.
+     * 
+     * @param imagenDePerfil Identificador de la imagen de perfil del usuario.
+     */
     public void setImagenDePerfil(String imagenDePerfil) {
         this.imagenDePerfil = imagenDePerfil;
         cargarImagenDePerfil();
     }
 
+    /**
+     * Acción del botón btnCrear.
+     * 
+     * @param evento El evento cachado por la presión del botón btnCrear.
+     */
     @FXML
     private void iniciarJuego(ActionEvent evento) {
 
         if (cbTamano.getItems().isEmpty() || cbColorFichas.getItems().isEmpty()) {
-            System.out.println("Campos no elegidos");
+            MensajeController.mensajeAdvertencia(idioma.getString("camposVacios"));
         } else {
             crearConfiguracion();
 
@@ -155,6 +196,9 @@ public class FXMLConfigurarPartidaController implements Initializable {
 
     }
 
+    /**
+     * Repinta la vista cuando creas una partida.
+     */
     private void mostrarElementosDeEspera() {
         btnCancelar.setVisible(false);
         btnCrear.setVisible(false);
@@ -169,6 +213,9 @@ public class FXMLConfigurarPartidaController implements Initializable {
         btnCancelarPartida.setText(idioma.getString("btnCancelar"));
     }
 
+    /**
+     * Repinta la vista a la forma original
+     */
     private void ocultarElementosDeEspera() {
         btnCancelar.setVisible(true);
         btnCrear.setVisible(true);
@@ -181,6 +228,9 @@ public class FXMLConfigurarPartidaController implements Initializable {
         btnCancelarPartida.setVisible(false);
     }
 
+    /**
+     * Crea un objeto ConfiguracionPartida con los datos de la partida creada.
+     */
     private void crearConfiguracion() {
         configuracion = new ConfiguracionPartida();
 
@@ -204,12 +254,21 @@ public class FXMLConfigurarPartidaController implements Initializable {
         configuracion.setEsCreador(true);
     }
 
+    /**
+     * Acción del botón btnCancelarPartida.
+     * 
+     * @param evento El evento cachado por la presión del botón 
+     * btnCancelarPartida.
+     */
     @FXML
     private void accionCancelarPartida(ActionEvent evento) {
         socket.emit("cancelarPartida", idUsuario);
         ocultarElementosDeEspera();
     }
 
+    /**
+     * Muestra la imagen de perfil del usuario
+     */
     private void cargarImagenDePerfil() {
         imgPerfil.setStyle("-fx-background-image: url('cincolinea/imagenes/" + imagenDePerfil + ".jpg" + "');"
                 + "-fx-background-position: center center; -fx-background-repeat: stretch; -fx-background-size: 128px 90px 128px 90px;");

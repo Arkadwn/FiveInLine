@@ -11,6 +11,8 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.Random;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.event.ActionEvent;
@@ -18,9 +20,10 @@ import javafx.fxml.FXML;
 import javafx.scene.input.KeyEvent;
 
 /**
- * FXML Controller class
+ * Controlador de la vista registrar usuario.
  *
- * @author Miguel Leonardo Jiménez
+ * @author Miguel Leonardo Jiménez Jiménez
+ * @author Adrián Bustamante Zarate
  */
 public class FXMLRegistrarUsuarioController implements Initializable {
 
@@ -81,10 +84,18 @@ public class FXMLRegistrarUsuarioController implements Initializable {
         }
     }
 
+    /**
+     * Setter de la variable main.
+     * 
+     * @param main Ventana principal.
+     */
     public void setMain(Main main) {
         this.main = main;
     }
 
+    /**
+     * Internacionaliza los componentes de la vista.
+     */
     private void iniciarIdiomaComponentes() {
         btnRegistrar.setText(idioma.getString("btnRegistrar"));
         btnCancelar.setText(idioma.getString("btnCancelar"));
@@ -96,12 +107,22 @@ public class FXMLRegistrarUsuarioController implements Initializable {
         labelNombre.setText(idioma.getString("labelNombre"));
     }
 
+    /**
+     * Acción del botón btnCancelar.
+     * 
+     * @param evento El evento cachado por la presión del botón btnCancelar.
+     */
     @FXML
     private void regresarMenuPrincipal(ActionEvent evento) {
         //main.desplegarMenuPrincipal(idioma, tfNombreUsuario.getText());//Quitar
         main.desplegarInicioSesion(idioma);
     }
 
+    /**
+     * Acción del botón btnRegistrar.
+     * 
+     * @param evento El evento cachado por la presión del botón btnRegistrar.
+     */
     @FXML
     private void accionRegistrarUsuario(ActionEvent evento) {
         Cuenta cuenta;
@@ -123,6 +144,7 @@ public class FXMLRegistrarUsuarioController implements Initializable {
 
                     }
                 } catch (RemoteException | NotBoundException ex) {
+                    Logger.getLogger(FXMLRegistrarUsuarioController.class.getName()).log(Level.SEVERE, null, ex);
                     MensajeController.mensajeAdvertencia(idioma.getString("errorDeConexionIP"));
                 }
             } else {
@@ -133,10 +155,20 @@ public class FXMLRegistrarUsuarioController implements Initializable {
 
     }
 
+    /**
+     * Valida si alguno de los campos se encuentra vacío.
+     * 
+     * @return validación de los campos validos.
+     */
     private boolean validarCamposVacios() {
         return tfNombreUsuario.getText().isEmpty() || tfContrasena.getText().isEmpty() || tfReContrasena.getText().isEmpty() || tfApellidos.getText().isEmpty() || tfCorreo.getText().isEmpty() || tfNombre.getText().isEmpty();
     }
 
+    /**
+     * Restringe el número de caracteres a 50.
+     * 
+     * @param evento Evento de la presión de alguna tecla.
+     */
     @FXML
     private void restringirNumeroDeCaracteres(KeyEvent evento) {
         if (tfNombreUsuario.getText().length() >= 50) {
@@ -144,6 +176,11 @@ public class FXMLRegistrarUsuarioController implements Initializable {
         }
     }
 
+    /**
+     * Evita que se agregue un espacio en el campo.
+     * 
+     * @param evento Evento de la presión de alguna tecla.
+     */
     @FXML
     private void restringirEspacios(KeyEvent evento) {
         char caracter = evento.getCharacter().charAt(0);
@@ -153,6 +190,11 @@ public class FXMLRegistrarUsuarioController implements Initializable {
         }
     }
 
+    /**
+     * Hace visibles los labels de los errores en los campos.
+     * 
+     * @param validaciones Arreglo con las validaciones de los campos.
+     */
     private void mostrarErroresCampos(boolean[] validaciones) {
         labelErrorNombre.setVisible(!validaciones[0]);
         labelErrorApellidos.setVisible(!validaciones[1]);
@@ -163,6 +205,11 @@ public class FXMLRegistrarUsuarioController implements Initializable {
         labelErrorCorreo.setVisible(!validaciones[5]);
     }
 
+    /**
+     * Genera un número entero aleatorio.
+     * 
+     * @return número entero.
+     */
     private int generarNumeroImagenAleatorio() {
         Random aleatatio = new Random(System.currentTimeMillis());
 
@@ -171,6 +218,9 @@ public class FXMLRegistrarUsuarioController implements Initializable {
         return numero;
     }
 
+    /**
+     * Muestra una imagen para el perfil del usuario.
+     */
     private void mostrarImagenPerfil() {
         numeroImagen = generarNumeroImagenAleatorio();
         imagenDeJugador = "img" + numeroImagen;
@@ -178,6 +228,11 @@ public class FXMLRegistrarUsuarioController implements Initializable {
                 + "-fx-background-position: center center; -fx-background-repeat: stretch; -fx-background-size: 116px 105px 116px 105px;");
     }
 
+    /**
+     * Acción del botón imgPerfil. Cambia la imagen del perfil.
+     * 
+     * @param evento El evento cachado por la presión del botón imgPerfil.
+     */
     @FXML
     private void cambiarImagen(ActionEvent evento) {
         if (numeroImagen > 14)

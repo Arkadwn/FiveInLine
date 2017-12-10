@@ -7,11 +7,12 @@ import cincolinea.modelo.Tablero;
 import com.jfoenix.controls.JFXButton;
 import conexion.ClienteRMI;
 import io.socket.emitter.Emitter;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -21,7 +22,7 @@ import javafx.scene.layout.GridPane;
 import org.json.JSONObject;
 
 /**
- * FXML Controller class
+ * Controlador de la vista Tablero.
  *
  * @author Adrian Bustamante Zarate
  * @author Miguel Leonardo Jimenez Jimenez
@@ -46,12 +47,21 @@ public class FXMLTableroController implements Initializable {
     @FXML
     private JFXButton imgPerfilContrincante;
 
+    /**
+     * Internacionaliza los componentes de la vista.
+     */
     private void inicializarComponentes() {
         btnAbandonarPartida.setText(idioma.getString("btnAbandonarP"));
     }
 
+    /**
+     * Acción del botón btnAbandonarPartida.
+     * 
+     * @param evento El evento cachado por la presión del botón 
+     * btnAbandonarPartida.
+     */
     @FXML
-    private void abandonarPartida(ActionEvent event) {
+    private void abandonarPartida(ActionEvent evento) {
         if (MensajeController.mensajeDesicion(idioma.getString("desicion"), idioma.getString("afirmacion"), idioma.getString("negacion"))) {
             configuracion.getSocket().emit("abandonarPartida", idUsuario);
             configuracion.getSocket().emit("desconectar", idUsuario);
@@ -61,19 +71,28 @@ public class FXMLTableroController implements Initializable {
 
     }
 
+    /**
+     * Setter de la variable main.
+     * 
+     * @param main Ventana principal.
+     */
     public void setMain(Main main) {
         this.main = main;
     }
 
+    /**
+     * Carga la configuración del tablero.
+     * 
+     * @param configuracion Configuración del tablero.
+     * @param idUsuario Identificador del usuario anfitrión.
+     */
     public void setConfiguracionJugador(ConfiguracionPartida configuracion, String idUsuario) {
         this.configuracion = configuracion;
         this.idUsuario = idUsuario;
         tableroLogico = new Tablero(this.configuracion.getTamaño());
-        try {
-            crearConexionIO();
-        } catch (URISyntaxException ex) {
-
-        }
+        activarEventosDelJuego();
+        
+        cargarPerfiles();
         crearTablero(configuracion.getTamaño());
     }
 
@@ -86,8 +105,12 @@ public class FXMLTableroController implements Initializable {
 
     }
 
-    private void crearConexionIO() throws URISyntaxException {
+    /**
+     * Activa los ons para jugar entre dos jugadores.
+     */
+    private void activarEventosDelJuego() {
 
+        /*Activa el evento para recibir las jugadas del contrincante*/
         configuracion.getSocket().on("jugadaRealizada", new Emitter.Listener() {
             @Override
             public void call(Object... os) {
@@ -100,7 +123,9 @@ public class FXMLTableroController implements Initializable {
 
                 colocarFichaContrincante(ficha);
             }
-        }).on("perder", new Emitter.Listener() {
+        });
+        /*Activa el evento que informa si pierde el jugador*/
+        configuracion.getSocket().on("perder", new Emitter.Listener() {
             @Override
             public void call(Object... os) {
                 Platform.runLater(() -> {
@@ -109,7 +134,9 @@ public class FXMLTableroController implements Initializable {
                 });
 
             }
-        }).on("ganarPorAbandono", new Emitter.Listener() {
+        });
+        /*Activa el evento que informa si el contrincante abandono la partida*/
+        configuracion.getSocket().on("ganarPorAbandono", new Emitter.Listener() {
             @Override
             public void call(Object... os) {
                 Platform.runLater(() -> {
@@ -119,7 +146,9 @@ public class FXMLTableroController implements Initializable {
                 });
 
             }
-        }).on("empatar", new Emitter.Listener() {
+        });
+        /*Activa el evento que informa si el los jugadores empataron*/
+        configuracion.getSocket().on("empatar", new Emitter.Listener() {
             @Override
             public void call(Object... os) {
                 Platform.runLater(() -> {
@@ -131,10 +160,15 @@ public class FXMLTableroController implements Initializable {
         });
     }
 
+    /**
+     * Acción de un botón del tablero.
+     * 
+     * @param evento Evento de presionar un botón del tablero.
+     */
     @FXML
-    private void retornarCoordenadas(ActionEvent event) {
+    private void retornarCoordenadas(ActionEvent evento) {
 
-        JFXButton boton = (JFXButton) event.getSource();
+        JFXButton boton = (JFXButton) evento.getSource();
 
         Ficha ficha = crearFicha(boton.getId());
 
@@ -160,11 +194,12 @@ public class FXMLTableroController implements Initializable {
                 MensajeController.mensajeInformacion(idioma.getString("empate"));
                 regresarMenuPrincipal();
             }
-        } else {
-            System.out.println("Ya hay una ficha");
         }
     }
 
+    /**
+     * Despliega la ventana del menú principal y desconecta socket.io
+     */
     private void regresarMenuPrincipal() {
         configuracion.getSocket().emit("desconectar", idUsuario);
         apagarOns();
@@ -172,6 +207,12 @@ public class FXMLTableroController implements Initializable {
         main.desplegarMenuPrincipal(idioma, idUsuario);
     }
 
+    /**
+     * Coloca la ficha en el tablero.
+     * 
+     * @param boton Referencia al boton que se presiono en el tablero.
+     * @param colorFicha Color de la ficha del jugador.
+     */
     private void colocarFicha(JFXButton boton, String colorFicha) {
         String estilo = boton.getStyle();
         boton.setStyle("-fx-background-image: url('cincolinea/imagenes/" + colorFicha + ".png');"
@@ -180,6 +221,12 @@ public class FXMLTableroController implements Initializable {
 
     }
 
+    /**
+     * Crea un objeto ficha y saca las coordenadas de la ficha.
+     * 
+     * @param coordenadas Cadena con las cadenas de la ficha.
+     * @return Ficha donde se realizo la jugada.
+     */
     private Ficha crearFicha(String coordenadas) {
         Ficha ficha = new Ficha();
 
@@ -192,6 +239,11 @@ public class FXMLTableroController implements Initializable {
         return ficha;
     }
 
+    /**
+     * Coloca la jugada del contrincante en el tablero.
+     * 
+     * @param ficha Ficha de la jugada del tablero.
+     */
     private void colocarFichaContrincante(Ficha ficha) {
         if (tableroLogico.validarJugada(ficha.getX(), ficha.getY(), ficha.getColorFicha())) {
             int posicion = Integer.parseInt("0" + ficha.getY() + ficha.getX());
@@ -204,12 +256,17 @@ public class FXMLTableroController implements Initializable {
 
     }
 
+    /**
+     * Modifica el tablero de la vista de acuerdo al tamaño de la configuración. 
+     * 
+     * @param tamaño Tamaño del tablero seleccionado.
+     */
     private void crearTablero(int tamaño) {
         if (validarSiTiraPrimero()) {
             tablero.setDisable(true);
         }
         JFXButton boton;
-        int i = 0;
+        int i;
         switch (tamaño) {
             case 8:
                 for (i = 9; i < 100; i += 10) {
@@ -257,36 +314,56 @@ public class FXMLTableroController implements Initializable {
                 }
 
                 break;
-            case 10:
-
-                break;
         }
     }
 
+    /**
+     * Valida que tipo de ficha tiene el jugador anfitrión.
+     * 
+     * @return validación de color de ficha.
+     */
     private boolean validarSiTiraPrimero() {
         return configuracion.getColorFicha().equals("B");
     }
 
+    /**
+     * Crea la conexón con RMI para hacer referencia a guardar resultado.
+     * 
+     * @param ganador Identificador del jugador ganador.
+     * @param perdedor Identificador del jugador perdedor.
+     */
     private void guardarResultado(String ganador, String perdedor) {
         ClienteRMI conexion;
         try {
             conexion = new ClienteRMI();
             conexion.guardarResultadosPardida(ganador, perdedor);
         } catch (RemoteException | NotBoundException ex) {
-            //hacer algo
+            Logger.getLogger(FXMLTableroController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
+    /**
+     * Crea la conexón con RMI para hacer referencia a guardar empate.
+     * 
+     * @param jugador1 Identificador del jugador anfitrión.
+     * @param jugador2 Identificador del jugador invitado.
+     */
     private void guardarEmpate(String jugador1, String jugador2) {
         ClienteRMI conexion;
         try {
             conexion = new ClienteRMI();
             conexion.guardarEmpate(jugador1, jugador2);
         } catch (RemoteException | NotBoundException ex) {
-            //hacer algo
+            Logger.getLogger(FXMLTableroController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
+    /**
+     * Crea la conexón con RMI para hacer referencia a guardar abandono de partida.
+     * 
+     * @param ganador Identificador del jugador ganador.
+     * @param desertor Idenfitificador del jugador que abandono partida.
+     */
     private void guardarAbandonoPartida(String ganador, String desertor) {
         ClienteRMI conexion;
         try {
@@ -294,10 +371,13 @@ public class FXMLTableroController implements Initializable {
             conexion.guardarResultadosPardida(ganador, desertor);
             conexion.aplicarCastigo(desertor);
         } catch (RemoteException | NotBoundException ex) {
-            //hacer algo
+            Logger.getLogger(FXMLTableroController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
+    /**
+     * Desactiva todos los ons creados para jugar.
+     */
     private void apagarOns() {
         configuracion.getSocket().off("empatar");
         configuracion.getSocket().off("ganarPorAbandono");
@@ -305,6 +385,9 @@ public class FXMLTableroController implements Initializable {
         configuracion.getSocket().off("jugadaRealizada");
     }
 
+    /**
+     * Carga las imagenes y los nombres de los jugadores.
+     */
     private void cargarPerfiles() {
         labelNombreContrincante.setText(configuracion.getIdContrincante());
         labelNombreJugador.setText(this.idUsuario);

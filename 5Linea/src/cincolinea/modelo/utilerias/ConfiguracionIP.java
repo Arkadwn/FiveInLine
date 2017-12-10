@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package cincolinea.modelo.utilerias;
 
 import cincolinea.controlador.FXMLRegistroIPController;
@@ -16,15 +11,26 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.security.CodeSource;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
- *
+ * Clase para metos estaticos para el manejo de las ip's de los servidores RMI y
+ * socket.io.
+ * 
  * @author Adrián Bustamante Zarate
- * @date 26/11/2017
- * @time 12:43:44 PM
+ * @author Miguel Leonardo Jiménez Jiménez
  */
 public class ConfiguracionIP {
 
+    /**
+     * Guarda en un archivo.properties las cuatro digitos de una ip.
+     * 
+     * @param ip Parte 1 de la ip.
+     * @param ip2 Parte 2 de la ip.
+     * @param ip3 Parte 3 de la ip.
+     * @param ip4 Parte 4 de la ip.
+     */
     public static void guardarConfiguracionIP(String ip, String ip2, String ip3, String ip4) {
         Properties archivoProperties = new Properties();
         String ruta = obtenerRutaProperties();
@@ -52,21 +58,32 @@ public class ConfiguracionIP {
             }
 
         } catch (IOException ex) {
-            System.out.println("Error: " + ex.getMessage());
+            Logger.getLogger(ConfiguracionIP.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
+    /**
+     * Valida si la ip ingresada corresponde a la del servidor.
+     * 
+     * @param ip Ip ingresada por el usuario.
+     * @return Validación de la ip.
+     */
     public static boolean verificarConfiguracionIP(String ip) {
         boolean banderaConexion = false;
         try {
             ClienteRMI conexion = new ClienteRMI(ip);
             banderaConexion = conexion.verficarConexion(true);
         } catch (RemoteException | NotBoundException ex) {
-            System.out.println("Error: "+ex.getMessage());
+            Logger.getLogger(ConfiguracionIP.class.getName()).log(Level.SEVERE, null, ex);
         }
         return banderaConexion;
     }
 
+    /**
+     * Devuleve la Ip contenida en el archivo.properties.
+     * 
+     * @return Ip del servidor.
+     */
     public static String[] getIP() {
         Properties archivoProperties = new Properties();
         File rutaProperties = new File(obtenerRutaProperties());
@@ -91,6 +108,11 @@ public class ConfiguracionIP {
         return ip;
     }
 
+    /**
+     * Optiene la ruta del archivo.properties.
+     * 
+     * @return ruta del archivo.properties.
+     */
     private static String obtenerRutaProperties() {
 
         String ruta = null;
@@ -103,7 +125,7 @@ public class ConfiguracionIP {
             ruta = fileProperties.getAbsolutePath();
 
         } catch (URISyntaxException ex) {
-            System.out.println("Error: " + ex.getMessage());
+            Logger.getLogger(ConfiguracionIP.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         return ruta;

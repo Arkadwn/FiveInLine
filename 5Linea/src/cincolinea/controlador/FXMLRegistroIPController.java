@@ -1,15 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package cincolinea.controlador;
 
 import cincolinea.Main;
 import cincolinea.modelo.utilerias.ConfiguracionIP;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
-import conexion.ClienteRMI;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -17,27 +11,22 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.AnchorPane;
 
 /**
- * FXML Controller class
+ * Controlador de la vista RegistroIP
  *
  * @author Adrián Bustamante Zarate
  */
 public class FXMLRegistroIPController implements Initializable {
 
     @FXML
-    private AnchorPane pane;
-    @FXML
     private JFXButton btnSalir;
     @FXML
     private JFXButton btnVerificarConexion;
     @FXML
-    private Label labelIP;
-    @FXML
     private Label labelTituloIP;
     @FXML
-    private JFXButton translateButton;
+    private JFXButton btnIdioma;
     @FXML
     private JFXTextField txtIP;
     @FXML
@@ -46,21 +35,13 @@ public class FXMLRegistroIPController implements Initializable {
     private JFXTextField txtIP2;
     @FXML
     private JFXTextField txtIP3;
-
-    private ClienteRMI conexion;
     private boolean estaEspañol;
     private ResourceBundle idioma;
     private Main main;
 
-    /**
-     * Initializes the controller class.
-     *
-     * @param url
-     * @param rb
-     */
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        translateButton.setStyle("-fx-background-image: url('cincolinea/imagenes/language.png');"
+    public void initialize(URL url, ResourceBundle idioma) {
+        btnIdioma.setStyle("-fx-background-image: url('cincolinea/imagenes/language.png');"
                 + "-fx-background-position: center center; -fx-background-repeat: stretch; -fx-background-size: 35px 35px 35px 35px;");
 
         if (idioma != null) {
@@ -77,6 +58,11 @@ public class FXMLRegistroIPController implements Initializable {
 
     }
 
+    /**
+     * Internacionaliza los componentes de la vista.
+     * 
+     * @param idomaElegido Es el ResourceBundle con el idioma elegido.
+     */
     private void inicializarComponentesPorDefecto(ResourceBundle idomaElegido) {
 
         labelTituloIP.setText(idomaElegido.getString("labelTituloIP"));
@@ -85,8 +71,13 @@ public class FXMLRegistroIPController implements Initializable {
         idioma = idomaElegido;
     }
 
+    /**
+     * Acción del botón btnIdioma.
+     * 
+     * @param evento El evento cachado por la presión del botón btnIdioma.
+     */
     @FXML
-    private void cambiarIdioma(ActionEvent event) {
+    private void cambiarIdioma(ActionEvent evento) {
         if (estaEspañol) {
             cambiarComponentesIngles();
         } else {
@@ -94,6 +85,9 @@ public class FXMLRegistroIPController implements Initializable {
         }
     }
 
+    /**
+     * Internacionaliza los componentes de la vista.
+     */
     private void cambiarComponentesEspañol() {
         idioma = ResourceBundle.getBundle("cincolinea/resources/Bundle_es_MX");
         labelTituloIP.setText(idioma.getString("labelTituloIP"));
@@ -102,6 +96,9 @@ public class FXMLRegistroIPController implements Initializable {
         estaEspañol = true;
     }
 
+    /**
+     * Internacionalizar los componentes de la vista.
+     */
     private void cambiarComponentesIngles() {
         idioma = ResourceBundle.getBundle("cincolinea/resources/Bundle_en_US");
         labelTituloIP.setText(idioma.getString("labelTituloIP"));
@@ -110,8 +107,14 @@ public class FXMLRegistroIPController implements Initializable {
         estaEspañol = false;
     }
 
+    /**
+     * Acción del botón btnVerificarConexion.
+     * 
+     * @param evento El evento cachado por la presión del botón 
+     * btnVerificarConexion.
+     */
     @FXML
-    private void verificarConexion(ActionEvent event) {
+    private void verificarConexion(ActionEvent evento) {
 
         if (ConfiguracionIP.verificarConfiguracionIP(txtIP.getText() + "." + txtIP1.getText() + "." + txtIP2.getText() + "." + txtIP3.getText())) {
             MensajeController.mensajeInformacion(idioma.getString("conexionRealizada"));
@@ -123,20 +126,36 @@ public class FXMLRegistroIPController implements Initializable {
 
     }
 
+    /**
+     * Limita el número de caracteres de los campos para la ip.
+     * 
+     * @param evento Evento de presionar una tecla.
+     */
     @FXML
-    private void delimitadorCaracteresIP(KeyEvent event) {
-        JFXTextField textField = (JFXTextField) event.getSource();
+    private void delimitadorCaracteresIP(KeyEvent evento) {
+        JFXTextField textField = (JFXTextField) evento.getSource();
         if (textField.getText().length() > 2) {
-            event.consume();
+            evento.consume();
         }
-        char caracter = event.getCharacter().charAt(0);
+        char caracter = evento.getCharacter().charAt(0);
         if (caracter < 48 || caracter > 57) {
-            event.consume();
+            evento.consume();
         }
     }
 
-    public void setMain(Main aThis) {
-        main = aThis;
+    /**
+     * Setter de la variable main.
+     * 
+     * @param main Ventana principal.
+     */
+    public void setMain(Main main) {
+        this.main = main;
+    }
+
+    @FXML
+    private void cerrarPantalla(ActionEvent event) {
+        main.getStageLocal().close();
+        System.exit((0));
     }
 
 }

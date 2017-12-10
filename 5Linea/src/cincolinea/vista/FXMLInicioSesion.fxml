@@ -51,6 +51,6 @@
          </effect>
       </Label>
       <Hyperlink fx:id="linkRegistro" layoutX="92.0" layoutY="336.0" onAction="#desplegarRegistroUsuario" prefHeight="23.0" prefWidth="142.0" underline="true" />
-      <JFXButton fx:id="translateButton" layoutX="528.0" layoutY="62.0" onAction="#cambiarIdioma" prefHeight="35.0" prefWidth="35.0" />
+      <JFXButton fx:id="btnIdioma" layoutX="528.0" layoutY="62.0" onAction="#cambiarIdioma" prefHeight="35.0" prefWidth="35.0" />
    </children>
 </AnchorPane>

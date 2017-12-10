@@ -4,12 +4,16 @@ import cincolinea.modelo.Ranking;
 import cincolineaservidor.persistencia.Rankings;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import javax.persistence.RollbackException;
 
 /**
+ * Controlador de la Entidad Rankings.
  * 
  * @author Miguel Leonardo Jimenez Jimenez
  * @author Adrian Bustamante Zarate
@@ -17,14 +21,32 @@ import javax.persistence.RollbackException;
 public class ControladorRanking {
     private EntityManagerFactory fabricaEntidad;
 
+    /**
+     * Constructor sobrecargado del controlador.
+     * 
+     * @param fabricaEntidad Referencia a la persistencia.
+     */
     public ControladorRanking(EntityManagerFactory fabricaEntidad) {
         this.fabricaEntidad = fabricaEntidad;
     }
     
+    /**
+     * Getter de la varable fabricaEntidad.
+     * 
+     * @return fabricaEntidad.
+     */
     public EntityManager getEntityManager() {
         return fabricaEntidad.createEntityManager();
     }
     
+    /**
+     * Guarda dentro de la base de datos el usuario que ganó la partida y quien
+     * la perdio.
+     * 
+     * @param ganador Identificador del usuario que ganó.
+     * @param perdedor Identificador del usuario que perdió.
+     * @return Confirmación de la operación realizada.
+     */
     public boolean guardarResultadosPartida(String ganador, String perdedor){
         boolean validacion = false;
         int idRankingGanador = buscarIdRankingJugador(ganador);
@@ -45,6 +67,7 @@ public class ControladorRanking {
             
             validacion = true;
         }catch(RollbackException ex){
+            Logger.getLogger(ControladorRanking.class.getName()).log(Level.SEVERE, null, ex);
             if(entidad.getTransaction().isActive()){
                 entidad.getTransaction().rollback();
             }
@@ -55,6 +78,13 @@ public class ControladorRanking {
         return validacion;
     }
     
+    /**
+     * Guarda dentro de la base de datos de los usario que empataron una partida.
+     * 
+     * @param jugador1 Identificador del usuario 1.
+     * @param jugador2 Identificador del usuario 2.
+     * @return Confirmación de la operación realizada.
+     */
     public boolean guardarEmpate(String jugador1, String jugador2){
         boolean validacion = false;
         int idRankingJugador1 = buscarIdRankingJugador(jugador1);
@@ -76,6 +106,7 @@ public class ControladorRanking {
             
             validacion = true;
         }catch(RollbackException ex){
+            Logger.getLogger(ControladorRanking.class.getName()).log(Level.SEVERE, null, ex);
             if(entidad.getTransaction().isActive()){
                 entidad.getTransaction().rollback();
             }
@@ -86,12 +117,18 @@ public class ControladorRanking {
         return validacion;
     }
     
+    /**
+     * Guarda dentro de la base de datos la reducción de puntos al usuario que
+     * abandonó partida.
+     * 
+     * @param idJugador Identificador del usuario que abandonó partida.
+     * @return Confirmación de la operación realizada.
+     */
     public boolean aplicarCastigo(String idJugador){
         boolean validacion = false;
         int idRankingJugador = buscarIdRankingJugador(idJugador);
         EntityManager entidad = getEntityManager();
         try{
-            
             entidad.getTransaction().begin();
             Rankings rankingJugador = entidad.find(Rankings.class, idRankingJugador);
             
@@ -101,6 +138,7 @@ public class ControladorRanking {
             
             validacion = true;
         }catch(RollbackException ex){
+            Logger.getLogger(ControladorRanking.class.getName()).log(Level.SEVERE, null, ex);
             if(entidad.getTransaction().isActive()){
                 entidad.getTransaction().rollback();
             }
@@ -111,15 +149,21 @@ public class ControladorRanking {
         return validacion;
     }
     
-    private int buscarIdRankingJugador(String idJugador){
+    /**
+     * Busca un usuario que dentro de la tabla de Rankings.
+     * 
+     * @param idUsuario Identificador del usuario.
+     * @return 
+     */
+    private int buscarIdRankingJugador(String idUsuario){
         EntityManager entidad = getEntityManager();
-        Query consulta = entidad.createQuery("SELECT r.idRanking FROM Rankings r WHERE r.nombreUsuario.nombreUsuario = :nombreUser").setParameter("nombreUser", idJugador);
+        Query consulta = entidad.createQuery("SELECT r.idRanking FROM Rankings r WHERE r.nombreUsuario.nombreUsuario = :nombreUser").setParameter("nombreUser", idUsuario);
         int idRanking = 0;
         
         try{
             idRanking = (Integer) consulta.getSingleResult();
-        }catch(Exception ex){
-            System.out.println("Error: "+ex.getMessage());
+        }catch(NoResultException ex){
+            Logger.getLogger(ControladorRanking.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             entidad.close();
         }
@@ -127,6 +171,12 @@ public class ControladorRanking {
         return idRanking;
     }
     
+    /**
+     * Pasa una List<Rankings> a una List<Ranking>.
+     * 
+     * @param rankings Lista de 10 rankings.
+     * @return List<Ranking> con los 10 mejores jugadores.
+     */
     private List<Ranking> cambiarDeRankingsARanking(List<Rankings> rankings){
        List<Ranking> mejores10 = new ArrayList();
        Ranking rankingJugador;
@@ -138,6 +188,12 @@ public class ControladorRanking {
        return mejores10;
     }
     
+    /**
+     * Saca de la base de datos los 10 mejores de acuerdo a sus puntos de mayor
+     * a menor.
+     * 
+     * @return Lista con los 10 mejores jugadores.
+     */
     public List<Ranking> sacarMejores10(){
         List<Ranking> rankings;
         List<Rankings> rankingsJPA = new ArrayList();
@@ -148,7 +204,7 @@ public class ControladorRanking {
         try{
             rankingsJPA = consulta.getResultList();
         }catch(Exception ex){
-            
+            Logger.getLogger(ControladorRanking.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             entidad.close();
         }

@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package cincolineaservidor.persistencia;
 
 import java.io.Serializable;
@@ -21,10 +15,10 @@ import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
+ * Entidad que hace referencia a la tabla de la base de datos Rankings.
  * 
  * @author Adrián Bustamante Zarate
- * @date 4/12/2017
- * @time 07:07:30 PM
+ * @author Miguel Leonardo Jimenez Jimenez
  */
 @Entity
 @Table(name = "rankings")
@@ -56,57 +50,125 @@ public class Rankings implements Serializable {
     @ManyToOne
     private Cuentas nombreUsuario;
 
+    /**
+     * Constructor por defecto.
+     */
     public Rankings() {
     }
 
+    /**
+     * Constructor sobrecargado.
+     * 
+     * @param idRanking Identificador del ranking.
+     */
     public Rankings(Integer idRanking) {
         this.idRanking = idRanking;
     }
 
+    /**
+     * Getter de la varible idRanking.
+     * 
+     * @return idRanking.
+     */
     public Integer getIdRanking() {
         return idRanking;
     }
 
+    /**
+     * Setter de la variable idRanking.
+     * 
+     * @param idRanking Identificador del ranking.
+     */
     public void setIdRanking(Integer idRanking) {
         this.idRanking = idRanking;
     }
 
+    /**
+     * Getter de la varible partidasGanadas. 
+     * 
+     * @return partidas ganadas.
+     */
     public Integer getPartidasGanadas() {
         return partidasGanadas;
     }
 
+    /**
+     * Setter de la variable partidasGanadas.
+     * 
+     * @param partidasGanadas partidas ganadas.
+     */
     public void setPartidasGanadas(Integer partidasGanadas) {
         this.partidasGanadas = partidasGanadas;
     }
 
+    /**
+     * Getter de la variable partidasPerdidas.
+     * 
+     * @return partida perdidas.
+     */
     public Integer getPartidasPerdidas() {
         return partidasPerdidas;
     }
 
+    /**
+     * Setter de la variable partidasPerdidas.
+     * 
+     * @param partidasPerdidas partidas perdidas
+     */
     public void setPartidasPerdidas(Integer partidasPerdidas) {
         this.partidasPerdidas = partidasPerdidas;
     }
 
+    /**
+     * Getter de la variable puntos.
+     * 
+     * @return puntos.
+     */
     public Integer getPuntos() {
         return puntos;
     }
 
+    /**
+     * Setter de la variable puntos.
+     * 
+     * @param puntos puntos.
+     */
     public void setPuntos(Integer puntos) {
         this.puntos = puntos;
     }
 
+    /**
+     * Getter de la variable partidasEmpatadas.
+     * 
+     * @return partidasEmpatadas
+     */
     public Integer getPartidasEmpatadas() {
         return partidasEmpatadas;
     }
 
+    /**
+     * Setter de la variable partidasEmpatadas.
+     * 
+     * @param partidasEmpatadas partidasEmpatadas
+     */
     public void setPartidasEmpatadas(Integer partidasEmpatadas) {
         this.partidasEmpatadas = partidasEmpatadas;
     }
 
+    /**
+     * Getter de la variable nombreUsuario.
+     * 
+     * @return nombreUsuario.
+     */
     public Cuentas getNombreUsuario() {
         return nombreUsuario;
     }
 
+    /**
+     * Setter de la variable nombreUsuario.
+     * 
+     * @param nombreUsuario nombreUsuario.
+     */
     public void setNombreUsuario(Cuentas nombreUsuario) {
         this.nombreUsuario = nombreUsuario;
     }
@@ -125,10 +187,7 @@ public class Rankings implements Serializable {
             return false;
         }
         Rankings other = (Rankings) object;
-        if ((this.idRanking == null && other.idRanking != null) || (this.idRanking != null && !this.idRanking.equals(other.idRanking))) {
-            return false;
-        }
-        return true;
+        return !((this.idRanking == null && other.idRanking != null) || (this.idRanking != null && !this.idRanking.equals(other.idRanking)));
     }
 
     @Override

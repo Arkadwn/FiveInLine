@@ -16,6 +16,8 @@ import javafx.scene.control.Label;
 import io.socket.client.IO;
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.image.ImageView;
@@ -23,9 +25,10 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
- * FXML Controller class
+ * Controlador de la vista de buscar partida.
  *
- * @author Adrian Bustamante Z
+ * @author Adrian Bustamante Zarate
+ * @author Miguel Leonardo Jiménez Jiménez
  */
 public class FXMLBuscaPartidaController implements Initializable {
 
@@ -52,11 +55,20 @@ public class FXMLBuscaPartidaController implements Initializable {
     @FXML
     private JFXButton imgPerfil;
 
+    /**
+     * Asigna el valor de la imagen de perfil del jugador.
+     * 
+     * @param imagenDePerfil Es el identificador de la imagen del perfil del
+     * usuario.
+     */
     public void setImagenDePerfil(String imagenDePerfil) {
         this.imagenDePerfil = imagenDePerfil;
         cargarImagenPerfil();
     }
 
+    /**
+     * Coloca los textos en las partes de la vista de acuerdo al idioma elegido.
+     */
     private void iniciarIdiomaComponentes() {
         btnCancelarBusqPartida.setText(idioma.getString("btnCancelarBusqPartida"));
         labelBuscandoPartidas.setText(idioma.getString("labelBuscandoP"));
@@ -65,6 +77,11 @@ public class FXMLBuscaPartidaController implements Initializable {
         btnJugar.setText(idioma.getString("btnJugar"));
     }
 
+    /**
+     * Setter de la variable idUsuario.
+     * 
+     * @param idUsuario Es el id del usuario que ha iniciado sesión.
+     */
     public void setIdUsuario(String idUsuario) {
         this.idUsuario = idUsuario;
     }
@@ -82,7 +99,7 @@ public class FXMLBuscaPartidaController implements Initializable {
                 crearConexionIO();
             }
         } catch (URISyntaxException ex) {
-            System.out.println("Error URI: " + ex.getMessage());
+            Logger.getLogger(FXMLBuscaPartidaController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         cbPartidas.setVisible(false);
@@ -90,18 +107,24 @@ public class FXMLBuscaPartidaController implements Initializable {
         obtenerPartidasDisponibles();
     }
 
+    /**
+     * Manda el emit al servidor para solicitar las partidas creadas y 
+     * personaliza la vista.
+     */
     private void obtenerPartidasDisponibles() {
-        try {
-            imgCargando.setVisible(true);
-            cbPartidas.setVisible(false);
-            labelBuscandoPartidas.setVisible(true);
-            labelJugadores.setVisible(false);
-        } catch (Exception ex) {
-            System.out.println("Error: " + ex.getMessage());
-        }
+        imgCargando.setVisible(true);
+        cbPartidas.setVisible(false);
+        labelBuscandoPartidas.setVisible(true);
+        labelJugadores.setVisible(false);
         socket.emit("peticionEnlacePartida");
     }
 
+    /**
+     * Crea la conexión con un socket.io y activa los ons para esperar los
+     * eventos con su respectivo código para reaccionar a ellos.
+     * 
+     * @throws URISyntaxException 
+     */
     private void crearConexionIO() throws URISyntaxException {
 
         String[] ipArray = ConfiguracionIP.getIP();
@@ -124,15 +147,16 @@ public class FXMLBuscaPartidaController implements Initializable {
 
                     cbPartidas.setVisible(true);
                     labelJugadores.setVisible(true);
-                    //Agregar al bundle
-                    partidasDisponibles.add(idioma + objetoRescatado.get("idAnfitrion").toString());
+                    partidasDisponibles.add(idioma.getString("textoCb") + objetoRescatado.get("idAnfitrion").toString());
                 }
                 Platform.runLater(() -> {
                     cbPartidas.setItems(partidasDisponibles);
                 });
 
             }
-        }).on("respuestaEmparejamiento", new Emitter.Listener() {
+        });
+
+        socket.on("respuestaEmparejamiento", new Emitter.Listener() {
             @Override
             public void call(Object... os) {
                 JSONObject configuracionPartida = (JSONObject) os[1];
@@ -149,7 +173,8 @@ public class FXMLBuscaPartidaController implements Initializable {
                 });
 
             }
-        }).on("respuestaEmparejamientoNegativa", new Emitter.Listener() {
+        });
+        socket.on("respuestaEmparejamientoNegativa", new Emitter.Listener() {
             @Override
             public void call(Object... os) {
                 Platform.runLater(() -> {
@@ -163,19 +188,33 @@ public class FXMLBuscaPartidaController implements Initializable {
         socket.connect();
     }
 
+    /**
+     * Setter de la variable main.
+     * 
+     * @param main Ventana principal.
+     */
     public void setMain(Main main) {
         this.main = main;
     }
 
+    /**
+     * Acción del botón btnJugar.
+     * 
+     * @param evento El evento cachado por la presión del botón btnJugar.
+     */
     @FXML
-    private void emparejar(ActionEvent event) {
+    private void emparejar(ActionEvent evento) {
         idContrincante = cbPartidas.getValue();
-        //Borrar
         socket.emit("emparejar", idContrincante.substring(11), idUsuario, imagenDePerfil);
     }
 
+    /**
+     * Acción del botón btnCancelar.
+     * 
+     * @param evento El evento cachado por la presión del botón btnCancelar.
+     */
     @FXML
-    private void regresarMenuPrincipal(ActionEvent event) {
+    private void regresarMenuPrincipal(ActionEvent evento) {
         socket.off("jugadores");
         socket.off("respuestaEmparejamiento");
         socket.off("respuestaEmparejamientoNegativa");
@@ -183,8 +222,13 @@ public class FXMLBuscaPartidaController implements Initializable {
         main.desplegarMenuPrincipal(idioma, idUsuario);
     }
 
+    /**
+     * Acción del botón btnActualizar.
+     * 
+     * @param evento El evento cachado por la presión del botón btnActualizar.
+     */
     @FXML
-    private void buscarPartidasNuevas(ActionEvent event) {
+    private void buscarPartidasNuevas(ActionEvent evento) {
         cbPartidas.setVisible(false);
         labelJugadores.setVisible(false);
         imgCargando.setVisible(true);
@@ -192,8 +236,11 @@ public class FXMLBuscaPartidaController implements Initializable {
 
         obtenerPartidasDisponibles();
     }
-    
-    private void cargarImagenPerfil(){
+
+    /**
+     * Muestra la imagen de perfil del usuario.
+     */
+    private void cargarImagenPerfil() {
         imgPerfil.setStyle("-fx-background-image: url('cincolinea/imagenes/" + imagenDePerfil + ".jpg" + "');"
                 + "-fx-background-position: center center; -fx-background-repeat: stretch; -fx-background-size: 128px 90px 128px 90px;");
     }

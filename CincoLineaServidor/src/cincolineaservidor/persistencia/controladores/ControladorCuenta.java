@@ -5,6 +5,8 @@ import cincolineaservidor.persistencia.Cuentas;
 import cincolineaservidor.persistencia.Rankings;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.NoResultException;
@@ -12,21 +14,38 @@ import javax.persistence.Query;
 import javax.persistence.RollbackException;
 
 /**
- *
+ * Controlador de la entidad Cuentas.
+ * 
  * @author Adrián Bustamante Zarate
  * @author Miguel Leonardo Jimenez
  */
 public class ControladorCuenta {
 
+    /**
+     * Constructor sobrecargado.
+     * 
+     * @param fabricaEntidad Referencia a la persistenacia.
+     */
     public ControladorCuenta(EntityManagerFactory fabricaEntidad) {
         this.fabricaEntidad = fabricaEntidad;
     }
     private EntityManagerFactory fabricaEntidad = null;
 
+    /**
+     * Getter de la variable fabricaEntidad.
+     * 
+     * @return fabricaEntidad.
+     */
     public EntityManager getEntityManager() {
         return fabricaEntidad.createEntityManager();
     }
 
+    /**
+     * Busca los datos de un usuario que desea ingresar al sistema.
+     * 
+     * @param nombreUsuario Identificador de la cuenta del usuario.
+     * @return Cuenta del usuario.
+     */
     public Cuenta verificarAutenticacion(String nombreUsuario) {
         EntityManager entidad = getEntityManager();
         Query consulta = entidad.createQuery("SELECT c FROM Cuentas c WHERE c.nombreUsuario = :nombreUser").setParameter("nombreUser", nombreUsuario);
@@ -37,13 +56,19 @@ public class ControladorCuenta {
             cuentaResultado.setContraseña(cuentaEntidadResultado.getContrasena());
             cuentaResultado.setEstadoSesion(cuentaEntidadResultado.getEstadoSesion());
         } catch (NoResultException ex) {
-            System.out.println("Error en verificar autenticación: " + ex.getMessage());
+            Logger.getLogger(ControladorCuenta.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             entidad.close();
         }
         return cuentaResultado;
     }
 
+    /**
+     * Guarda dentro de la base de datos una nueva cuenta.
+     * 
+     * @param cuenta Nueva cuenta que se desea guardar.
+     * @return Confirmación de la operación realizada.
+     */
     public boolean registrarUsuario(Cuenta cuenta) {
         boolean registro = true;
         EntityManager entidad = getEntityManager();
@@ -76,7 +101,7 @@ public class ControladorCuenta {
             entidad.getTransaction().commit();
             
         } catch (RollbackException ex) {
-            System.out.println("Error: " + ex.getMessage());
+            Logger.getLogger(ControladorCuenta.class.getName()).log(Level.SEVERE, null, ex);
             if (entidad.getTransaction().isActive()) {
                 entidad.getTransaction().rollback();
             }
@@ -88,7 +113,13 @@ public class ControladorCuenta {
         return registro;
     }
     
-        public boolean desactivarPerfilInicioSesion(String nombreUsuario) {
+    /**
+     * Cambia la disposición de la cuenta a 1.
+     * 
+     * @param nombreUsuario Identificador de la cuenta del usuario.
+     * @return Confirmación de la operación realizada.
+     */
+    public boolean desactivarPerfilInicioSesion(String nombreUsuario) {
         EntityManager entidad = getEntityManager();
         int estadoSesion;
         boolean validacion = false;
@@ -110,11 +141,18 @@ public class ControladorCuenta {
             if (entidad.getTransaction().isActive()) {
                 entidad.getTransaction().rollback();
                 validacion = false;
+                Logger.getLogger(ControladorCuenta.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return validacion;
     }
 
+    /**
+     * Cambia el estado de la cuenta de un usuario a 0.
+     * 
+     * @param nombreUsuario Identificador de la cuenta del usuario.
+     * @return Confirmación de la operación realizada.
+     */
     public boolean activarPerfilInicioSesion(String nombreUsuario) {
         EntityManager entidad = getEntityManager();
         int estadoSesion;
@@ -137,12 +175,18 @@ public class ControladorCuenta {
             if (entidad.getTransaction().isActive()) {
                 entidad.getTransaction().rollback();
                 validacion = false;
+                Logger.getLogger(ControladorCuenta.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return validacion;
     }
 
-    
+    /**
+     * Saca de la base de datos el identificador de la imagen de la cuenta.
+     * 
+     * @param idUsuario Identificador de la cuenta del usuario.
+     * @return Identificador de la imagen del usuario.
+     */
     public String sacarImagenDePerfil(String idUsuario){
         String imagen = "";
         
@@ -152,7 +196,7 @@ public class ControladorCuenta {
         try{
             imagen = (String) consulta.getSingleResult();
         } catch(NoResultException ex){
-            System.out.println("Error: " + ex.getMessage());
+            Logger.getLogger(ControladorCuenta.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             entidad.close();
         }

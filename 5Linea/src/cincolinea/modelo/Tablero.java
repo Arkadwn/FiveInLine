@@ -1,7 +1,8 @@
 package cincolinea.modelo;
 
 /**
- *
+ * Clase que representa la vista logica del tablero del juego 5 en linea.
+ * 
  * @author Miguel Leonardo Jimenez Jimenez
  * @author Adrian Bustamate Zarate
  */
@@ -10,6 +11,12 @@ public class Tablero {
     private final String tableroLogico[][];
     private int numeroDeJugadas;
     
+    /**
+     * Constructor sobrecargado de la clase para crear la matriz del tamaño
+     * deseado.
+     * 
+     * @param tamaño Es el tamaño del tablero que se desea crear.
+     */
     public Tablero(int tamaño){
         this.tamaño = tamaño;
         this.tableroLogico = new String[this.tamaño][this.tamaño];
@@ -17,10 +24,18 @@ public class Tablero {
         numeroDeJugadas = 0;
     }
     
+    /**
+     * Valida si ha llegado al empate
+     * 
+     * @return Validación de empate.
+     */
     public boolean validarEmpate(){
         return numeroDeJugadas == (tamaño*tamaño);
     }
     
+    /**
+     * Llena la matriz de 0's.
+     */
     private void llenarTableroDe0(){
         
         for(int x = 0; x < tamaño; x++){
@@ -31,6 +46,14 @@ public class Tablero {
         }
     }
     
+    /**
+     * Valida si la jugada realizada por el jugador se puede realizar.
+     * 
+     * @param x Posicion en el ejes de las x del tablero donde realizo el tiro.
+     * @param y Posicion en el ejes de las y del tablero donde realizo el tiro.
+     * @param ficha Color de la ficha del jugador.
+     * @return Validacion de la jugada.
+     */
     public boolean validarJugada(int x, int y, String ficha){
         boolean validacion = false;
         
@@ -43,25 +66,30 @@ public class Tablero {
         return validacion;
     }
     
+    /**
+     * Valida si un jugador a ganado.
+     * 
+     * @param x Posición en el ejes de las x del tablero donde realizó el tiro.
+     * @param y Posición en el ejes de las y del tablero donde realizó el tiro.
+     * @param colorFicha Color de la ficha del jugador.
+     * @return Validacion de ganar.
+     */
     public boolean validarSiGano(int x, int y, String colorFicha){
-        
-        return validarVertical(x, y, colorFicha) || validarHorizontal(x, y, colorFicha) || validarDiagonal(x, y, colorFicha) || validarDiagonalInvertida(x, y, colorFicha);
+        return validarVertical(x,colorFicha) || validarHorizontal(y, colorFicha) || validarDiagonal(x, y, colorFicha) || validarDiagonalInvertida(x, y, colorFicha);
     }
     
     /**
+     * Valida si el jugador a juntado 5 fichas en línea de manera horizontal.
      * 
-     * 
-     * @param x Posicion en el eje de las x del tablero donde fue colocada la
-     * ficha.
-     * @param y
-     * @param colorFicha
-     * @return 
+     * @param y Posición en el ejes de las y del tablero donde realizó el tiro.
+     * @param colorFicha Color de la ficha del jugador.
+     * @return Validación de ganar horizontalmente.
      */
-    private boolean validarHorizontal(int x, int y, String colorFicha){
+    private boolean validarHorizontal(int y, String colorFicha){
         
         boolean validacion = false;
         int fichasEnLinea = 0;
-        x = 0;
+        int x = 0;
         
         while(x < tamaño){
             
@@ -73,7 +101,6 @@ public class Tablero {
             
             if(fichasEnLinea == 5){
                 validacion = true;
-                System.out.println("gano horizontal");
                 break;
             }
             
@@ -82,10 +109,17 @@ public class Tablero {
         return validacion;
     }
     
-    private boolean validarVertical(int x, int y, String colorFicha){
+    /**
+     * Valida si el jugador a juntado 5 fichas en línea de manera vertical.
+     * 
+     * @param x Posición en el ejes de las x del tablero donde realizó el tiro.
+     * @param colorFicha Color de la ficha del jugador.
+     * @return Validación de ganar verticalmente.
+     */
+    private boolean validarVertical(int x,String colorFicha){
         boolean validacion = false;
         int fichasEnLinea = 0;
-        y = 0;
+        int y = 0;
         
         while(y < tamaño){
             
@@ -99,7 +133,6 @@ public class Tablero {
             
             if(fichasEnLinea == 5){
                 validacion = true;
-                System.out.println("gano vertical");
                 break;
             }
             
@@ -108,6 +141,14 @@ public class Tablero {
         return validacion;
     }
     
+    /**
+     * Valida si el jugador a juntado 5 fichas en línea en diagonal.
+     * 
+     * @param x Posición en el ejes de las x del tablero donde realizó el tiro.
+     * @param y Posición en el ejes de las y del tablero donde realizó el tiro.
+     * @param colorFicha Color de la ficha del jugador.
+     * @return Validación de ganar en diagonal.
+     */
     private boolean validarDiagonal(int x, int y, String colorFicha){
         boolean validacion = false;
         int fichasEnlinea = 0;
@@ -143,6 +184,14 @@ public class Tablero {
         return validacion;
     }
     
+    /**
+     * Valida si el jugador a juntado 5 fichas en línea en diagonal invertida.
+     * 
+     * @param x Posición en el ejes de las x del tablero donde realizó el tiro.
+     * @param y Posición en el ejes de las y del tablero donde realizó el tiro.
+     * @param colorFicha Color de la ficha del jugador.
+     * @return Validación de ganar en diagonal invertida.
+     */
     private boolean validarDiagonalInvertida(int x, int y, String colorFicha){
         boolean validacion = false;
         int fichasEnlinea = 0;

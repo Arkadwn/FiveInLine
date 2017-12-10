@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package cincolinea.controlador;
 
 import cincolinea.Main;
@@ -19,12 +14,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
-import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 /**
- *
- * @author Adrian Bustamante Z
+ * Controlador de la vista de inicio de sesión
+ * 
+ * @author Adrian Bustamante Zarate
+ * @author Miguel Leonardo Jiménez Jiménez
  */
 public class FXMLInicioSesionController implements Initializable {
 
@@ -41,8 +37,7 @@ public class FXMLInicioSesionController implements Initializable {
     @FXML
     private Hyperlink linkRegistro;
     @FXML
-    private JFXButton translateButton;
-
+    private JFXButton btnIdioma;
     private boolean estaEspañol;
     private ResourceBundle idioma;
     private Main main;
@@ -51,25 +46,40 @@ public class FXMLInicioSesionController implements Initializable {
     private JFXTextField txtNombreUsuario;
     @FXML
     private JFXPasswordField txtContrasena;
-    @FXML
-    private AnchorPane pane;
 
+    /**
+     * Accion del botón btnIdioma.
+     * 
+     * @param evento El evento cachado por la presión del botón btnIdioma.
+     */
     @FXML
-    private void cambiarIdioma(ActionEvent event) {
+    private void cambiarIdioma(ActionEvent evento) {
         if (estaEspañol) {
             cambiarComponentesIngles();
+            inicializarComponentes(idioma);
         } else {
             cambiarComponentesEspañol();
+            inicializarComponentes(idioma);
         }
     }
 
+    /**
+     * Acción del enlace linkRegistro
+     * 
+     * @param evento El evento cachado por la presión del enlace linkRegistro.
+     */
     @FXML
-    private void desplegarRegistroUsuario(javafx.event.ActionEvent event) {
+    private void desplegarRegistroUsuario(javafx.event.ActionEvent evento) {
         main.desplegarRegistrarUsuario(idioma);
     }
 
+    /**
+     * Acción del botón btnIngresar.
+     * 
+     * @param evento El evento cachado por la presión del botón btnIngresar.
+     */
     @FXML
-    private void ingresarMenuPrincipal(ActionEvent event) {
+    private void ingresarMenuPrincipal(ActionEvent evento) {
         if (!txtContrasena.getText().isEmpty() || !txtNombreUsuario.getText().isEmpty()) {
             int valorSesion = conexion.autenticarCuenta(txtNombreUsuario.getText(), txtContrasena.getText());
             switch (valorSesion) {
@@ -90,48 +100,51 @@ public class FXMLInicioSesionController implements Initializable {
         }
     }
 
+    /**
+     * Setter de la variable main.
+     * 
+     * @param main Ventana principal.
+     */
     public void setMain(Main main) {
         this.main = main;
     }
 
+    /**
+     * Cambia el Bundle a español.
+     */
     private void cambiarComponentesEspañol() {
         idioma = ResourceBundle.getBundle("cincolinea/resources/Bundle_es_MX");
-        labelTitle.setText(idioma.getString("labelTitle"));
-        labelContraseña.setText(idioma.getString("labelContraseña"));
-        labelUsuario.setText(idioma.getString("labelUsuario"));
-        btnIngresar.setText(idioma.getString("btnIngresar"));
-        btnSalir.setText(idioma.getString("btnSalir"));
-        linkRegistro.setText(idioma.getString("linkRegistro"));
         estaEspañol = true;
     }
 
+    /**
+     * Cambia el Bundle a ingles.
+     */
     private void cambiarComponentesIngles() {
         idioma = ResourceBundle.getBundle("cincolinea/resources/Bundle_en_US");
+        estaEspañol = false;
+    }
+
+    /**
+     * Internacionaliza los componentes de la vista de acuerdo al idioma por
+     * defecto.
+     * 
+     * @param idioma Es el ResourceBundle con el idioma elegido.
+     */
+    private void inicializarComponentes(ResourceBundle idioma) {
         labelTitle.setText(idioma.getString("labelTitle"));
         labelContraseña.setText(idioma.getString("labelContraseña"));
         labelUsuario.setText(idioma.getString("labelUsuario"));
         btnIngresar.setText(idioma.getString("btnIngresar"));
         btnSalir.setText(idioma.getString("btnSalir"));
         linkRegistro.setText(idioma.getString("linkRegistro"));
-        estaEspañol = false;
-    }
-
-    private void inicializarComponentes(ResourceBundle idomaDefecto) {
-        labelTitle.setText(idomaDefecto.getString("labelTitle"));
-        labelContraseña.setText(idomaDefecto.getString("labelContraseña"));
-        labelUsuario.setText(idomaDefecto.getString("labelUsuario"));
-        btnIngresar.setText(idomaDefecto.getString("btnIngresar"));
-        btnSalir.setText(idomaDefecto.getString("btnSalir"));
-        linkRegistro.setText(idomaDefecto.getString("linkRegistro"));
     }
 
     @Override
     public void initialize(URL url, ResourceBundle idioma) {
         try {
             conexion = new ClienteRMI();
-        } catch (RemoteException ex) {
-            System.out.println("Error: " + ex.getMessage());
-        } catch (NotBoundException ex) {
+        } catch (RemoteException | NotBoundException ex) {
             System.out.println("Error: " + ex.getMessage());
         }
 
@@ -139,15 +152,21 @@ public class FXMLInicioSesionController implements Initializable {
         estaEspañol = !idioma.getBaseBundleName().equals("cincolinea/resources/Bundle_en_US");
         inicializarComponentes(idioma);
 
-        translateButton.setStyle("-fx-background-image: url('cincolinea/imagenes/language.png');"
+        btnIdioma.setStyle("-fx-background-image: url('cincolinea/imagenes/language.png');"
                 + "-fx-background-position: center center; -fx-background-repeat: stretch; -fx-background-size: 35px 35px 35px 35px;");
 
     }
 
+    /**
+     * Acción el botón btnSalir.
+     * 
+     * @param evento El evento cachado por la presión del botón btnSalir.
+     */
     @FXML
-    private void cerrarSistema(ActionEvent event) {
+    private void cerrarSistema(ActionEvent evento) {
         Stage stageActual = main.getStageLocal();
         stageActual.close();
+        System.exit(0);
     }
 
 }

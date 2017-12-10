@@ -13,16 +13,24 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
 /**
- *
+ * Servidor del juego 5 en línea.
+ * 
  * @author Adrián Bustamante Zarate
  * @author Miguel Leonardo Jimenez
  */
 public class ServidorRMI implements ICuenta, IVerificacionConexion, IRanking {
 
+    /**
+     * Activa los servicios que ofrece el servidor.
+     * 
+     * @return valición de la activación de los servicios.
+     */
     public boolean activarServicioAutenticacion() {
         boolean seActivo = true;
         try {
@@ -45,9 +53,8 @@ public class ServidorRMI implements ICuenta, IVerificacionConexion, IRanking {
             registryRanking.bind("ServiciosRanking", ranking);
 
         } catch (RemoteException | AlreadyBoundException ex) {
-            System.out.println("Error: " + ex.getMessage());
+            Logger.getLogger(ServidorRMI.class.getName()).log(Level.SEVERE, null, ex);
             seActivo = false;
-            ex.printStackTrace();
         }
         return seActivo;
     }

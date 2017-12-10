@@ -10,6 +10,8 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -19,14 +21,13 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 
 /**
- * FXML Controller class
+ * Controlador de la vista Ranking.
  *
  * @author Adrián Bustamante Zarate
- * @author Miguel Leonardo Jimenez
+ * @author Miguel Leonardo Jimenez Jimenez
  */
 public class FXMLRankingController implements Initializable {
     private ResourceBundle idioma;
-    
     @FXML
     private JFXButton btnRegresar;
     private Main main;
@@ -63,11 +64,19 @@ public class FXMLRankingController implements Initializable {
     @FXML
     private Label labelPartidasPerdidas;
 
+    /**
+     * Setter de la variable imagenDePerfil.
+     * 
+     * @param imagenDePerfil Identificador de la imagen de perfil del usuario.
+     */
     public void setImagenDePerfil(String imagenDePerfil) {
         this.imagenDePerfil = imagenDePerfil;
         cargarPerfil();
     }
     
+    /**
+     * Internacionaliza los componentes de la vista.
+     */
     private void iniciarIdiomaComponentes() {
         btnRegresar.setText(idioma.getString("btnRegresar"));
         labelRanking.setText(idioma.getString("labelRanking"));
@@ -89,14 +98,27 @@ public class FXMLRankingController implements Initializable {
         obtenerRankings();
     }
 
+    /**
+     * Setter de la variable idUsuario.
+     * 
+     * @param idUsuario Identificador del usuario que ha iniciado sesión.
+     */
     public void setIdUsuario(String idUsuario) {
         this.idUsuario = idUsuario;
     }
 
+    /**
+     * Setter de la varible main.
+     * 
+     * @param main Ventana principal.
+     */
     public void setMain(Main main) {
-        this.main=main;
+        this.main = main;
     }
 
+    /**
+     * Saca los mejores 10 jugadores.
+     */
     public void obtenerRankings(){
         List <Ranking> listaRankigs = new ArrayList();
         ObservableList <String> usuarios = FXCollections.observableArrayList();
@@ -110,7 +132,7 @@ public class FXMLRankingController implements Initializable {
             listaRankigs = conexion.sacar10MejoresJugadores();
         } catch (RemoteException | NotBoundException ex) {
             MensajeController.mensajeAdvertencia(idioma.getString("ErrorDeConexionIP"));
-            System.out.println("Error: "+ex.getMessage());
+            Logger.getLogger(FXMLRankingController.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         for(Ranking ranking : listaRankigs){
@@ -123,6 +145,18 @@ public class FXMLRankingController implements Initializable {
         rellenarTabla(usuarios, partidasGanadas, partidasPerdidas, partidasEmpatadas, puntos);
     }
     
+    /**
+     * Rellena las listas que representan las columnas de la tabla del ranking.
+     * 
+     * @param usuarios nombres de los 10 jugadores. 
+     * @param partidasGanadas Partidas ganadas de los 10 mejores jugadores
+     * respectivamente.
+     * @param partidasPerdidas Partidas perdidas de los 10 mejores jugadores
+     * respectivamente.
+     * @param partidasEmpatadas Partidas empatadas de los 10 mejores jugadores
+     * respectivamente.
+     * @param puntos Puntos de los 10 mejores jugadores respectivamente.
+     */
     public void rellenarTabla(ObservableList usuarios, ObservableList partidasGanadas, ObservableList partidasPerdidas, ObservableList partidasEmpatadas, ObservableList puntos){
         ObservableList<String> partidasTotales = FXCollections.observableArrayList();
         
@@ -140,11 +174,19 @@ public class FXMLRankingController implements Initializable {
         
     }
     
+    /**
+     * Acción del botón btnRegresar.
+     * 
+     * @param evento El evento cachado por la presión del botón btnRegresar.
+     */
     @FXML
-    private void regresarMenuPrincipal(ActionEvent event) {
+    private void regresarMenuPrincipal(ActionEvent evento) {
         main.desplegarMenuPrincipal(idioma, idUsuario);
     }
     
+    /**
+     * Muestra la imagen de perfil del usuario.
+     */
     private void cargarPerfil(){
         imgPerfil.setStyle("-fx-background-image: url('cincolinea/imagenes/" + imagenDePerfil + ".jpg" + "');"
                 + "-fx-background-position: center center; -fx-background-repeat: stretch; -fx-background-size: 128px 90px 128px 90px;");

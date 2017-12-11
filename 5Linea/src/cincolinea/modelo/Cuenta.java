@@ -184,17 +184,17 @@ public class Cuenta implements Serializable{
     public boolean[] validarCampos(Cuenta cuenta, String confirmacionContraseña){
         boolean[] validaciones = new boolean[7];
         /*Nombre personal del usuario mayor a 2 caracteres*/
-        validaciones[0] = cuenta.getNombre().length() >= 2;
+        validaciones[0] = cuenta.getNombre().length() >= 2 && cuenta.getNombre().length() <= 50;
         /*Apellidos del usuario mayor a dos caracteres*/
-        validaciones[1] = cuenta.getApellidos().length() >= 2;
+        validaciones[1] = cuenta.getApellidos().length() >= 2 && cuenta.getApellidos().length() <= 50;
         /*Identificador de la cuneta mayor a un caracter*/
-        validaciones[2] = cuenta.getNombreUsuario().length() > 0;
+        validaciones[2] = cuenta.getNombreUsuario().length() > 0 && cuenta.getNombreUsuario().length() <= 50;
         /*Contraseñas iguales*/
         validaciones[3] = cuenta.getContraseña().equals(confirmacionContraseña);
         /*Tamaño de la contraseña mayor a 8 caracteres*/
         validaciones[4] = cuenta.getContraseña().length() > 8;
         /*Correo valido*/
-        validaciones[5] = Cuenta.validarCorreo(cuenta.getCorreo());
+        validaciones[5] = Cuenta.validarCorreo(cuenta.getCorreo()) && cuenta.getCorreo().length() <= 32;
         /*¿Campos correctos?*/
         validaciones[6] = validaciones[0] && validaciones[1] && validaciones[2] && validaciones[3] && validaciones[4] && validaciones[5];
         

@@ -128,15 +128,17 @@ public class ControladorCuenta {
         try {
             entidad.getTransaction().begin();
             Cuentas cuentaUsuario = entidad.find(Cuentas.class, nombreUsuario);
-            estadoSesion = cuentaUsuario.getEstadoSesion();
+            if (cuentaUsuario != null) {
+                estadoSesion = cuentaUsuario.getEstadoSesion();
 
-            if (estadoSesion == 0) {
-                estadoSesion = 1;
+                if (estadoSesion == 0) {
+                    estadoSesion = 1;
+                }
+
+                cuentaUsuario.setEstadoSesion(estadoSesion);
+                entidad.getTransaction().commit();
+                validacion = true;
             }
-
-            cuentaUsuario.setEstadoSesion(estadoSesion);
-            entidad.getTransaction().commit();
-            validacion = true;
 
         } catch (RollbackException ex) {
             if (entidad.getTransaction().isActive()) {
@@ -162,15 +164,16 @@ public class ControladorCuenta {
         try {
             entidad.getTransaction().begin();
             Cuentas cuentaUsuario = entidad.find(Cuentas.class, nombreUsuario);
-            estadoSesion = cuentaUsuario.getEstadoSesion();
+            if (cuentaUsuario != null) {
+                estadoSesion = cuentaUsuario.getEstadoSesion();
 
-            if (estadoSesion == 1) {
-                estadoSesion = 0;
+                if (estadoSesion == 1) {
+                    estadoSesion = 0;
+                }
+                cuentaUsuario.setEstadoSesion(estadoSesion);
+                entidad.getTransaction().commit();
+                validacion = true;
             }
-
-            cuentaUsuario.setEstadoSesion(estadoSesion);
-            entidad.getTransaction().commit();
-            validacion = true;
 
         } catch (RollbackException ex) {
             if (entidad.getTransaction().isActive()) {

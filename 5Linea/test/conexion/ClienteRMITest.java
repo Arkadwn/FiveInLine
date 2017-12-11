@@ -14,9 +14,11 @@ import static org.junit.Assert.*;
  */
 public class ClienteRMITest {
     private ClienteRMI conexion;
+    private final String IP = "192.168.43.75";
+    
     public ClienteRMITest() throws RemoteException {
         try {
-            conexion = new ClienteRMI();
+            conexion = new ClienteRMI(IP);
         } catch (NotBoundException ex) {
             Logger.getLogger(ClienteRMITest.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -27,20 +29,18 @@ public class ClienteRMITest {
      * @throws java.rmi.NotBoundException
      */
     @Test
-    public void testAutenticarCuentaNombreUsuarioIncorrecto() throws RemoteException, NotBoundException {
+    public void testAutenticarCuentaNombreUsuarioQueHaIniciadoSesion() throws RemoteException, NotBoundException {
         String usuario = "Mauricio";
         String contrasena = "acdc";
-        conexion = new ClienteRMI();
         boolean resultadoEsperado = false;
         int resultado = conexion.autenticarCuenta(usuario, contrasena);
-        assertEquals(resultadoEsperado, resultado == 0);
+        assertEquals(resultadoEsperado, resultado == 2);
     }
 
     @Test
     public void testAutenticarCuenta() throws RemoteException, NotBoundException {
         String usuario = "Leo";
         String contrasena = "acdc619mljj";
-        conexion = new ClienteRMI();
         boolean resultadoEsperado = true;
         int resultado = conexion.autenticarCuenta(usuario, contrasena);
         assertEquals(resultadoEsperado, resultado == 1);
@@ -56,7 +56,7 @@ public class ClienteRMITest {
         cuenta.setApellidos("Jimenez");
         cuenta.setContraseña("qwerty12345");
         cuenta.setEstadoSesion(0);
-        cuenta.setNombreUsuario("Cristhianhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
+        cuenta.setNombreUsuario("Cristhianhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
         cuenta.setCorreo("acdc@gmail.com");
         cuenta.setImagen("img01");
         boolean expResult = false;
@@ -64,4 +64,52 @@ public class ClienteRMITest {
         assertEquals(expResult, result);
     }
     
+    @Test
+    public void probarActivacionDeCuenta() throws NotBoundException, RemoteException {
+        boolean expResult = true;
+        boolean result = conexion.activarEstadoSesion("AdrianB");
+        assertEquals(expResult, result);
+    }
+    
+    @Test
+    public void probarDesactivacionDeCuenta() throws NotBoundException, RemoteException {
+        boolean expResult = true;
+        boolean result = conexion.activarEstadoSesion("AdrianB");
+        assertEquals(expResult, result);
+    }
+    
+    @Test
+    public void probarActivacionDeCuentaNoExistente() throws NotBoundException, RemoteException {
+        boolean expResult = false;
+        boolean result = conexion.activarEstadoSesion("Beto");
+        assertEquals(expResult, result);
+    }
+    
+    @Test
+    public void probarDesactivacionDeCuentaNoExistente() throws NotBoundException, RemoteException {
+        boolean expResult = false;
+        boolean result = conexion.activarEstadoSesion("Beto");
+        assertEquals(expResult, result);
+    }
+    
+    @Test
+    public void probarConexionServidorCorrecta() throws NotBoundException, RemoteException {
+        boolean expResult = true;
+        boolean result = conexion.verficarConexion(true);
+        assertEquals(expResult, result);
+    }
+    
+    @Test
+    public void probarConexionServidorIncorrecta() {
+        boolean expResult = false;
+        boolean result = false;
+        ClienteRMI conexionFallida;
+        try {
+            conexionFallida = new ClienteRMI();
+            result = conexionFallida.verficarConexion(true);
+        } catch (RemoteException | NotBoundException ex) {
+            Logger.getLogger(ClienteRMITest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        assertEquals(expResult, result);
+    }
 }

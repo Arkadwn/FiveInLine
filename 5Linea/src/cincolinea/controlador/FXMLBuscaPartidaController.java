@@ -5,6 +5,7 @@ import cincolinea.modelo.ConfiguracionPartida;
 import cincolinea.modelo.utilerias.ConfiguracionIP;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
+import conexion.ClienteRMI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -16,11 +17,15 @@ import javafx.scene.control.Label;
 import io.socket.client.IO;
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.scene.image.ImageView;
+import javafx.stage.WindowEvent;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -37,7 +42,6 @@ public class FXMLBuscaPartidaController implements Initializable {
     private ResourceBundle idioma;
     private Main main;
     private String idUsuario;
-    private String idContrincante;
     private Socket socket;
     @FXML
     private Label labelJugadores;
@@ -195,6 +199,19 @@ public class FXMLBuscaPartidaController implements Initializable {
      */
     public void setMain(Main main) {
         this.main = main;
+        main.getStageLocal().setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent event) {
+                try {
+                    ClienteRMI conexion = new ClienteRMI();
+                    conexion.activarEstadoSesion(idUsuario);
+                } catch (RemoteException | NotBoundException ex) {
+                    Logger.getLogger(FXMLMenuPrincipalController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                socket.disconnect();
+                System.exit((0));
+            }
+        });
     }
 
     /**
@@ -204,7 +221,7 @@ public class FXMLBuscaPartidaController implements Initializable {
      */
     @FXML
     private void emparejar(ActionEvent evento) {
-        idContrincante = cbPartidas.getValue();
+        String idContrincante = cbPartidas.getValue();
         socket.emit("emparejar", idContrincante.substring(11), idUsuario, imagenDePerfil);
     }
 

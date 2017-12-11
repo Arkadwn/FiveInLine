@@ -97,7 +97,7 @@ public class ConfiguracionIP {
                 ip[2] = archivoProperties.getProperty("IP3");
                 ip[3] = archivoProperties.getProperty("IP4");
             } catch (IOException ex) {
-                System.out.println("Error: " + ex.getMessage());
+                Logger.getLogger(ConfiguracionIP.class.getName()).log(Level.SEVERE, null, ex);
             }
         }else {
             for(int i = 0; i < ip.length; i++){

@@ -19,9 +19,14 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import org.json.JSONObject;
 import cincolinea.modelo.utilerias.ConfiguracionIP;
+import conexion.ClienteRMI;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.event.EventHandler;
 import javafx.scene.image.ImageView;
+import javafx.stage.WindowEvent;
 
 /**
  * Controlador de la vista configurar partida.
@@ -57,6 +62,8 @@ public class FXMLConfigurarPartidaController implements Initializable {
     private String imagenDePerfil;
     @FXML
     private JFXButton imgPerfil;
+    private boolean partidaCreada;
+    private final String EVENTO_RESPUESTA_EMPAREJAMIENTO = "respuestaEmparejamiento";;
 
     @Override
     public void initialize(URL url, ResourceBundle idioma) {
@@ -64,6 +71,7 @@ public class FXMLConfigurarPartidaController implements Initializable {
         if (this.idioma != null) {
             iniciarIdiomaComponentes();
             crearConexionIO();
+            partidaCreada = false;
         }
     }
 
@@ -95,14 +103,14 @@ public class FXMLConfigurarPartidaController implements Initializable {
             String ip = ipPartes[0] + "." + ipPartes[1] + "." + ipPartes[2] + "." + ipPartes[3];
             socket = IO.socket("http://" + ip + ":8000");
 
-            socket.on("respuestaEmparejamiento", new Emitter.Listener() {
+            socket.on(EVENTO_RESPUESTA_EMPAREJAMIENTO, new Emitter.Listener() {
                 @Override
                 public void call(Object... os) {
                     configuracion.setIdContrincante((String) os[0]);
                     configuracion.setImagenPerfil(imagenDePerfil);
                     configuracion.setImagenPerfilInvitado((String) os[1]);
-                    socket.off("respuestaEmparejamiento");
-
+                    socket.off(EVENTO_RESPUESTA_EMPAREJAMIENTO);
+                    
                     Platform.runLater(() -> {
                         main.iniciarJuego(idioma, configuracion, idUsuario);
                     });
@@ -121,6 +129,22 @@ public class FXMLConfigurarPartidaController implements Initializable {
      */
     public void setMain(Main main) {
         this.main = main;
+        main.getStageLocal().setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent event) {
+                try {
+                    ClienteRMI conexion = new ClienteRMI();
+                    conexion.activarEstadoSesion(idUsuario);
+                    if(partidaCreada){
+                        socket.emit("cancelarPartida", idUsuario);
+                    }
+                    socket.disconnect();
+                    System.exit((0));
+                } catch (RemoteException | NotBoundException ex) {
+                    Logger.getLogger(FXMLMenuPrincipalController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
     }
 
     /**
@@ -141,7 +165,7 @@ public class FXMLConfigurarPartidaController implements Initializable {
      */
     @FXML
     private void regresarMenuPrincipal(ActionEvent evento) {
-        socket.off("respuestaEmparejamiento");
+        socket.off(EVENTO_RESPUESTA_EMPAREJAMIENTO);
         socket.disconnect();
         main.desplegarMenuPrincipal(idioma, idUsuario);
     }
@@ -192,6 +216,7 @@ public class FXMLConfigurarPartidaController implements Initializable {
 
             socket.emit("peticionCreacionPartida", idUsuario, configuracionEncriptada);
             mostrarElementosDeEspera();
+            partidaCreada = true;
         }
 
     }
@@ -264,6 +289,7 @@ public class FXMLConfigurarPartidaController implements Initializable {
     private void accionCancelarPartida(ActionEvent evento) {
         socket.emit("cancelarPartida", idUsuario);
         ocultarElementosDeEspera();
+        partidaCreada = false;
     }
 
     /**

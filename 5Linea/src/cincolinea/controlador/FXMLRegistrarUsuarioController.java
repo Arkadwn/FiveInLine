@@ -39,7 +39,6 @@ public class FXMLRegistrarUsuarioController implements Initializable {
     private Label labelReContrasena;
     private ResourceBundle idioma;
     private Main main;
-    private ClienteRMI conexion;
     @FXML
     private JFXPasswordField tfReContrasena;
     @FXML
@@ -114,7 +113,6 @@ public class FXMLRegistrarUsuarioController implements Initializable {
      */
     @FXML
     private void regresarMenuPrincipal(ActionEvent evento) {
-        //main.desplegarMenuPrincipal(idioma, tfNombreUsuario.getText());//Quitar
         main.desplegarInicioSesion(idioma);
     }
 
@@ -135,7 +133,7 @@ public class FXMLRegistrarUsuarioController implements Initializable {
 
             if (validaciones[6]) {
                 try {
-                    conexion = new ClienteRMI();
+                    ClienteRMI conexion = new ClienteRMI();
                     if (conexion.registrarUsuario(cuenta)) {
                         MensajeController.mensajeInformacion(idioma.getString("usuarioGuardado"));
                         main.desplegarMenuPrincipal(idioma, tfNombreUsuario.getText());
@@ -213,9 +211,7 @@ public class FXMLRegistrarUsuarioController implements Initializable {
     private int generarNumeroImagenAleatorio() {
         Random aleatatio = new Random(System.currentTimeMillis());
 
-        int numero = aleatatio.nextInt(15);
-
-        return numero;
+        return  aleatatio.nextInt(15);
     }
 
     /**

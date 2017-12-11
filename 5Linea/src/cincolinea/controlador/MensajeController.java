@@ -54,7 +54,7 @@ public class MensajeController {
      * @return La desición tomada por el usuario.
      */
     public static boolean mensajeDesicion(String mensaje, String si, String no){
-        boolean validacion;
+        boolean validacion = false;
         
         Alert ventana = new Alert(Alert.AlertType.CONFIRMATION);
         ventana.setTitle(null);
@@ -63,11 +63,14 @@ public class MensajeController {
         ventana.initStyle(StageStyle.UNDECORATED);
         ButtonType botonSi = new ButtonType(si, ButtonData.YES);
         ButtonType botonNo = new ButtonType(no, ButtonData.NO);
-        ventana.getButtonTypes().setAll(botonSi,botonNo);
+        ventana.getButtonTypes().setAll(botonNo,botonSi);
         
         Optional<ButtonType> resultado = ventana.showAndWait();
         
-        validacion = resultado.get() == ButtonType.YES;
+        if(resultado.isPresent()){
+            validacion = resultado.get() == botonSi;
+        }
+        
         
         return validacion;
     }

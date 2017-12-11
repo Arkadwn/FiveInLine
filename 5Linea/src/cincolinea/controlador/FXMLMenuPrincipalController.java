@@ -9,9 +9,11 @@ import java.rmi.RemoteException;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.stage.WindowEvent;
 
 /**
  * Controlador de la vista Menu principal.
@@ -36,8 +38,6 @@ public class FXMLMenuPrincipalController implements Initializable {
     private String idUsuario;
     private String imagenPerfil;
     @FXML
-    private JFXButton btnAyuda;
-    @FXML
     private JFXButton imgPerfil;
     @FXML
     private Label labelNombreUsuario;
@@ -48,7 +48,19 @@ public class FXMLMenuPrincipalController implements Initializable {
      * @param main Ventana principal.
      */
     public void setMain(Main main){
-        this.main=main;
+        this.main = main;
+        main.getStageLocal().setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent event) {
+                try {
+                    ClienteRMI conexion = new ClienteRMI();
+                    conexion.activarEstadoSesion(idUsuario);
+                    System.exit((0));
+                } catch (RemoteException | NotBoundException ex) {
+                    Logger.getLogger(FXMLMenuPrincipalController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
     }
     
     /**

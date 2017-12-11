@@ -9,6 +9,8 @@ import java.net.URL;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -145,7 +147,7 @@ public class FXMLInicioSesionController implements Initializable {
         try {
             conexion = new ClienteRMI();
         } catch (RemoteException | NotBoundException ex) {
-            System.out.println("Error: " + ex.getMessage());
+            Logger.getLogger(FXMLInicioSesionController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         this.idioma = idioma;

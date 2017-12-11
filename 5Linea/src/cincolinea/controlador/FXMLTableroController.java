@@ -15,10 +15,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
+import javafx.stage.WindowEvent;
 import org.json.JSONObject;
 
 /**
@@ -46,6 +48,7 @@ public class FXMLTableroController implements Initializable {
     private JFXButton imgPerfil;
     @FXML
     private JFXButton imgPerfilContrincante;
+    private final String EVENTO_ABANDONO_PARTIDA = "abandonarPartida";
 
     /**
      * Internacionaliza los componentes de la vista.
@@ -56,14 +59,14 @@ public class FXMLTableroController implements Initializable {
 
     /**
      * Acción del botón btnAbandonarPartida.
-     * 
-     * @param evento El evento cachado por la presión del botón 
+     *
+     * @param evento El evento cachado por la presión del botón
      * btnAbandonarPartida.
      */
     @FXML
     private void abandonarPartida(ActionEvent evento) {
         if (MensajeController.mensajeDesicion(idioma.getString("desicion"), idioma.getString("afirmacion"), idioma.getString("negacion"))) {
-            configuracion.getSocket().emit("abandonarPartida", idUsuario);
+            configuracion.getSocket().emit(EVENTO_ABANDONO_PARTIDA, idUsuario);
             configuracion.getSocket().emit("desconectar", idUsuario);
             configuracion.getSocket().disconnect();
             main.desplegarMenuPrincipal(idioma, idUsuario);
@@ -73,16 +76,31 @@ public class FXMLTableroController implements Initializable {
 
     /**
      * Setter de la variable main.
-     * 
+     *
      * @param main Ventana principal.
      */
     public void setMain(Main main) {
         this.main = main;
+        main.getStageLocal().setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent event) {
+                try {
+                    ClienteRMI conexion = new ClienteRMI();
+                    conexion.activarEstadoSesion(idUsuario);
+                } catch (RemoteException | NotBoundException ex) {
+                    Logger.getLogger(FXMLMenuPrincipalController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                configuracion.getSocket().emit(EVENTO_ABANDONO_PARTIDA, idUsuario);
+                configuracion.getSocket().emit("desconectar", idUsuario);
+                configuracion.getSocket().disconnect();
+                System.exit((0));
+            }
+        });
     }
 
     /**
      * Carga la configuración del tablero.
-     * 
+     *
      * @param configuracion Configuración del tablero.
      * @param idUsuario Identificador del usuario anfitrión.
      */
@@ -91,7 +109,7 @@ public class FXMLTableroController implements Initializable {
         this.idUsuario = idUsuario;
         tableroLogico = new Tablero(this.configuracion.getTamaño());
         activarEventosDelJuego();
-        
+
         cargarPerfiles();
         crearTablero(configuracion.getTamaño());
     }
@@ -162,7 +180,7 @@ public class FXMLTableroController implements Initializable {
 
     /**
      * Acción de un botón del tablero.
-     * 
+     *
      * @param evento Evento de presionar un botón del tablero.
      */
     @FXML
@@ -209,7 +227,7 @@ public class FXMLTableroController implements Initializable {
 
     /**
      * Coloca la ficha en el tablero.
-     * 
+     *
      * @param boton Referencia al boton que se presiono en el tablero.
      * @param colorFicha Color de la ficha del jugador.
      */
@@ -223,7 +241,7 @@ public class FXMLTableroController implements Initializable {
 
     /**
      * Crea un objeto ficha y saca las coordenadas de la ficha.
-     * 
+     *
      * @param coordenadas Cadena con las cadenas de la ficha.
      * @return Ficha donde se realizo la jugada.
      */
@@ -241,7 +259,7 @@ public class FXMLTableroController implements Initializable {
 
     /**
      * Coloca la jugada del contrincante en el tablero.
-     * 
+     *
      * @param ficha Ficha de la jugada del tablero.
      */
     private void colocarFichaContrincante(Ficha ficha) {
@@ -257,78 +275,27 @@ public class FXMLTableroController implements Initializable {
     }
 
     /**
-     * Modifica el tablero de la vista de acuerdo al tamaño de la configuración. 
-     * 
+     * Modifica el tablero de la vista de acuerdo al tamaño de la configuración.
+     *
      * @param tamaño Tamaño del tablero seleccionado.
      */
     private void crearTablero(int tamaño) {
-        if (validarSiTiraPrimero()) {
+        if (configuracion.getColorFicha().equals("B")) {
             tablero.setDisable(true);
         }
-        JFXButton boton;
-        int i;
         switch (tamaño) {
             case 8:
-                for (i = 9; i < 100; i += 10) {
-                    boton = (JFXButton) tablero.getChildren().get(i);
-                    boton.setVisible(false);
-
-                    if (i == 79) {
-                        break;
-                    }
-                }
-
-                for (i = 8; i < 100; i += 10) {
-                    boton = (JFXButton) tablero.getChildren().get(i);
-                    boton.setVisible(false);
-
-                    if (i == 78) {
-                        break;
-                    }
-                }
-
-                for (i = 90; i < 100; i++) {
-                    boton = (JFXButton) tablero.getChildren().get(i);
-                    boton.setVisible(false);
-                }
-
-                for (i = 80; i < 90; i++) {
-                    boton = (JFXButton) tablero.getChildren().get(i);
-                    boton.setVisible(false);
-                }
-
+                crearTableroTamaño8();
                 break;
             case 9:
-                for (i = 9; i < 100; i += 10) {
-                    boton = (JFXButton) tablero.getChildren().get(i);
-                    boton.setVisible(false);
-
-                    if (i == 89) {
-                        break;
-                    }
-                }
-
-                for (i = 90; i < 100; i++) {
-                    boton = (JFXButton) tablero.getChildren().get(i);
-                    boton.setVisible(false);
-                }
-
+                crearTableroTamaño9();
                 break;
         }
-    }
-
-    /**
-     * Valida que tipo de ficha tiene el jugador anfitrión.
-     * 
-     * @return validación de color de ficha.
-     */
-    private boolean validarSiTiraPrimero() {
-        return configuracion.getColorFicha().equals("B");
     }
 
     /**
      * Crea la conexón con RMI para hacer referencia a guardar resultado.
-     * 
+     *
      * @param ganador Identificador del jugador ganador.
      * @param perdedor Identificador del jugador perdedor.
      */
@@ -344,7 +311,7 @@ public class FXMLTableroController implements Initializable {
 
     /**
      * Crea la conexón con RMI para hacer referencia a guardar empate.
-     * 
+     *
      * @param jugador1 Identificador del jugador anfitrión.
      * @param jugador2 Identificador del jugador invitado.
      */
@@ -359,8 +326,9 @@ public class FXMLTableroController implements Initializable {
     }
 
     /**
-     * Crea la conexón con RMI para hacer referencia a guardar abandono de partida.
-     * 
+     * Crea la conexón con RMI para hacer referencia a guardar abandono de
+     * partida.
+     *
      * @param ganador Identificador del jugador ganador.
      * @param desertor Idenfitificador del jugador que abandono partida.
      */
@@ -395,5 +363,55 @@ public class FXMLTableroController implements Initializable {
                 + "-fx-background-position: center center; -fx-background-repeat: stretch; -fx-background-size: 113px 105px 113px 105px;");
         imgPerfilContrincante.setStyle("-fx-background-image: url('cincolinea/imagenes/" + configuracion.getImagenPerfilInvitado() + ".jpg" + "');"
                 + "-fx-background-position: center center; -fx-background-repeat: stretch; -fx-background-size: 113px 105px 113px 105px;");
+    }
+    
+    private void crearTableroTamaño8(){
+        int i;
+        JFXButton boton;
+        for (i = 9; i < 100; i += 10) {
+                    boton = (JFXButton) tablero.getChildren().get(i);
+                    boton.setVisible(false);
+
+                    if (i == 79) {
+                        break;
+                    }
+                }
+
+                for (i = 8; i < 100; i += 10) {
+                    boton = (JFXButton) tablero.getChildren().get(i);
+                    boton.setVisible(false);
+
+                    if (i == 78) {
+                        break;
+                    }
+                }
+
+                for (i = 90; i < 100; i++) {
+                    boton = (JFXButton) tablero.getChildren().get(i);
+                    boton.setVisible(false);
+                }
+
+                for (i = 80; i < 90; i++) {
+                    boton = (JFXButton) tablero.getChildren().get(i);
+                    boton.setVisible(false);
+                }
+    }
+    
+    private void crearTableroTamaño9(){
+        int i;
+        JFXButton boton;
+        for (i = 9; i < 100; i += 10) {
+                    boton = (JFXButton) tablero.getChildren().get(i);
+                    boton.setVisible(false);
+
+                    if (i == 89) {
+                        break;
+                    }
+                }
+
+                for (i = 90; i < 100; i++) {
+                    boton = (JFXButton) tablero.getChildren().get(i);
+                    boton.setVisible(false);
+                }
     }
 }

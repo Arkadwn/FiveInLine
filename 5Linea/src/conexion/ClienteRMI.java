@@ -26,6 +26,8 @@ import java.util.logging.Logger;
 public class ClienteRMI {
 
     private Registry conexion;
+    private final String SERVICIO_CUENTA = "ServiciosCuenta";
+    private final String SERVICIO_RANKING = "ServiciosRanking";
 
     /**
      * Constructor que instancia el LocateRegistry.
@@ -44,10 +46,8 @@ public class ClienteRMI {
      *
      * @param ip Ip del servidor.
      * @throws RemoteException Si la referencia no pudo ser creada.
-     * @throws NotBoundException Si se intenta crear un lookup o unbind en el
-     * registro un nombre que no tenga un enlace asociado.
      */
-    public ClienteRMI(String ip) throws RemoteException, NotBoundException {
+    public ClienteRMI(String ip) throws RemoteException {
         conexion = LocateRegistry.getRegistry(ip);
     }
 
@@ -61,16 +61,16 @@ public class ClienteRMI {
     public int autenticarCuenta(String usuario, String contrasena) {
         int validacion = 0;
 
-        String contrasenaEncriptada = "";
+        String contrasenaAValidar = null;
         try {
-            contrasenaEncriptada = encriptarContrasena(contrasena);
+            contrasenaAValidar = encriptarContrasena(contrasena);
         } catch (NoSuchAlgorithmException ex) {
             Logger.getLogger(ClienteRMI.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         try {
-            ICuenta cuenta = (ICuenta) conexion.lookup("ServiciosCuenta");
-            validacion = cuenta.autenticarCuenta(usuario, contrasenaEncriptada);
+            ICuenta cuenta = (ICuenta) conexion.lookup(SERVICIO_CUENTA);
+            validacion = cuenta.autenticarCuenta(usuario, contrasenaAValidar);
 
         } catch (NotBoundException | RemoteException ex) {
             Logger.getLogger(ClienteRMI.class.getName()).log(Level.SEVERE, null, ex);
@@ -90,17 +90,17 @@ public class ClienteRMI {
      */
     public boolean registrarUsuario(Cuenta cuentaNueva) throws RemoteException, NotBoundException {
         boolean validacion;
-        String contrasenaEncriptada = "";
+        String contrasenaAValidar = null;
 
         try {
-            contrasenaEncriptada = encriptarContrasena(cuentaNueva.getContraseña());
+            contrasenaAValidar = encriptarContrasena(cuentaNueva.getContraseña());
         } catch (NoSuchAlgorithmException ex) {
             Logger.getLogger(ClienteRMI.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        cuentaNueva.setContraseña(contrasenaEncriptada);
+        cuentaNueva.setContraseña(contrasenaAValidar);
 
-        ICuenta cuenta = (ICuenta) conexion.lookup("ServiciosCuenta");
+        ICuenta cuenta = (ICuenta) conexion.lookup(SERVICIO_CUENTA);
         validacion = cuenta.registrarCuenta(cuentaNueva);
 
         return validacion;
@@ -153,7 +153,7 @@ public class ClienteRMI {
         boolean validacion = false;
 
         try {
-            IRanking ranking = (IRanking) conexion.lookup("ServiciosRanking");
+            IRanking ranking = (IRanking) conexion.lookup(SERVICIO_RANKING);
             validacion = ranking.guardarResultadosPartida(ganador, perdedor);
         } catch (RemoteException | NotBoundException ex) {
             Logger.getLogger(ClienteRMI.class.getName()).log(Level.SEVERE, null, ex);
@@ -173,7 +173,7 @@ public class ClienteRMI {
         boolean validacion = false;
 
         try {
-            IRanking ranking = (IRanking) conexion.lookup("ServiciosRanking");
+            IRanking ranking = (IRanking) conexion.lookup(SERVICIO_RANKING);
             validacion = ranking.guardarEmpate(jugador1, jugador2);
         } catch (RemoteException | NotBoundException ex) {
             Logger.getLogger(ClienteRMI.class.getName()).log(Level.SEVERE, null, ex);
@@ -192,7 +192,7 @@ public class ClienteRMI {
         boolean validacion = false;
 
         try {
-            ICuenta cuenta = (ICuenta) conexion.lookup("ServiciosCuenta");
+            ICuenta cuenta = (ICuenta) conexion.lookup(SERVICIO_CUENTA);
             validacion = cuenta.activarEstadoSesion(nombreUsuario);
         } catch (RemoteException | NotBoundException ex) {
             Logger.getLogger(ClienteRMI.class.getName()).log(Level.SEVERE, null, ex);
@@ -211,7 +211,7 @@ public class ClienteRMI {
         boolean validacion = false;
 
         try {
-            ICuenta cuenta = (ICuenta) conexion.lookup("ServiciosCuenta");
+            ICuenta cuenta = (ICuenta) conexion.lookup(SERVICIO_CUENTA);
             validacion = cuenta.desactivarEstadoSesion(nombreUsuario);
         } catch (RemoteException | NotBoundException ex) {
             Logger.getLogger(ClienteRMI.class.getName()).log(Level.SEVERE, null, ex);
@@ -230,7 +230,7 @@ public class ClienteRMI {
         boolean validacion = false;
 
         try {
-            IRanking ranking = (IRanking) conexion.lookup("ServiciosRanking");
+            IRanking ranking = (IRanking) conexion.lookup(SERVICIO_RANKING);
             validacion = ranking.aplicarCastigo(idJugador);
         } catch (RemoteException | NotBoundException ex) {
             Logger.getLogger(ClienteRMI.class.getName()).log(Level.SEVERE, null, ex);
@@ -248,7 +248,7 @@ public class ClienteRMI {
         List<Ranking> mejores10Jugadores = new ArrayList();
 
         try {
-            IRanking ranking = (IRanking) conexion.lookup("ServiciosRanking");
+            IRanking ranking = (IRanking) conexion.lookup(SERVICIO_RANKING);
             mejores10Jugadores = ranking.sacarMejores10();
         } catch (RemoteException | NotBoundException ex) {
             Logger.getLogger(ClienteRMI.class.getName()).log(Level.SEVERE, null, ex);
@@ -269,7 +269,7 @@ public class ClienteRMI {
     public String sacarImagenDePerfil(String nombreUsuario) throws RemoteException, NotBoundException {
         String imagen;
 
-        ICuenta cuenta = (ICuenta) conexion.lookup("ServiciosCuenta");
+        ICuenta cuenta = (ICuenta) conexion.lookup(SERVICIO_CUENTA);
         imagen = cuenta.sacarImagenDePerfil(nombreUsuario);
 
         return imagen;

@@ -90,10 +90,8 @@ public class FXMLRegistroIPController implements Initializable {
      */
     private void cambiarComponentesEspañol() {
         idioma = ResourceBundle.getBundle("cincolinea/resources/Bundle_es_MX");
-        labelTituloIP.setText(idioma.getString("labelTituloIP"));
-        btnSalir.setText(idioma.getString("btnSalir"));
-        btnVerificarConexion.setText(idioma.getString("btnValidarConexion"));
         estaEspañol = true;
+        inicializarComponentesPorDefecto(idioma);
     }
 
     /**
@@ -101,10 +99,8 @@ public class FXMLRegistroIPController implements Initializable {
      */
     private void cambiarComponentesIngles() {
         idioma = ResourceBundle.getBundle("cincolinea/resources/Bundle_en_US");
-        labelTituloIP.setText(idioma.getString("labelTituloIP"));
-        btnSalir.setText(idioma.getString("btnSalir"));
-        btnVerificarConexion.setText(idioma.getString("btnValidarConexion"));
         estaEspañol = false;
+        inicializarComponentesPorDefecto(idioma);
     }
 
     /**
@@ -157,5 +153,5 @@ public class FXMLRegistroIPController implements Initializable {
         main.getStageLocal().close();
         System.exit((0));
     }
-
+    
 }

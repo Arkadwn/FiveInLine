@@ -174,7 +174,6 @@ public class Tablero {
            
            if(fichasEnlinea == 5){
                validacion = true;
-               System.out.println("gano diagonal");
                break;
            }
            
@@ -217,7 +216,6 @@ public class Tablero {
 
             if (fichasEnlinea == 5) {
                 validacion = true;
-                System.out.println("gano diagonal invertida");
                 break;
             }
             

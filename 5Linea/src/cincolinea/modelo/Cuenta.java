@@ -196,7 +196,7 @@ public class Cuenta implements Serializable{
         /*Correo valido*/
         validaciones[5] = Cuenta.validarCorreo(cuenta.getCorreo());
         /*¿Campos correctos?*/
-        validaciones[6] = validaciones[0] && validaciones[1] && validaciones[2] && validaciones[3] && validaciones[4];
+        validaciones[6] = validaciones[0] && validaciones[1] && validaciones[2] && validaciones[3] && validaciones[4] && validaciones[5];
         
         return validaciones;
     }

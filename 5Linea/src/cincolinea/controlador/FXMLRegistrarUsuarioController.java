@@ -139,7 +139,7 @@ public class FXMLRegistrarUsuarioController implements Initializable {
                         main.desplegarMenuPrincipal(idioma, tfNombreUsuario.getText());
                     } else {
                         labelErrorNombreUsuario.setVisible(validaciones[2]);
-
+                        MensajeController.mensajeAdvertencia("usuarioYaExistente");
                     }
                 } catch (RemoteException | NotBoundException ex) {
                     Logger.getLogger(FXMLRegistrarUsuarioController.class.getName()).log(Level.SEVERE, null, ex);
@@ -147,7 +147,7 @@ public class FXMLRegistrarUsuarioController implements Initializable {
                 }
             } else {
                 mostrarErroresCampos(validaciones);
-                MensajeController.mensajeAdvertencia("Hay camposInvalidos");
+                MensajeController.mensajeAdvertencia(idioma.getString("camposInvalidos"));
             }
         }
 

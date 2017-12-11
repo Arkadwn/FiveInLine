@@ -65,7 +65,7 @@ public class FXMLConfigurarPartidaController implements Initializable {
     private JFXButton imgPerfil;
     private boolean partidaCreada;
     private final String EVENTO_RESPUESTA_EMPAREJAMIENTO = "respuestaEmparejamiento";;
-
+    private javax.swing.Timer temporizador;
     @Override
     public void initialize(URL url, ResourceBundle idioma) {
         this.idioma = idioma;
@@ -75,7 +75,7 @@ public class FXMLConfigurarPartidaController implements Initializable {
             partidaCreada = false;
         }
         
-        javax.swing.Timer temporizador = temporizadorConexion();
+        temporizador = temporizadorConexion();
         temporizador.start();
     }
 
@@ -200,6 +200,7 @@ public class FXMLConfigurarPartidaController implements Initializable {
     private void regresarMenuPrincipal(ActionEvent evento) {
         socket.off(EVENTO_RESPUESTA_EMPAREJAMIENTO);
         socket.disconnect();
+        temporizador.stop();
         main.desplegarMenuPrincipal(idioma, idUsuario);
     }
 

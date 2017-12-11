@@ -59,7 +59,7 @@ public class FXMLBuscaPartidaController implements Initializable {
     private String imagenDePerfil;
     @FXML
     private JFXButton imgPerfil;
-
+    javax.swing.Timer temporizador;
     /**
      * Asigna el valor de la imagen de perfil del jugador.
      * 
@@ -98,7 +98,7 @@ public class FXMLBuscaPartidaController implements Initializable {
         if (this.idioma != null) {
             iniciarIdiomaComponentes();
         }
-        javax.swing.Timer temporizador = temporizadorConexion();
+        temporizador = temporizadorConexion();
         temporizador.start();
         try {
             if (socket == null) {
@@ -270,6 +270,7 @@ public class FXMLBuscaPartidaController implements Initializable {
         socket.off("respuestaEmparejamiento");
         socket.off("respuestaEmparejamientoNegativa");
         socket.disconnect();
+        temporizador.stop();
         main.desplegarMenuPrincipal(idioma, idUsuario);
     }
 

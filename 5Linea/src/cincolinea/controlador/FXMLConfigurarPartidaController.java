@@ -20,6 +20,7 @@ import javafx.fxml.FXML;
 import org.json.JSONObject;
 import cincolinea.modelo.utilerias.ConfiguracionIP;
 import conexion.ClienteRMI;
+import java.awt.event.ActionListener;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.logging.Level;
@@ -73,8 +74,40 @@ public class FXMLConfigurarPartidaController implements Initializable {
             crearConexionIO();
             partidaCreada = false;
         }
+        
+        javax.swing.Timer temporizador = temporizadorConexion();
+        temporizador.start();
     }
 
+        
+    /**
+     * Metodo que retorna un objeto del tipo Timer, que sirve de temporizador
+     * para verificar conexión con el servidor Node.js
+     * @return Objeto tipo javax.swing.Timer
+     */
+    private javax.swing.Timer temporizadorConexion() {
+
+        javax.swing.Timer temporizador = new javax.swing.Timer(3000, new ActionListener() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent ae) {
+                if (!ConfiguracionIP.verficarConexionSocket()) {
+                    Platform.runLater(() -> {
+                        MensajeController.mensajeAdvertencia(idioma.getString("errorDeConexionServidor"));
+                    });
+                    Platform.runLater(() -> {
+                        socket.off(EVENTO_RESPUESTA_EMPAREJAMIENTO);
+                        socket.disconnect();
+                        main.desplegarMenuPrincipal(idioma, idUsuario);
+                    });
+                    Thread.currentThread().stop();
+                }
+            }
+        });
+
+        return temporizador;
+    }
+
+    
     /**
      * Rellena el combo box cbTamano.
      */

@@ -20,7 +20,7 @@ import javax.persistence.Persistence;
 
 /**
  * Servidor del juego 5 en línea.
- * 
+ *
  * @author Adrián Bustamante Zarate
  * @author Miguel Leonardo Jimenez
  */
@@ -28,10 +28,14 @@ public class ServidorRMI implements ICuenta, IVerificacionConexion, IRanking {
 
     /**
      * Activa los servicios que ofrece el servidor.
-     * 
+     *
      * @return valición de la activación de los servicios.
+     * @throws java.rmi.RemoteException Excepción al inicializar el servicio de
+     * RMI
+     * @throws java.rmi.AlreadyBoundException Excepción al inicializar el
+     * servicio de RMI
      */
-    public boolean activarServicioAutenticacion() {
+    public boolean activarServiciosRMI() throws RemoteException, AlreadyBoundException {
         boolean seActivo = true;
         try {
             ServidorRMI servidorRMICuenta = new ServidorRMI();
@@ -74,11 +78,11 @@ public class ServidorRMI implements ICuenta, IVerificacionConexion, IRanking {
             if (resultadoCuenta.isEstadoSesion() == 1) {
                 autentico = 2;
                 System.out.println("Se ha tratado de acceder con el usuario: " + usuario);
-            }else{
+            } else {
                 autentico = 1;
                 System.out.println("Ha accedido el usuario: " + usuario);
             }
-            
+
         }
 
         return autentico;
@@ -89,11 +93,11 @@ public class ServidorRMI implements ICuenta, IVerificacionConexion, IRanking {
         EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("CincoLineaServidorPU", null);
         ControladorCuenta controller = new ControladorCuenta(entityManagerFactory);
         boolean registro = controller.registrarUsuario(datosUsuario);
-        
+
         if (registro) {
             System.out.println("Se ha realizado un registro exitoso para el usuario: " + datosUsuario.getNombre());
         }
-        
+
         return registro;
     }
 

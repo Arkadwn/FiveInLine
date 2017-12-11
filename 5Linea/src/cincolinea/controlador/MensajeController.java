@@ -10,6 +10,7 @@ import javafx.stage.StageStyle;
  * Controlador de los mesajes para el usuario.
  * 
  * @author Miguel Leonardo Jimenez Jimenez
+ * @author Adrián Bustamante Zarate
  */
 public class MensajeController {
     

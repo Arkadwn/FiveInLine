@@ -46,8 +46,10 @@ public class ClienteRMI {
      *
      * @param ip Ip del servidor.
      * @throws RemoteException Si la referencia no pudo ser creada.
+     * @throws NotBoundException Si se intenta crear un lookup o unbind en el
+     * registro un nombre que no tenga un enlace asociado.
      */
-    public ClienteRMI(String ip) throws RemoteException {
+    public ClienteRMI(String ip) throws RemoteException, NotBoundException {
         conexion = LocateRegistry.getRegistry(ip);
     }
 
@@ -144,7 +146,7 @@ public class ClienteRMI {
 
     /**
      * Guarda los resultados de una partida.
-     * 
+     *
      * @param ganador Identificador del usuario ganador.
      * @param perdedor Identificador del usuario perdedor.
      * @return Confirmación de la operación realizada.
@@ -164,7 +166,7 @@ public class ClienteRMI {
 
     /**
      * Guarda el empate de una pardida entre dos jugadores.
-     * 
+     *
      * @param jugador1 Identifiacdor del usuario 1.
      * @param jugador2 Identificador del usuario 2.
      * @return Confirmación de la operación realizada.
@@ -184,26 +186,25 @@ public class ClienteRMI {
 
     /**
      * Cambia el estado de la sesión de un usuario a activa.
-     * 
+     *
      * @param nombreUsuario Identificador del usuario que a iniciado sesión.
      * @return Confirmación de la operación realizada.
+     * @throws RemoteException Si la referencia no pudo ser creada.
+     * @throws NotBoundException Si se intenta crear un lookup o unbind en el
+     * registro un nombre que no tenga un enlace asociado.
      */
-    public boolean activarEstadoSesion(String nombreUsuario) {
+    public boolean activarEstadoSesion(String nombreUsuario) throws RemoteException, NotBoundException {
         boolean validacion = false;
 
-        try {
-            ICuenta cuenta = (ICuenta) conexion.lookup(SERVICIO_CUENTA);
-            validacion = cuenta.activarEstadoSesion(nombreUsuario);
-        } catch (RemoteException | NotBoundException ex) {
-            Logger.getLogger(ClienteRMI.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        ICuenta cuenta = (ICuenta) conexion.lookup(SERVICIO_CUENTA);
+        validacion = cuenta.activarEstadoSesion(nombreUsuario);
 
         return validacion;
     }
 
     /**
      * Cambia el estado de la sesión de un usuario a inactiva.
-     * 
+     *
      * @param nombreUsuario Identificador del usuario que a cerrado sesión.
      * @return Confirmación de la operación realizada.
      */
@@ -222,7 +223,7 @@ public class ClienteRMI {
 
     /**
      * Resta puntos a un usuario cuando abandona una partida.
-     * 
+     *
      * @param idJugador Identificador del usuario que abandono partida.
      * @return Confirmación de la operación realizada.
      */
@@ -241,25 +242,24 @@ public class ClienteRMI {
 
     /**
      * Saca los mejores 10 jugadores en base a sus puntajes.
-     * 
+     *
      * @return Lista con los 10 mejores jugadores.
+     * @throws RemoteException Si la referencia no pudo ser creada.
+     * @throws NotBoundException Si se intenta crear un lookup o unbind en el
+     * registro un nombre que no tenga un enlace asociado.
      */
-    public List<Ranking> sacar10MejoresJugadores() {
+    public List<Ranking> sacar10MejoresJugadores() throws RemoteException, NotBoundException {
         List<Ranking> mejores10Jugadores = new ArrayList();
 
-        try {
-            IRanking ranking = (IRanking) conexion.lookup(SERVICIO_RANKING);
-            mejores10Jugadores = ranking.sacarMejores10();
-        } catch (RemoteException | NotBoundException ex) {
-            Logger.getLogger(ClienteRMI.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        IRanking ranking = (IRanking) conexion.lookup(SERVICIO_RANKING);
+        mejores10Jugadores = ranking.sacarMejores10();
 
         return mejores10Jugadores;
     }
 
     /**
      * Saca el Identificador imagen de perfil de un usuario en especifico.
-     * 
+     *
      * @param nombreUsuario Identificador del usuario deseado.
      * @return Identificador de la imagen del usuario.
      * @throws RemoteException Si la referencia no pudo ser creada.

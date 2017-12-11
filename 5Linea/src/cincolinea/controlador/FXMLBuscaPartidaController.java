@@ -17,6 +17,7 @@ import javafx.scene.control.Label;
 import io.socket.client.IO;
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
+import java.awt.event.ActionListener;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.logging.Level;
@@ -97,7 +98,8 @@ public class FXMLBuscaPartidaController implements Initializable {
         if (this.idioma != null) {
             iniciarIdiomaComponentes();
         }
-
+        javax.swing.Timer temporizador = temporizadorConexion();
+        temporizador.start();
         try {
             if (socket == null) {
                 crearConexionIO();
@@ -107,10 +109,38 @@ public class FXMLBuscaPartidaController implements Initializable {
         }
 
         cbPartidas.setVisible(false);
-
         obtenerPartidasDisponibles();
     }
 
+    /**
+     * Metodo que retorna un objeto del tipo Timer, que sirve de temporizador
+     * para verificar conexión con el servidor Node.js
+     * @return Objeto tipo javax.swing.Timer
+     */
+    private javax.swing.Timer temporizadorConexion() {
+
+        javax.swing.Timer temporizador = new javax.swing.Timer(3000, new ActionListener() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent ae) {
+                if (!ConfiguracionIP.verficarConexionSocket()) {
+                    Platform.runLater(() -> {
+                        MensajeController.mensajeAdvertencia(idioma.getString("errorDeConexionServidor"));
+                    });
+                    Platform.runLater(() -> {
+                        socket.off("jugadores");
+                        socket.off("respuestaEmparejamiento");
+                        socket.off("respuestaEmparejamientoNegativa");
+                        socket.disconnect();
+                        main.desplegarMenuPrincipal(idioma, idUsuario);
+                    });
+                    Thread.currentThread().stop();
+                }
+            }
+        });
+
+        return temporizador;
+    }
+    
     /**
      * Manda el emit al servidor para solicitar las partidas creadas y 
      * personaliza la vista.
@@ -222,7 +252,11 @@ public class FXMLBuscaPartidaController implements Initializable {
     @FXML
     private void emparejar(ActionEvent evento) {
         String idContrincante = cbPartidas.getValue();
-        socket.emit("emparejar", idContrincante.substring(11), idUsuario, imagenDePerfil);
+        if (idContrincante != null) {
+            socket.emit("emparejar", idContrincante.substring(11), idUsuario, imagenDePerfil);
+        } else {
+            MensajeController.mensajeInformacion(idioma.getString("jugarSinPareja"));
+        }
     }
 
     /**

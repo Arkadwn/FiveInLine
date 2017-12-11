@@ -27,6 +27,7 @@ import javafx.scene.control.ListView;
  * @author Miguel Leonardo Jimenez Jimenez
  */
 public class FXMLRankingController implements Initializable {
+
     private ResourceBundle idioma;
     @FXML
     private JFXButton btnRegresar;
@@ -66,14 +67,14 @@ public class FXMLRankingController implements Initializable {
 
     /**
      * Setter de la variable imagenDePerfil.
-     * 
+     *
      * @param imagenDePerfil Identificador de la imagen de perfil del usuario.
      */
     public void setImagenDePerfil(String imagenDePerfil) {
         this.imagenDePerfil = imagenDePerfil;
         cargarPerfil();
     }
-    
+
     /**
      * Internacionaliza los componentes de la vista.
      */
@@ -88,7 +89,7 @@ public class FXMLRankingController implements Initializable {
         labelPartidas.setText(idioma.getString("labelPartidas"));
         labelNombreJugador.setText(idioma.getString("labelNombreJugador"));
     }
-
+    
     @Override
     public void initialize(URL url, ResourceBundle idiomaElegido) {
         idioma = idiomaElegido;
@@ -100,7 +101,7 @@ public class FXMLRankingController implements Initializable {
 
     /**
      * Setter de la variable idUsuario.
-     * 
+     *
      * @param idUsuario Identificador del usuario que ha iniciado sesión.
      */
     public void setIdUsuario(String idUsuario) {
@@ -109,7 +110,7 @@ public class FXMLRankingController implements Initializable {
 
     /**
      * Setter de la varible main.
-     * 
+     *
      * @param main Ventana principal.
      */
     public void setMain(Main main) {
@@ -119,23 +120,24 @@ public class FXMLRankingController implements Initializable {
     /**
      * Saca los mejores 10 jugadores.
      */
-    public void obtenerRankings(){
-        List <Ranking> listaRankigs = new ArrayList();
-        ObservableList <String> usuarios = FXCollections.observableArrayList();
-        ObservableList <String> partidasGanadas = FXCollections.observableArrayList();
-        ObservableList <String> partidasPerdidas = FXCollections.observableArrayList();
-        ObservableList <String> partidasEmpatadas = FXCollections.observableArrayList();
-        ObservableList <String> puntos = FXCollections.observableArrayList();
+    public void obtenerRankings() {
+        List<Ranking> listaRankigs = new ArrayList();
+        ObservableList<String> usuarios = FXCollections.observableArrayList();
+        ObservableList<String> partidasGanadas = FXCollections.observableArrayList();
+        ObservableList<String> partidasPerdidas = FXCollections.observableArrayList();
+        ObservableList<String> partidasEmpatadas = FXCollections.observableArrayList();
+        ObservableList<String> puntos = FXCollections.observableArrayList();
         
         try {
             ClienteRMI conexion = new ClienteRMI();
             listaRankigs = conexion.sacar10MejoresJugadores();
         } catch (RemoteException | NotBoundException ex) {
-            MensajeController.mensajeAdvertencia(idioma.getString("ErrorDeConexionIP"));
             Logger.getLogger(FXMLRankingController.class.getName()).log(Level.SEVERE, null, ex);
+            MensajeController.mensajeInformacion(idioma.getString("errorDeConexionIP"));
+            main.desplegarMenuPrincipal(idioma, idUsuario);
         }
         
-        for(Ranking ranking : listaRankigs){
+        for (Ranking ranking : listaRankigs) {
             usuarios.add(ranking.getNombreUsuario());
             partidasGanadas.add(String.valueOf(ranking.getPartidasGanadas()));
             partidasPerdidas.add(String.valueOf(ranking.getPartidasPerdidas()));
@@ -144,11 +146,11 @@ public class FXMLRankingController implements Initializable {
         }
         rellenarTabla(usuarios, partidasGanadas, partidasPerdidas, partidasEmpatadas, puntos);
     }
-    
+
     /**
      * Rellena las listas que representan las columnas de la tabla del ranking.
-     * 
-     * @param usuarios nombres de los 10 jugadores. 
+     *
+     * @param usuarios nombres de los 10 jugadores.
      * @param partidasGanadas Partidas ganadas de los 10 mejores jugadores
      * respectivamente.
      * @param partidasPerdidas Partidas perdidas de los 10 mejores jugadores
@@ -157,10 +159,10 @@ public class FXMLRankingController implements Initializable {
      * respectivamente.
      * @param puntos Puntos de los 10 mejores jugadores respectivamente.
      */
-    public void rellenarTabla(ObservableList usuarios, ObservableList partidasGanadas, ObservableList partidasPerdidas, ObservableList partidasEmpatadas, ObservableList puntos){
+    public void rellenarTabla(ObservableList usuarios, ObservableList partidasGanadas, ObservableList partidasPerdidas, ObservableList partidasEmpatadas, ObservableList puntos) {
         ObservableList<String> partidasTotales = FXCollections.observableArrayList();
         
-        for(int i = 0; i < usuarios.size(); i++){
+        for (int i = 0; i < usuarios.size(); i++) {
             int suma = Integer.parseInt((String) partidasGanadas.get(i)) + Integer.parseInt((String) partidasPerdidas.get(i)) + Integer.parseInt((String) partidasEmpatadas.get(i));
             partidasTotales.add(String.valueOf(suma));
         }
@@ -173,23 +175,23 @@ public class FXMLRankingController implements Initializable {
         listPuntos.setItems(puntos);
         
     }
-    
+
     /**
      * Acción del botón btnRegresar.
-     * 
+     *
      * @param evento El evento cachado por la presión del botón btnRegresar.
      */
     @FXML
     private void regresarMenuPrincipal(ActionEvent evento) {
         main.desplegarMenuPrincipal(idioma, idUsuario);
     }
-    
+
     /**
      * Muestra la imagen de perfil del usuario.
      */
-    private void cargarPerfil(){
+    private void cargarPerfil() {
         imgPerfil.setStyle("-fx-background-image: url('cincolinea/imagenes/" + imagenDePerfil + ".jpg" + "');"
                 + "-fx-background-position: center center; -fx-background-repeat: stretch; -fx-background-size: 128px 90px 128px 90px;");
     }
-
+    
 }

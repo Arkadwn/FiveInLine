@@ -2,12 +2,14 @@ package cincolinea.controlador;
 
 import cincolinea.Main;
 import cincolinea.modelo.ConfiguracionPartida;
+import cincolinea.modelo.utilerias.ConfiguracionIP;
 import cincolinea.modelo.Ficha;
 import cincolinea.modelo.Tablero;
 import com.jfoenix.controls.JFXButton;
 import conexion.ClienteRMI;
 import io.socket.emitter.Emitter;
 import java.net.URL;
+import java.awt.event.ActionListener;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.ResourceBundle;
@@ -74,6 +76,33 @@ public class FXMLTableroController implements Initializable {
 
     }
 
+    /**
+     * Metodo que retorna un objeto del tipo Timer, que sirve de temporizador
+     * para verificar conexión con el servidor Node.js
+     * @return Objeto tipo javax.swing.Timer
+     */
+    private javax.swing.Timer temporizadorConexion() {
+
+        javax.swing.Timer temporizador = new javax.swing.Timer(3000, new ActionListener() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent ae) {
+                if (!ConfiguracionIP.verficarConexionSocket()) {
+                    Platform.runLater(() -> {
+                        MensajeController.mensajeAdvertencia(idioma.getString("errorDeConexionServidor"));
+                    });
+                    apagarOns();
+                    configuracion.getSocket().disconnect();
+                    Platform.runLater(() -> {
+                        main.desplegarMenuPrincipal(idioma, idUsuario);
+                    });
+                    Thread.currentThread().stop();
+                }
+            }
+        });
+
+        return temporizador;
+    }
+    
     /**
      * Setter de la variable main.
      *

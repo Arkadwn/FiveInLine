@@ -5,6 +5,7 @@ import cincolineaservidor.persistencia.Cuentas;
 import cincolineaservidor.persistencia.Rankings;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
@@ -15,7 +16,7 @@ import javax.persistence.RollbackException;
 
 /**
  * Controlador de la entidad Cuentas.
- * 
+ *
  * @author Adrián Bustamante Zarate
  * @author Miguel Leonardo Jimenez
  */
@@ -23,7 +24,7 @@ public class ControladorCuenta {
 
     /**
      * Constructor sobrecargado.
-     * 
+     *
      * @param fabricaEntidad Referencia a la persistenacia.
      */
     public ControladorCuenta(EntityManagerFactory fabricaEntidad) {
@@ -33,7 +34,7 @@ public class ControladorCuenta {
 
     /**
      * Getter de la variable fabricaEntidad.
-     * 
+     *
      * @return fabricaEntidad.
      */
     public EntityManager getEntityManager() {
@@ -42,7 +43,7 @@ public class ControladorCuenta {
 
     /**
      * Busca los datos de un usuario que desea ingresar al sistema.
-     * 
+     *
      * @param nombreUsuario Identificador de la cuenta del usuario.
      * @return Cuenta del usuario.
      */
@@ -50,14 +51,14 @@ public class ControladorCuenta {
         EntityManager entidad = getEntityManager();
         Query consulta = entidad.createQuery("SELECT c FROM Cuentas c WHERE c.nombreUsuario = :nombreUser").setParameter("nombreUser", nombreUsuario);
         Cuentas cuentaEntidadResultado;
-        Cuenta cuentaResultado = new Cuenta(); 
+        Cuenta cuentaResultado = new Cuenta();
         try {
             cuentaEntidadResultado = (Cuentas) consulta.getSingleResult();
             cuentaResultado.setContraseña(cuentaEntidadResultado.getContrasena());
             cuentaResultado.setEstadoSesion(cuentaEntidadResultado.getEstadoSesion());
         } catch (NoResultException ex) {
             Logger.getLogger(ControladorCuenta.class.getName()).log(Level.SEVERE, null, ex);
-        }finally{
+        } finally {
             entidad.close();
         }
         return cuentaResultado;
@@ -65,7 +66,7 @@ public class ControladorCuenta {
 
     /**
      * Guarda dentro de la base de datos una nueva cuenta.
-     * 
+     *
      * @param cuenta Nueva cuenta que se desea guardar.
      * @return Confirmación de la operación realizada.
      */
@@ -83,12 +84,12 @@ public class ControladorCuenta {
             nuevaCuenta.setImagen(cuenta.getImagen());
             nuevaCuenta.setNombre(cuenta.getNombre());
             nuevaCuenta.setApellidos(cuenta.getApellidos());
-            
+
             Collection<Rankings> rankings = new ArrayList();
             nuevaCuenta.setRankingsCollection(rankings);
-            
+
             entidad.persist(nuevaCuenta);
-            
+
             Rankings ranking = new Rankings();
             ranking.setIdRanking(null);
             ranking.setNombreUsuario(nuevaCuenta);
@@ -97,25 +98,25 @@ public class ControladorCuenta {
             ranking.setPartidasEmpatadas(0);
             ranking.setPuntos(0);
             entidad.persist(ranking);
-            
+
             entidad.getTransaction().commit();
-            
+
         } catch (RollbackException ex) {
             Logger.getLogger(ControladorCuenta.class.getName()).log(Level.SEVERE, null, ex);
             if (entidad.getTransaction().isActive()) {
                 entidad.getTransaction().rollback();
             }
             registro = false;
-        }finally{
+        } finally {
             entidad.close();
         }
 
         return registro;
     }
-    
+
     /**
      * Cambia la disposición de la cuenta a 1.
-     * 
+     *
      * @param nombreUsuario Identificador de la cuenta del usuario.
      * @return Confirmación de la operación realizada.
      */
@@ -149,7 +150,7 @@ public class ControladorCuenta {
 
     /**
      * Cambia el estado de la cuenta de un usuario a 0.
-     * 
+     *
      * @param nombreUsuario Identificador de la cuenta del usuario.
      * @return Confirmación de la operación realizada.
      */
@@ -182,25 +183,59 @@ public class ControladorCuenta {
     }
 
     /**
+     * Activa el inicio de sesión de todos los perfiles de usuarios
+     * desactivados.
+     *
+     * @return Confirmación de la operación realizada.
+     */
+    public boolean activarPerfilesInicioSesion() {
+        EntityManager entidad = getEntityManager();
+        int estadoSesion;
+        boolean validacion = false;
+
+        try {
+            entidad.getTransaction().begin();
+
+            List<Cuentas> cuentasUsuario = entidad.createQuery("SELECT c FROM Cuentas c").getResultList();
+            //estadoSesion = cuentaUsuario.getEstadoSesion();
+            for (Cuentas cuenta : cuentasUsuario) {
+                if (cuenta.getEstadoSesion() == 1) {
+                    cuenta.setEstadoSesion(0);
+                    entidad.getTransaction().commit();
+                }
+            }
+            validacion = true;
+
+        } catch (RollbackException ex) {
+            if (entidad.getTransaction().isActive()) {
+                entidad.getTransaction().rollback();
+                validacion = false;
+                //Logger.getLogger(ControladorCuenta.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return validacion;
+    }
+
+    /**
      * Saca de la base de datos el identificador de la imagen de la cuenta.
-     * 
+     *
      * @param idUsuario Identificador de la cuenta del usuario.
      * @return Identificador de la imagen del usuario.
      */
-    public String sacarImagenDePerfil(String idUsuario){
+    public String sacarImagenDePerfil(String idUsuario) {
         String imagen = "";
-        
+
         EntityManager entidad = getEntityManager();
         Query consulta = entidad.createQuery("SELECT c.imagen FROM Cuentas c WHERE c.nombreUsuario = :nombreUser").setParameter("nombreUser", idUsuario);
-        
-        try{
+
+        try {
             imagen = (String) consulta.getSingleResult();
-        } catch(NoResultException ex){
+        } catch (NoResultException ex) {
             Logger.getLogger(ControladorCuenta.class.getName()).log(Level.SEVERE, null, ex);
-        }finally{
+        } finally {
             entidad.close();
         }
-        
+
         return imagen;
     }
 }

@@ -1,5 +1,6 @@
 package conexion;
 
+import cincolinea.modelo.Cuenta;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.logging.Level;
@@ -22,6 +23,8 @@ public class ClienteRMITest {
     }
     /**
      * Test of autenticarCuenta method, of class ClienteRMI.
+     * @throws java.rmi.RemoteException
+     * @throws java.rmi.NotBoundException
      */
     @Test
     public void testAutenticarCuentaNombreUsuarioIncorrecto() throws RemoteException, NotBoundException {
@@ -29,30 +32,35 @@ public class ClienteRMITest {
         String contrasena = "acdc";
         conexion = new ClienteRMI();
         boolean resultadoEsperado = false;
-        boolean resultado = conexion.autenticarCuenta(usuario, contrasena);
-        assertEquals(resultadoEsperado, resultado);
+        int resultado = conexion.autenticarCuenta(usuario, contrasena);
+        assertEquals(resultadoEsperado, resultado == 0);
     }
 
     @Test
     public void testAutenticarCuenta() throws RemoteException, NotBoundException {
         String usuario = "Leo";
-        String contrasena = "acdc";
+        String contrasena = "acdc619mljj";
         conexion = new ClienteRMI();
         boolean resultadoEsperado = true;
-        boolean resultado = conexion.autenticarCuenta(usuario, contrasena);
-        assertEquals(resultadoEsperado, resultado);
+        int resultado = conexion.autenticarCuenta(usuario, contrasena);
+        assertEquals(resultadoEsperado, resultado == 1);
     }
     
     /**
      * Test of registrarUsuario method, of class ClienteRMI.
      */
     @Test
-    public void probrarRegistroSobrepasoDeCaracteres() {
-        String nombreUsuario = "Cristhianhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh";
-        String contrasena = "123456";
-        String imagen = "img01";
+    public void probrarRegistroSobrepasoDeCaracteres() throws NotBoundException, RemoteException {
+        Cuenta cuenta = new Cuenta();
+        cuenta.setNombre("Mauricio");
+        cuenta.setApellidos("Jimenez");
+        cuenta.setContraseña("qwerty12345");
+        cuenta.setEstadoSesion(0);
+        cuenta.setNombreUsuario("Cristhianhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
+        cuenta.setCorreo("acdc@gmail.com");
+        cuenta.setImagen("img01");
         boolean expResult = false;
-        boolean result = conexion.registrarUsuario(nombreUsuario, contrasena);
+        boolean result = conexion.registrarUsuario(cuenta);
         assertEquals(expResult, result);
     }
     
